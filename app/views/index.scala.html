@@ -1,0 +1,59 @@
+@import helper._
+@main("Todo list") {
+
+<h1 id="title"></h1>
+
+<ul id="list"></ul>
+
+<h2>Add a new task</h2>
+Tags: <input type="text" id="newTags" /> <br/>
+Payload: <input type="text" id="newPayload" />
+<input type="button" onclick="saveNew()" value="push" />
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        loadObjects();
+    });
+
+    function loadObjects() {
+        $.ajax({
+            url: "@routes.TaggableController.list()",
+            type: "GET",
+            dataType: "json",
+            success: showObjects
+        });
+    }
+
+    function showObjects(objects) {
+        $("#title").html(objects.length + " object(s)");
+        $.each(objects, function(i, obj) {
+            appendObject(obj);
+        });
+    }
+    
+    function appendObject(object) {
+        var li = $("<li></li>");
+        li.append(object.payload);
+
+        $("#list").append(li);
+    }
+    
+    function saveNew() {
+        $.ajax({
+            url: "@routes.TaggableController.save()",
+            type: "POST",
+            dataType: "json",
+            contentType: "json",
+            data: {
+                payload: $("#newPayload").val(),
+            },
+            success: function(result) {
+                console.log(result);
+            },
+            error: function(xhr,status,error) {
+                console.log(error);
+            }
+        });
+    }
+</script>
+}
