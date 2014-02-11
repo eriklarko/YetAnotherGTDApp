@@ -24,12 +24,4 @@ public class Tag extends Model {
     public static Collection<Tag> all() {
         return find.all();
     }
-
-    public static void create(Tag tag) {
-        tag.save();
-    }
-
-    public static void delete(Long id) {
-        find.byId(id).delete();
-    }
 }

@@ -1,6 +1,7 @@
 package models;
 
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,7 +20,7 @@ public class TaggableObject extends Model {
     public Long id;
 
     @ManyToMany
-    public List<Tag> tags;
+    public List<Tag> tags = new LinkedList<>();
 
     @Column
     public String payload;
@@ -28,13 +29,5 @@ public class TaggableObject extends Model {
 
     public static Collection<TaggableObject> all() {
         return find.all();
-    }
-
-    public static void create(TaggableObject taggable) {
-        taggable.save();
-    }
-
-    public static void delete(Long id) {
-        find.byId(id).delete();
     }
 }

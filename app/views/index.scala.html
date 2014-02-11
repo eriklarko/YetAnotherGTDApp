@@ -1,17 +1,19 @@
 @import helper._
 @main("Todo list") {
 
-<h1 id="title"></h1>
-
 <ul id="list"></ul>
 
 <h2>Add a new task</h2>
 Tags: <input type="text" id="newTags" /> <br/>
-Payload: <input type="text" id="newPayload" />
+Payload: <input type="text" id="newPayload" value="hej" />
 <input type="button" onclick="saveNew()" value="push" />
 
 <script type="text/javascript">
     $(document).ready(function() {
+        $('#newTags').tagsInput({
+            autocomplete_url:"@routes.TagController.listNames()"
+        });
+
         loadObjects();
     });
 
@@ -25,32 +27,69 @@ Payload: <input type="text" id="newPayload" />
     }
 
     function showObjects(objects) {
-        $("#title").html(objects.length + " object(s)");
         $.each(objects, function(i, obj) {
             appendObject(obj);
         });
     }
-    
+
     function appendObject(object) {
         var li = $("<li></li>");
+        li.attr("id", "object-" + object.id);
         li.append(object.payload);
+
+        $.each(object.tags, function(i, tag) {
+            li.append(" " + tag.name);
+        });
+
+        var removeButton = $("<button>X</button>");
+        removeButton.on("click", function() {
+           remove(object.id);
+        });
+        li.append(removeButton);
 
         $("#list").append(li);
     }
-    
+
     function saveNew() {
         $.ajax({
             url: "@routes.TaggableController.save()",
             type: "POST",
             dataType: "json",
-            contentType: "json",
-            data: {
+            contentType: "application/json",
+            data: JSON.stringify({
+                tags: getTags(),
                 payload: $("#newPayload").val(),
+            }),
+            success: appendObject,
+            error: function(xhr, status, error) {
+                console.log("ERROR");
+                console.log(xhr);
+                console.log(status);
+                console.log(error);
+            }
+        });
+    }
+
+    function getTags() {
+        return $("#newTags").val().split(",");
+    }
+
+    function remove(id) {
+        $.ajax({
+            url: "@routes.TaggableController.remove()",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                id: id
+            }),
+            success: function() {
+                console.log("SUCCESS");
+                $("#object-" + id).remove();
             },
-            success: function(result) {
-                console.log(result);
-            },
-            error: function(xhr,status,error) {
+            error: function(xhr, status, error) {
+                console.log("ERROR");
+                console.log(xhr);
+                console.log(status);
                 console.log(error);
             }
         });
