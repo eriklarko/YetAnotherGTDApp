@@ -1,8 +1,8 @@
-function TaggableCard(taggable, removeListener) {
+function TaggableCard(taggable, removeTaggableListener, removeTagListener) {
     var mainDiv = $("<div></div>");
     mainDiv.addClass("card");
 
-    var tags = new TagRow(taggable.id, taggable.tags);
+    var tags = new TagRow(taggable.tags);
     var payload = new Payload(taggable.payload);
 
     mainDiv.append(payload);
@@ -11,14 +11,20 @@ function TaggableCard(taggable, removeListener) {
     return mainDiv;
 
     function Payload(payload) {
+        var removeBtn = $("<a href='#' title='Remove'>x</a>");
+        removeBtn.on('click', function () {
+            removeTaggableListener(taggable.id);
+        });
+
         var div = $("<div></div>");
         div.addClass("text");
         div.append(payload);
+        div.append(removeBtn);
 
         return div;
     }
 
-    function TagRow(taggableId, tags) {
+    function TagRow(tags) {
 
         var row = $("<div></div>");
         $.each(tags, function(i, tag) {
@@ -30,7 +36,7 @@ function TaggableCard(taggable, removeListener) {
         function Tag(tag) {
             var removeBtn = $("<a href='#' title='Remove'>x</a>");
             removeBtn.on('click', function () {
-                removeListener(taggableId, tag.id);
+                removeTagListener(taggable.id, tag.id);
             });
 
             var div = $("<div></div>");

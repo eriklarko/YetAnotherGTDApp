@@ -4,13 +4,14 @@
 <div id="taggables"></div>
 
 <div style="width: 15em" class="card">
-<h2>Add a new task</h2>
+    <h2>Add a new task</h2>
 
-<input type="text" id="newPayload" placeholder="Payload" style="width: 97%"/>
-<input type="text" id="newTags" /> <br/>
-<input type="button" onclick="saveNew()" value="Add" />
+    <input type="text" id="newPayload" placeholder="Payload" style="width: 97%"/>
+    <input type="text" id="newTags" /> <br/>
+    <input type="button" onclick="saveNew()" value="Add" />
 </div>
 
+<script src="@routes.Assets.at("javascripts/TaggableCard.js")" type="text/javascript"></script>
 <script type="text/javascript">
     $(document).ready(function() {
         $('#newTags').tagsInput({
@@ -37,7 +38,7 @@
     }
 
     function appendObject(taggable) {
-        var card = new TaggableCard(taggable, removeTagFromTaggable);
+        var card = new TaggableCard(taggable, removeTaggable, removeTagFromTaggable);
         card.attr("id", "taggable-" + taggable.id);
         $("#taggables").append(card);
     }
