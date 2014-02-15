@@ -1,4 +1,14 @@
 *.class
+build*
+logs
+project
+target
+
+.classpath
+.project
+.settings
+
+conf/evolutions
 
 # Package Files #
 *.jar
