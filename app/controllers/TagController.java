@@ -1,11 +1,7 @@
-
 package controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import java.util.ArrayList;
-import java.util.List;
 import models.Tag;
 import play.data.Form;
 import play.libs.Json;
@@ -15,6 +11,7 @@ import static play.mvc.Controller.request;
 import play.mvc.Result;
 import static play.mvc.Results.badRequest;
 import static play.mvc.Results.ok;
+import services.TagsService;
 
 /**
  *
@@ -27,11 +24,7 @@ public class TagController extends Controller {
 	}
 
 	public static Result listNames() throws JsonProcessingException {
-		List<String> tagNames = new ArrayList<>();
-		for(Tag tag : Tag.all()) {
-			tagNames.add(tag.name);
-		}
-		return ok(Json.toJson(tagNames));
+		return ok(Json.toJson(TagsService.getTagNames(Tag.all())));
 	}
 
     @BodyParser.Of(BodyParser.Json.class)
@@ -45,10 +38,7 @@ public class TagController extends Controller {
         } else {
             Tag toCreate = bound.get();
             toCreate.save();
-
-            ObjectNode result = Json.newObject();
-            result.put("Tag", Json.toJson(toCreate));
-            return ok(result);
+            return ok(Json.toJson(toCreate));
         }
     }
 }
