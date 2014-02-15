@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import models.Tag;
 import org.junit.Assert;
@@ -24,6 +25,21 @@ public class TagsServiceTest extends PlayIntegrationTest {
 			return o1.name.compareTo(o2.name);
 		}
 	};
+
+	@Test
+	public void testFindByNameExisting() {
+		String nameToFind = UUID.randomUUID().toString();
+		TagsService.findOrCreateTags(Arrays.asList(UUID.randomUUID().toString(), nameToFind, UUID.randomUUID().toString()));
+
+		Tag found = TagsService.findByName(nameToFind);
+		Assert.assertEquals(nameToFind, found.name);
+	}
+
+	@Test(expected = NoSuchElementException.class)
+	public void testFindByNameNonExisting() {
+		String nameToFind = UUID.randomUUID().toString();
+		Tag found = TagsService.findByName(nameToFind);
+	}
 
 	@Test
 	public void testFindOrCreateOnlyCreate() {

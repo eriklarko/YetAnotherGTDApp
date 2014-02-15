@@ -1,4 +1,4 @@
-function TaggableCard(taggable, removeTaggableListener, removeTagListener) {
+function TaggableCard(taggable, removeTaggableListener) {
     var mainDiv = $("<div></div>");
     mainDiv.addClass("card");
 
@@ -7,6 +7,7 @@ function TaggableCard(taggable, removeTaggableListener, removeTagListener) {
 
     mainDiv.append(payload);
     mainDiv.append(tags);
+
     mainDiv.append("<div style='clear: both'></div>");
     return mainDiv;
 
@@ -25,27 +26,12 @@ function TaggableCard(taggable, removeTaggableListener, removeTagListener) {
     }
 
     function TagRow(tags) {
-
-        var row = $("<div></div>");
-        $.each(tags, function(i, tag) {
-           row.append(new Tag(tag));
+        var tagNames = new Array();
+        $.each(tags, function (i, tag) {
+            tagNames.push(tag.name);
         });
-
-        return row;
-
-        function Tag(tag) {
-            var removeBtn = $("<a href='#' title='Remove'>x</a>");
-            removeBtn.on('click', function () {
-                removeTagListener(taggable.id, tag.id);
-            });
-
-            var div = $("<div></div>");
-            div.addClass("tag");
-            div.attr("id", "tag-" + tag.id);
-            div.append(tag.name + "&nbsp;&nbsp;");
-            div.append(removeBtn);
-
-            return div;
-        }
+        var input = $("<input type='text' />");
+        input.attr("tag-data", tagNames.join(","));
+        return input;
     }
 }

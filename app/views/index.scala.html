@@ -8,9 +8,10 @@
 
     <input type="text" id="newPayload" placeholder="Payload" style="width: 97%"/>
     <input type="text" id="newTags" /> <br/>
-    <input type="button" onclick="saveNew()" value="Add" />
+    <input type="button" id="addBtn" value="Add" />
 </div>
 
+<script src="@routes.Assets.at("javascripts/API.js")" type="text/javascript"></script>
 <script src="@routes.Assets.at("javascripts/TaggableCard.js")" type="text/javascript"></script>
 <script type="text/javascript">
     $(document).ready(function() {
@@ -18,18 +19,15 @@
             autocomplete_url:"@routes.TagController.listNames()"
         });
 
-        loadObjects();
-    });
-
-    function loadObjects() {
-        $.ajax({
-            url: "@routes.TaggableController.list()",
-            type: "GET",
-            dataType: "json",
-            success: showObjects,
-            error: genericAjaxError
+        $("#addBtn").on("click", function () {
+            addTaggable(function(newObject) {
+                clearInput();
+                appendObject (newObject);
+            });
         });
-    }
+
+        loadObjects(showObjects);
+    });
 
     function showObjects(objects) {
         $.each(objects, function(i, obj) {
@@ -38,35 +36,28 @@
     }
 
     function appendObject(taggable) {
-        var card = new TaggableCard(taggable, removeTaggable, removeTagFromTaggable);
+        var card = new TaggableCard(taggable, function (taggableId) {
+            removeTaggable(taggableId, function() {
+                $("#taggable-" + taggableId).remove();
+            });
+        });
         card.attr("id", "taggable-" + taggable.id);
         $("#taggables").append(card);
-    }
 
-    function saveNew() {
-        $.ajax({
-            url: "@routes.TaggableController.save()",
-            type: "POST",
-            dataType: "json",
-            contentType: "application/json",
-            data: JSON.stringify({
-                tags: getTags(),
-                payload: $("#newPayload").val(),
-            }),
-            success: function(newObject) {
-                clearInput();
-                appendObject (newObject);
-            },
-            error: genericAjaxError
+        $.each(card.children("[tag-data]"), function (i, input) {
+            $(this).tagsInput({
+                autocomplete_url:"@routes.TagController.listNames()",
+                onAddTag: function (tagName) {
+                  addTagToTaggable(taggable.id, [tagName]);
+                },
+                onRemoveTag: function (tagName) {
+                    removeTagFromTaggable(taggable.id, tagName);
+                }
+            });
+            $(this).importTags($(this).attr("tag-data"));
         });
     }
 
-    function genericAjaxError(xhr, status, error) {
-        alert("ERROR");
-        console.log(xhr);
-        console.log(status);
-        console.log(error);
-    }
 
     function getTags() {
         return $("#newTags").val().split(",");
@@ -75,40 +66,6 @@
     function clearInput() {
         $("#newPayload").val("");
         $("#newTags").importTags("");
-    }
-
-    function removeTaggable(taggableId) {
-        $.ajax({
-            url: "@routes.TaggableController.remove()",
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({
-                id: taggableId
-            }),
-            success: function() {
-                console.log("SUCCESS");
-                $("#taggable-" + taggableId).remove();
-            },
-            error: genericAjaxError
-        });
-    }
-
-    function removeTagFromTaggable(taggableId, tagId) {
-        $.ajax({
-            url: "@routes.TaggableController.untag()",
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({
-                taggableId: taggableId,
-                tagId: tagId
-            }),
-            success: function(res) {
-                console.log("SUCCESS");
-                console.log(res);
-                $("#taggable-" + taggableId + " #tag-" + tagId).remove();
-            },
-            error: genericAjaxError
-        });
     }
 </script>
 }

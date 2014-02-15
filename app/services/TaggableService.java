@@ -44,7 +44,7 @@ public class TaggableService {
 	}
 
 	@Transactional
-	public static void removeTagFromTaggable(TaggableObject taggable, Tag tagToRemove) throws NoSuchElementException{
+	public static void removeTagFromTaggable(TaggableObject taggable, Tag tagToRemove) throws NoSuchElementException {
 		boolean tagRemoved = taggable.tags.remove(tagToRemove);
 
 		if (tagRemoved) {
@@ -52,5 +52,12 @@ public class TaggableService {
 		} else {
 			throw new NoSuchElementException("Unable to find tag " + tagToRemove.name + " in taggable " + taggable.id);
 		}
+	}
+
+	@Transactional
+	public static void addTags(TaggableObject taggable, Collection<String> tagNames) {
+		List<Tag> newTags = TagsService.findOrCreateTags(tagNames);
+		taggable.tags.addAll(newTags);
+		taggable.save();
 	}
 }

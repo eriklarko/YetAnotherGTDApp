@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.validation.constraints.NotNull;
 import play.db.ebean.Model;
 
 /**
@@ -23,6 +24,7 @@ public class TaggableObject extends Model {
     public List<Tag> tags = new LinkedList<>();
 
     @Column
+	@NotNull
     public String payload;
 
     public static Finder<Long, TaggableObject> find = new Finder(Long.class, TaggableObject.class);
