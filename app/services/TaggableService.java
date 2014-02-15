@@ -3,9 +3,12 @@ package services;
 import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.TreeSet;
 import models.Tag;
 import models.TaggableObject;
 import play.db.ebean.Transactional;
+import utils.TaggablesIdComparator;
 
 /**
  *
@@ -36,11 +39,15 @@ public class TaggableService {
 
 	private static void markUnusedTagsForDeletion(List<Tag> candidates) {
 		for (Tag candidate : candidates) {
-			List<TaggableObject> objectsWithTag = TaggableObject.find.where().eq("tags.name", candidate.name).findList();
+			List<TaggableObject> objectsWithTag = findTaggablesWithTag(candidate);
 			if (objectsWithTag.isEmpty()) {
 				candidate.delete();
 			}
 		}
+	}
+
+	private static List<TaggableObject> findTaggablesWithTag(Tag tag) {
+		return TaggableObject.find.where().eq("tags.name", tag.name).findList();
 	}
 
 	@Transactional
@@ -59,5 +66,13 @@ public class TaggableService {
 		List<Tag> newTags = TagsService.findOrCreateTags(tagNames);
 		taggable.tags.addAll(newTags);
 		taggable.save();
+	}
+
+	public static Set<TaggableObject> findTaggablesTaggedWith(Collection<Tag> tags) {
+		Set<TaggableObject> taggables = new TreeSet<>(new TaggablesIdComparator());
+		for (Tag tag : tags) {
+			taggables.addAll(findTaggablesWithTag(tag));
+		}
+		return taggables;
 	}
 }

@@ -1,4 +1,29 @@
-function loadObjects(successCallback) {
+function getAllFilters(successCallback) {
+    $.ajax({
+        url: "/filter/list.json",
+        type: "GET",
+        dataType: "json",
+        success: successCallback,
+        error: genericAjaxError
+    });
+}
+
+function addFilter(name, tags, successCallback) {
+    $.ajax({
+        url: "/filter/add",
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json",
+        data: JSON.stringify({
+            tags: tags,
+            name: name,
+        }),
+        success: successCallback,
+        error: genericAjaxError
+    });
+}
+
+function loadAllObjects(successCallback) {
     $.ajax({
         url: "/taggable/list.json",
         type: "GET",
@@ -8,15 +33,29 @@ function loadObjects(successCallback) {
     });
 }
 
-function addTaggable(successCallback) {
+function loadObjects(tagNames, successCallback) {
+    $.ajax({
+        url: "/taggable/tagged",
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json",
+        data: JSON.stringify({
+           tagNames: tagNames
+        }),
+        success: successCallback,
+        error: genericAjaxError
+    });
+}
+
+function addTaggable(payload, tags, successCallback) {
     $.ajax({
         url: "/taggable/add",
         type: "POST",
         dataType: "json",
         contentType: "application/json",
         data: JSON.stringify({
-            tags: getTags(),
-            payload: $("#newPayload").val(),
+            tags: tags,
+            payload: payload,
         }),
         success: successCallback,
         error: genericAjaxError
@@ -24,7 +63,7 @@ function addTaggable(successCallback) {
 }
 
 function genericAjaxError(xhr, status, error) {
-    alert("ERROR");
+    alert("ERROR\n" + xhr.responseText);
     console.log(xhr);
     console.log(status);
     console.log(error);

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.NoSuchElementException;
 import models.Tag;
 import models.TaggableObject;
@@ -15,6 +16,7 @@ import play.mvc.Result;
 import services.TaggableService;
 import services.TagsService;
 import util.Validation;
+import utils.JsonUtil;
 
 /**
  *
@@ -39,15 +41,12 @@ public class TaggableController extends Controller {
 	@BodyParser.Of(BodyParser.Json.class)
 	public static Result save() {
 		JsonNode json = request().body().asJson();
-		return save(json);
-	}
 
-	private static Result save(JsonNode json) {
 		Validation<String> validation = validateSaveJson(json);
 		if (validation.hasErrors()) {
 			return badRequest(Json.toJson(validation.errors()));
 		} else {
-			String[] tagNames = getTagNames(json.findValue("tags"));
+			String[] tagNames = JsonUtil.getTagNames(json.findValue("tags"));
 			String payload = validation.getParsed("payload").iterator().next();
 
 			TaggableObject newTaggable = TaggableService.createTaggable(payload, Arrays.asList(tagNames));
@@ -64,8 +63,8 @@ public class TaggableController extends Controller {
 		if (tags == null || !tags.isArray()) {
 			validation.reject("tags", "No tags given");
 		} else {
-			tagNames = getTagNames(tags);
-			if (tagNames == null || tagNames.length == 0 || onlyEmptyStrings(tagNames)) {
+			tagNames = JsonUtil.getTagNames(tags);
+			if (tagNames == null || tagNames.length == 0 || JsonUtil.onlyEmptyStrings(tagNames)) {
 				validation.reject("tags", "No tags given");
 			} else {
 				validation.successfullyParsed("tags", tags.asText());
@@ -79,24 +78,6 @@ public class TaggableController extends Controller {
 		}
 
 		return validation;
-	}
-
-	private static String[] getTagNames(JsonNode tags) {
-		ObjectMapper mapper = new ObjectMapper();
-		try {
-			return mapper.readValue(tags.traverse(), String[].class);
-		} catch (IOException ex) {
-			return null;
-		}
-	}
-
-	private static boolean onlyEmptyStrings(String[] strings) {
-		for (String string : strings) {
-			if (!(string == null || string.trim().isEmpty())) {
-				return false;
-			}
-		}
-		return true;
 	}
 
 	@BodyParser.Of(BodyParser.Json.class)
@@ -130,7 +111,7 @@ public class TaggableController extends Controller {
 		String[] tagNames;
 		try {
 			taggableId = Long.parseLong(taggableIdJson.asText());
-			tagNames = getTagNames(tagNamesJson);
+			tagNames = JsonUtil.getTagNames(tagNamesJson);
 		} catch (NullPointerException | NumberFormatException ex) {
 			return badRequest("Empty or non-integral ids");
 		}
@@ -138,7 +119,7 @@ public class TaggableController extends Controller {
 		TaggableObject taggable = TaggableObject.find.byId(taggableId);
 		if (taggable == null) {
 			return badRequest("Could not find taggable object with id " + taggableId);
-		} else if (tagNames == null || onlyEmptyStrings(tagNames)) {
+		} else if (tagNames == null || JsonUtil.onlyEmptyStrings(tagNames)) {
 			return badRequest("No tags found");
 		}
 
@@ -175,5 +156,24 @@ public class TaggableController extends Controller {
 
 		TaggableService.removeTagFromTaggable(taggable, tag);
 		return ok(Json.toJson(taggable));
+	}
+
+	@BodyParser.Of(BodyParser.Json.class)
+	public static Result findTagged() {
+		JsonNode json = request().body().asJson();
+		JsonNode tagNamesJson = json.findValue("tagNames");
+
+		String[] tagNames = JsonUtil.getTagNames(tagNamesJson);
+
+		if(tagNames == null || JsonUtil.onlyEmptyStrings(tagNames)) {
+			return badRequest("No tag names given");
+		}
+
+		try {
+			Collection<Tag> tags = TagsService.findTagsByName(Arrays.asList(tagNames));
+			return ok(Json.toJson(TaggableService.findTaggablesTaggedWith(tags)));
+		} catch (NoSuchElementException ex) {
+			return badRequest(ex.getMessage());
+		}
 	}
 }

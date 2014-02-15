@@ -1,0 +1,47 @@
+@import helper._
+@main("Todo list") {
+
+
+<ul id="filters"></ul>
+
+<div style="width: 15em;">
+    <input type="text" id="newFilterName" placeholder="Filter name" />
+    <input type="text" id="newFilterTags" />
+    <input type="button" id="createFilterBtn" value="Create" />
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#newFilterTags").tagsInput({
+            autocomplete_url: "@routes.TagController.listNames()",
+            defaultText: "Tags to use in filter"
+        });
+
+        $("#createFilterBtn").on("click", function() {
+            addFilter($("#newFilterName").val(), getTags(), function (newFilter) {
+                appendFilter(newFilter);
+            })
+        });
+
+        getAllFilters(function(filters) {
+            $.each(filters, function(i , filter) {
+                appendFilter(filter);
+            });
+        })
+    });
+
+    function getTags() {
+        return $("#newFilterTags").val().split(",");
+    }
+
+    function appendFilter(filter) {
+        var link = $("<a></a>");
+        link.attr("href", "/filter/view/" + filter.id);
+        link.append(filter.name);
+
+        var li = $("<li></li>");
+        li.append(link);
+        $("#filters").append(li);
+    }
+</script>
+}

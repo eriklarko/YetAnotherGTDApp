@@ -13,7 +13,7 @@ import play.db.ebean.Transactional;
  */
 public class TagsService {
 
-	public static Tag findByName(String name) {
+	public static Tag findByName(String name) throws NoSuchElementException {
 		Tag found = Tag.find.where().eq("name", name).findUnique();
 		if (found == null) {
 			throw new NoSuchElementException("No tag with name " + name + " found");
@@ -41,11 +41,10 @@ public class TagsService {
 	}
 
 	private static Tag findOrCreateTag(String tagName) {
-		Tag tag = Tag.find.where().eq("name", tagName).findUnique();
-		if (tag == null) {
+		try {
+			return findByName(tagName);
+		} catch (NoSuchElementException ex) {
 			return createNewTag(tagName);
-		} else {
-			return tag;
 		}
 	}
 
@@ -54,5 +53,13 @@ public class TagsService {
 		tag.name = tagName;
 		tag.save();
 		return tag;
+	}
+
+	public static List<Tag> findTagsByName(Collection<String> tagNames) throws NoSuchElementException {
+		List<Tag> tags = new ArrayList<>(tagNames.size());
+		for(String tagName : tagNames) {
+			tags.add(findByName(tagName));
+		}
+		return tags;
 	}
 }

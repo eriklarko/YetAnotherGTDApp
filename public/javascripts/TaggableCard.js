@@ -13,11 +13,14 @@ function TaggableCard(taggable, removeTaggableListener) {
 
     function Payload(payload) {
         var removeBtn = $("<a href='#' title='Remove'>x</a>");
+        removeBtn.css("float", "right");
+        removeBtn.addClass("remove");
         removeBtn.on('click', function () {
             removeTaggableListener(taggable.id);
         });
 
         var div = $("<div></div>");
+        div.addClass("payload");
         div.addClass("text");
         div.append(payload);
         div.append(removeBtn);
