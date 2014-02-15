@@ -1,12 +1,15 @@
 @import helper._
 @main("Todo list") {
 
-<ul id="list"></ul>
+<div id="taggables"></div>
 
+<div style="width: 15em" class="card">
 <h2>Add a new task</h2>
-Tags: <input type="text" id="newTags" /> <br/>
-Payload: <input type="text" id="newPayload" value="hej" />
-<input type="button" onclick="saveNew()" value="push" />
+
+<input type="text" id="newPayload" placeholder="Payload" style="width: 97%"/>
+<input type="text" id="newTags" /> <br/>
+<input type="button" onclick="saveNew()" value="Add" />
+</div>
 
 <script type="text/javascript">
     $(document).ready(function() {
@@ -22,7 +25,8 @@ Payload: <input type="text" id="newPayload" value="hej" />
             url: "@routes.TaggableController.list()",
             type: "GET",
             dataType: "json",
-            success: showObjects
+            success: showObjects,
+            error: genericAjaxError
         });
     }
 
@@ -32,22 +36,10 @@ Payload: <input type="text" id="newPayload" value="hej" />
         });
     }
 
-    function appendObject(object) {
-        var li = $("<li></li>");
-        li.attr("id", "object-" + object.id);
-        li.append(object.payload);
-
-        $.each(object.tags, function(i, tag) {
-            li.append(" " + tag.name);
-        });
-
-        var removeButton = $("<button>X</button>");
-        removeButton.on("click", function() {
-           remove(object.id);
-        });
-        li.append(removeButton);
-
-        $("#list").append(li);
+    function appendObject(taggable) {
+        var card = new TaggableCard(taggable, removeTagFromTaggable);
+        card.attr("id", "taggable-" + taggable.id);
+        $("#taggables").append(card);
     }
 
     function saveNew() {
@@ -60,38 +52,61 @@ Payload: <input type="text" id="newPayload" value="hej" />
                 tags: getTags(),
                 payload: $("#newPayload").val(),
             }),
-            success: appendObject,
-            error: function(xhr, status, error) {
-                console.log("ERROR");
-                console.log(xhr);
-                console.log(status);
-                console.log(error);
-            }
+            success: function(newObject) {
+                clearInput();
+                appendObject (newObject);
+            },
+            error: genericAjaxError
         });
+    }
+
+    function genericAjaxError(xhr, status, error) {
+        alert("ERROR");
+        console.log(xhr);
+        console.log(status);
+        console.log(error);
     }
 
     function getTags() {
         return $("#newTags").val().split(",");
     }
 
-    function remove(id) {
+    function clearInput() {
+        $("#newPayload").val("");
+        $("#newTags").importTags("");
+    }
+
+    function removeTaggable(taggableId) {
         $.ajax({
             url: "@routes.TaggableController.remove()",
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify({
-                id: id
+                id: taggableId
             }),
             success: function() {
                 console.log("SUCCESS");
-                $("#object-" + id).remove();
+                $("#taggable-" + taggableId).remove();
             },
-            error: function(xhr, status, error) {
-                console.log("ERROR");
-                console.log(xhr);
-                console.log(status);
-                console.log(error);
-            }
+            error: genericAjaxError
+        });
+    }
+
+    function removeTagFromTaggable(taggableId, tagId) {
+        $.ajax({
+            url: "@routes.TaggableController.untag()",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                taggableId: taggableId,
+                tagId: tagId
+            }),
+            success: function(res) {
+                console.log("SUCCESS");
+                console.log(res);
+                $("#taggable-" + taggableId + " #tag-" + tagId).remove();
+            },
+            error: genericAjaxError
         });
     }
 </script>

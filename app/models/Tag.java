@@ -4,6 +4,8 @@ import java.util.Collection;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.NotEmpty;
 import play.db.ebean.Model;
 
 /**
@@ -17,7 +19,9 @@ public class Tag extends Model {
     public Long id;
 
     @Column
-    public String name;
+	@NotEmpty
+	@NotNull
+	public String name;
 
     public static Finder<Long, Tag> find = new Finder(Long.class, Tag.class);
 

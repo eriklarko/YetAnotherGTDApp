@@ -1,0 +1,23 @@
+.card {
+    margin: 0.5em;
+    padding: 0.5em;
+    border: 0.1em solid #CCC;
+    width: 15em;
+    float: left;
+}
+
+.card .text {
+    font-size: 1.7em;
+    color: #555;
+    margin-bottom: 0.5em;
+}
+
+input[type=text] {
+    outline: 0px;
+    border: 0.1em solid #CCC;
+    padding: 0.2em;
+}
+
+input.hint {
+    color: #AAA;
+}

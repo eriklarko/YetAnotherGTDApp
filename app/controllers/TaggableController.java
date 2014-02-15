@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.Arrays;
+import models.Tag;
 import models.TaggableObject;
 import play.libs.Json;
 import play.mvc.BodyParser;
@@ -106,12 +107,38 @@ public class TaggableController extends Controller {
 			return badRequest("Empty or non-integral id");
 		}
 
-		TaggableObject obj = TaggableObject.find.byId(id);
-		if (obj == null) {
+		TaggableObject taggable = TaggableObject.find.byId(id);
+		if (taggable == null) {
 			return badRequest("Could not find taggable object with id " + id);
 		} else {
-			TaggableService.remove(obj);
+			TaggableService.remove(taggable);
 			return ok();
 		}
+	}
+
+	@BodyParser.Of(BodyParser.Json.class)
+	public static Result untag() {
+		JsonNode json = request().body().asJson();
+		JsonNode taggableIdJson = json.findValue("taggableId");
+		JsonNode tagIdJson = json.findValue("tagId");
+
+		long taggableId, tagId;
+		try {
+			taggableId = Long.parseLong(taggableIdJson.asText());
+			tagId = Long.parseLong(tagIdJson.asText());
+		} catch (NumberFormatException ex) {
+			return badRequest("Empty or non-integral ids");
+		}
+
+		TaggableObject taggable = TaggableObject.find.byId(taggableId);
+		Tag tag = Tag.find.byId(tagId);
+		if (taggable == null) {
+			return badRequest("Could not find taggable object with id " + taggableId);
+		} else if (tag == null) {
+			return badRequest("Could not find tag with id " + tagId);
+		}
+
+		TaggableService.removeTagFromTaggable(taggable, tag);
+		return ok(Json.toJson(taggable));
 	}
 }
