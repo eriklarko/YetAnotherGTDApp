@@ -2,8 +2,9 @@ package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 import models.Filter;
-import models.TaggableObject;
+import models.Tag;
 import play.libs.Json;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
@@ -13,6 +14,7 @@ import static play.mvc.Results.badRequest;
 import static play.mvc.Results.ok;
 import services.FilterService;
 import services.TaggableService;
+import services.TagsService;
 import util.Validation;
 import utils.JsonUtil;
 
@@ -67,4 +69,78 @@ public class FilterController extends Controller {
 
 		return validation;
 	}
+
+    public static Result getTaggablesInFilter() {
+        JsonNode json = request().body().asJson();
+		JsonNode filterIdJson = json.findValue("filterId");
+
+		long filterId;
+		try {
+			filterId = Long.parseLong(filterIdJson.asText());
+		} catch (NullPointerException | NumberFormatException ex) {
+			return badRequest("Empty or non-integral ids");
+		}
+
+		Filter filter = Filter.find.byId(filterId);
+		if (filter == null) {
+			return badRequest("Could not find filter with id " + filterId);
+		}
+
+        return ok(Json.toJson(TaggableService.findTaggablesTaggedWith(filter.tags)));
+    }
+
+    public static Result addTags() {
+        JsonNode json = request().body().asJson();
+		JsonNode filterIdJson = json.findValue("filterId");
+		JsonNode tagNamesJson = json.findValue("tagNames");
+
+		long filterId;
+		String[] tagNames;
+		try {
+			filterId = Long.parseLong(filterIdJson.asText());
+			tagNames = JsonUtil.getTagNames(tagNamesJson);
+		} catch (NullPointerException | NumberFormatException ex) {
+			return badRequest("Empty or non-integral ids");
+		}
+
+		Filter filter = Filter.find.byId(filterId);
+		if (filter == null) {
+			return badRequest("Could not find taggable object with id " + filterId);
+		} else if (tagNames == null || JsonUtil.onlyEmptyStrings(tagNames)) {
+			return badRequest("No tags found");
+		}
+
+		FilterService.addTags(filter, Arrays.asList(tagNames));
+		return ok(Json.toJson(filter));
+    }
+
+    public static Result removeTag() {
+        JsonNode json = request().body().asJson();
+		JsonNode filterIdJson = json.findValue("filterId");
+		JsonNode tagNameJson = json.findValue("tagName");
+
+		long filterId;
+		String tagName;
+		try {
+			filterId = Long.parseLong(filterIdJson.asText());
+			tagName = tagNameJson.asText();
+		} catch (NullPointerException | NumberFormatException ex) {
+			return badRequest("Empty or non-integral ids");
+		}
+
+		Filter filter = Filter.find.byId(filterId);
+		if (filter == null) {
+			return badRequest("Could not find filter with id " + filterId);
+		}
+
+		Tag tag;
+		try {
+			tag = TagsService.findByName(tagName);
+		} catch (NoSuchElementException ex) {
+			return badRequest("Could not find tag with name " + tagName);
+		}
+
+		FilterService.removeTagFromFilter(filter, tag);
+		return ok(Json.toJson(filter));
+    }
 }

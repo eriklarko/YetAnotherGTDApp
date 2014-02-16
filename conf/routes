@@ -4,6 +4,7 @@
 
 # Home page
 GET     /                           controllers.Application.filterList()
+GET     /all                        controllers.Application.viewAllTaggables()
 GET     /filter/view/:id            controllers.Application.viewFilter(id: Long)
 
 # Map static resources from the /public folder to the /assets URL path
@@ -25,3 +26,6 @@ POST    /taggable/tagged            controllers.TaggableController.findTagged()
 ## Filters
 GET     /filter/list.json           controllers.FilterController.list()
 POST    /filter/add                 controllers.FilterController.save()
+POST    /filter/addTags             controllers.FilterController.addTags()
+POST    /filter/removeTag           controllers.FilterController.removeTag()
+POST    /filter/getTaggables        controllers.FilterController.getTaggablesInFilter()

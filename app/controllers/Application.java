@@ -3,12 +3,17 @@ package controllers;
 import models.Filter;
 import play.mvc.Controller;
 import play.mvc.Result;
-import views.html.*;
+import views.html.filterList;
+import views.html.viewFilter;
 
 public class Application extends Controller {
 
     public static Result filterList() {
         return ok(filterList.render());
+    }
+
+    public static Result viewAllTaggables() {
+        return ok(viewFilter.render(null));
     }
 
 	public static Result viewFilter(Long id) {

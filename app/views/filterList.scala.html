@@ -19,6 +19,7 @@
 
         $("#createFilterBtn").on("click", function() {
             addFilter($("#newFilterName").val(), getTags(), function (newFilter) {
+                clearInput();        
                 appendFilter(newFilter);
             })
         });
@@ -32,6 +33,11 @@
 
     function getTags() {
         return $("#newFilterTags").val().split(",");
+    }
+    
+    function clearInput() {
+        $("#newFilterName").val("");
+        $("#newFilterTags").importTags("");
     }
 
     function appendFilter(filter) {

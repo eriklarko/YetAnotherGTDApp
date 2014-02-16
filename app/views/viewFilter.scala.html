@@ -1,7 +1,18 @@
-@import helper._
-
 @(filter: Filter)
+
+@import helper._
+@import play.libs.Json
+@import services.TagsService
 @main("Todo list") {
+
+@if(filter == null) {
+  <h3>Showing all objects</h3>
+} else {
+  <h3>Showing @filter.name</h3> 
+  <input type="text" id="tags-summary"/>
+}
+<div style="clear: both" />
+<hr/>
 
 <div id="taggables"></div>
 
@@ -27,10 +38,31 @@
             });
         });
 
-        loadObjects(["a", "b"], showObjects);
+        @if(filter == null) {
+            loadAllObjects(showObjects);
+        } else {
+            loadObjectsInFilter(@filter.id, showObjects)
+            
+            $("#tags-summary").tagsInput({
+                autocomplete_url: "@routes.TagController.listNames()",
+                onAddTag: function (tagName) {
+                    addTagsToFilter(@filter.id, [tagName], function () {
+                        loadObjectsInFilter(@filter.id, showObjects)
+                    });
+                },
+                onRemoveTag: function (tagName) {
+                    removeTagFromFilter(@filter.id, tagName, function () {
+                        loadObjectsInFilter(@filter.id, showObjects)
+                    });
+                }
+            });
+            var tagsToLoad = @Html(Json.stringify(Json.toJson(TagsService.getTagNames(filter.tags))));
+            $("#tags-summary").importTags(tagsToLoad.join(","));
+        }
     });
-
+    
     function showObjects(objects) {
+        $("#taggables").html("");
         $.each(objects, function(i, obj) {
             appendObject(obj);
         });

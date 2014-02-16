@@ -23,6 +23,47 @@ function addFilter(name, tags, successCallback) {
     });
 }
 
+function addTagsToFilter(filterId, tagNames, successCallback) {
+    $.ajax({
+        url: "/filter/addTags",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({
+            filterId: filterId,
+            tagNames: tagNames
+        }),
+        success: successCallback,
+        error: genericAjaxError
+    });
+}
+
+function removeTagFromFilter(filterId, tagName, successCallback) {
+    $.ajax({
+        url: "/filter/removeTag",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({
+            filterId: filterId,
+            tagName: tagName
+        }),
+        success: successCallback,
+        error: genericAjaxError
+    });
+}
+
+function loadObjectsInFilter(filterId, successCallback) {
+    $.ajax({
+        url: "/filter/getTaggables",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({
+            filterId: filterId
+        }),
+        success: successCallback,
+        error: genericAjaxError
+    });
+}
+
 function loadAllObjects(successCallback) {
     $.ajax({
         url: "/taggable/list.json",
