@@ -1,6 +1,6 @@
 function getAllFilters(successCallback) {
     $.ajax({
-        url: "/filter/list.json",
+        url: "/filters",
         type: "GET",
         dataType: "json",
         success: successCallback,
@@ -10,7 +10,7 @@ function getAllFilters(successCallback) {
 
 function addFilter(name, tags, successCallback) {
     $.ajax({
-        url: "/filter/add",
+        url: "/filters",
         type: "POST",
         dataType: "json",
         contentType: "application/json",
@@ -23,15 +23,11 @@ function addFilter(name, tags, successCallback) {
     });
 }
 
-function addTagsToFilter(filterId, tagNames, successCallback) {
+function addTagToFilter(filterId, tagName, successCallback) {
     $.ajax({
-        url: "/filter/addTags",
+        url: "/filters/" + filterId + "/tags/" + tagName,
         type: "POST",
         contentType: "application/json",
-        data: JSON.stringify({
-            filterId: filterId,
-            tagNames: tagNames
-        }),
         success: successCallback,
         error: genericAjaxError
     });
@@ -39,13 +35,9 @@ function addTagsToFilter(filterId, tagNames, successCallback) {
 
 function removeTagFromFilter(filterId, tagName, successCallback) {
     $.ajax({
-        url: "/filter/removeTag",
-        type: "POST",
+        url: "/filters/" + filterId + "/tags/" + tagName,
+        type: "DELETE",
         contentType: "application/json",
-        data: JSON.stringify({
-            filterId: filterId,
-            tagName: tagName
-        }),
         success: successCallback,
         error: genericAjaxError
     });
@@ -53,12 +45,9 @@ function removeTagFromFilter(filterId, tagName, successCallback) {
 
 function loadObjectsInFilter(filterId, successCallback) {
     $.ajax({
-        url: "/filter/getTaggables",
-        type: "POST",
+        url: "/filters/" + filterId,
+        type: "GET",
         contentType: "application/json",
-        data: JSON.stringify({
-            filterId: filterId
-        }),
         success: successCallback,
         error: genericAjaxError
     });
@@ -66,7 +55,7 @@ function loadObjectsInFilter(filterId, successCallback) {
 
 function loadAllObjects(successCallback) {
     $.ajax({
-        url: "/taggable/list.json",
+        url: "/notes",
         type: "GET",
         dataType: "json",
         success: successCallback,
@@ -74,23 +63,9 @@ function loadAllObjects(successCallback) {
     });
 }
 
-function loadObjects(tagNames, successCallback) {
+function addNote(payload, tags, successCallback) {
     $.ajax({
-        url: "/taggable/tagged",
-        type: "POST",
-        dataType: "json",
-        contentType: "application/json",
-        data: JSON.stringify({
-           tagNames: tagNames
-        }),
-        success: successCallback,
-        error: genericAjaxError
-    });
-}
-
-function addTaggable(payload, tags, successCallback) {
-    $.ajax({
-        url: "/taggable/add",
+        url: "/notes",
         type: "POST",
         dataType: "json",
         contentType: "application/json",
@@ -103,48 +78,37 @@ function addTaggable(payload, tags, successCallback) {
     });
 }
 
-function genericAjaxError(xhr, status, error) {
-    alert("ERROR\n" + xhr.responseText);
-    console.log(xhr);
-    console.log(status);
-    console.log(error);
-}
-
-function removeTaggable(taggableId, successCallback) {
+function removeNote(noteId, successCallback) {
     $.ajax({
-        url: "/taggable/remove",
-        type: "POST",
+        url: "/notes/" + noteId,
+        type: "DELETE",
         contentType: "application/json",
-        data: JSON.stringify({
-            id: taggableId
-        }),
         success: successCallback,
         error: genericAjaxError
     });
 }
 
-function addTagToTaggable(taggableId, tagNames) {
+function addTagToNote(noteId, tagName) {
     $.ajax({
-        url: "/taggable/tag",
+        url: "/notes/" + noteId + "/tags/" + tagName,
         type: "POST",
         contentType: "application/json",
-        data: JSON.stringify({
-            taggableId: taggableId,
-            tagNames: tagNames
-        }),
         error: genericAjaxError
     });
 }
 
-function removeTagFromTaggable(taggableId, tagName) {
+function removeTagFromNote(noteId, tagName) {
     $.ajax({
-        url: "/taggable/untag",
-        type: "POST",
+        url: "/notes/" + noteId + "/tags/" + tagName,
+        type: "DELETE",
         contentType: "application/json",
-        data: JSON.stringify({
-            taggableId: taggableId,
-            tagName: tagName
-        }),
         error: genericAjaxError
     });
+}
+
+function genericAjaxError(xhr, status, error) {
+    alert("ERROR\n" + xhr.responseText);
+    console.log(xhr);
+    console.log(status);
+    console.log(error);
 }

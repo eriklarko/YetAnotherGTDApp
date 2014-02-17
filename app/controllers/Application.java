@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.Arrays;
 import models.Filter;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -12,7 +13,7 @@ public class Application extends Controller {
         return ok(filterList.render());
     }
 
-    public static Result viewAllTaggables() {
+    public static Result viewAllNotes() {
         return ok(viewFilter.render(null));
     }
 
@@ -22,6 +23,7 @@ public class Application extends Controller {
 			return badRequest("No filter with id " + id + " found");
 		}
 
+		System.out.println("Tags in filter: " + Arrays.deepToString(filter.tags.toArray()));
         return ok(viewFilter.render(filter));
     }
 }

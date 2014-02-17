@@ -1,8 +1,7 @@
 package services;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import models.Filter;
 import models.Tag;
 import play.db.ebean.Transactional;
@@ -13,13 +12,19 @@ import play.db.ebean.Transactional;
  */
 public class FilterService {
 
-	public static Filter createFilter(String name, Collection<String> tagNames) {
+	@Transactional
+	public static Filter createFilter(String name, Set<Tag> tags) {
 		Filter filter = new Filter();
 		filter.name = name;
-		filter.tags = TagsService.findOrCreateTags(tagNames);
+		filter.tags = TagsService.findOrCreateTags(tags);
 		filter.save();
 
 		return filter;
+	}
+
+	@Transactional
+	public static void remove(Filter filter) {
+		filter.delete();
 	}
 
     @Transactional
@@ -34,9 +39,8 @@ public class FilterService {
 	}
 
 	@Transactional
-	public static void addTags(Filter filter, Collection<String> tagNames) {
-		List<Tag> newTags = TagsService.findOrCreateTags(tagNames);
-		filter.tags.addAll(newTags);
+	public static void addTag(Filter filter, Tag tag) {
+		filter.tags.add(tag);
 		filter.save();
 	}
 }

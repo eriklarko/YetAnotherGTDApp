@@ -1,9 +1,9 @@
-function TaggableCard(taggable, removeTaggableListener) {
+function NoteCard(note, removeNoteListener) {
     var mainDiv = $("<div></div>");
     mainDiv.addClass("card");
 
-    var tags = new TagRow(taggable.tags);
-    var payload = new Payload(taggable.payload);
+    var tags = new TagRow(note.tags);
+    var payload = new Payload(note.payload);
 
     mainDiv.append(payload);
     mainDiv.append(tags);
@@ -16,7 +16,7 @@ function TaggableCard(taggable, removeTaggableListener) {
         removeBtn.css("float", "right");
         removeBtn.addClass("remove");
         removeBtn.on('click', function () {
-            removeTaggableListener(taggable.id);
+            removeNoteListener(note.id);
         });
 
         var div = $("<div></div>");

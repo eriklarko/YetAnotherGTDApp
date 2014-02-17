@@ -6,20 +6,17 @@
 
 <div style="width: 15em;">
     <input type="text" id="newFilterName" placeholder="Filter name" />
-    <input type="text" id="newFilterTags" />
+    <select multiple id="newFilterTags"></select>
     <input type="button" id="createFilterBtn" value="Create" />
 </div>
 
 <script type="text/javascript">
     $(document).ready(function() {
-        $("#newFilterTags").tagsInput({
-            autocomplete_url: "@routes.TagController.listNames()",
-            defaultText: "Tags to use in filter"
-        });
+        setupTagsBox($("#newFilterTags"));
 
         $("#createFilterBtn").on("click", function() {
             addFilter($("#newFilterName").val(), getTags(), function (newFilter) {
-                clearInput();        
+                clearInput();
                 appendFilter(newFilter);
             })
         });
@@ -32,12 +29,12 @@
     });
 
     function getTags() {
-        return $("#newFilterTags").val().split(",");
+        return $("#newFilterTags").tagsinput("filteredItems");
     }
-    
+
     function clearInput() {
         $("#newFilterName").val("");
-        $("#newFilterTags").importTags("");
+        $("#newFilterTags").tagsinput('removeAll');
     }
 
     function appendFilter(filter) {

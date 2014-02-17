@@ -3,29 +3,31 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.filterList()
-GET     /all                        controllers.Application.viewAllTaggables()
-GET     /filter/view/:id            controllers.Application.viewFilter(id: Long)
+GET     /                                   controllers.Application.filterList()
+GET     /all                                controllers.Application.viewAllNotes()
+GET     /filter/view/:id                    controllers.Application.viewFilter(id: Long)
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET     /assets/*file                       controllers.Assets.at(path="/public", file)
 
 ## Tags
-GET     /tag/list.json              controllers.TagController.list()
-GET     /tag/listNames.json         controllers.TagController.listNames()
-POST    /tag/add                    controllers.TagController.save()
+GET     /tags                               controllers.TagController.list()
+POST    /tags                               controllers.TagController.save()
 
-## Taggables
-GET     /taggable/list.json         controllers.TaggableController.list()
-POST    /taggable/add               controllers.TaggableController.save()
-POST    /taggable/remove            controllers.TaggableController.remove()
-POST    /taggable/tag               controllers.TaggableController.tag()
-POST    /taggable/untag             controllers.TaggableController.untag()
-POST    /taggable/tagged            controllers.TaggableController.findTagged()
+## Notes
+GET     /notes                              controllers.NoteController.list()
+POST    /notes                              controllers.NoteController.save()
+DELETE  /notes/:id                          controllers.NoteController.remove(id: Long)
+
+POST    /notes/:noteId/tags/:tagName        controllers.NoteController.tag(noteId: Long, tagName: String)
+DELETE  /notes/:noteId/tags/:tagName        controllers.NoteController.untag(noteId: Long, tagName: String)
 
 ## Filters
-GET     /filter/list.json           controllers.FilterController.list()
-POST    /filter/add                 controllers.FilterController.save()
-POST    /filter/addTags             controllers.FilterController.addTags()
-POST    /filter/removeTag           controllers.FilterController.removeTag()
-POST    /filter/getTaggables        controllers.FilterController.getTaggablesInFilter()
+GET     /filters                            controllers.FilterController.list()
+GET     /filters/:id                        controllers.FilterController.listNotes(id: Long)
+POST    /filters                            controllers.FilterController.save()
+DELETE  /filters/:id                        controllers.FilterController.delete(id: Long)
+
+GET     /filters/:id/notes                  controllers.FilterController.getNotesInFilter(id: Long)
+POST    /filters/:filterId/tags/:tagName    controllers.FilterController.addTag(filterId: Long, tagName: String)
+DELETE  /filters/:filterId/tags/:tagName    controllers.FilterController.removeTag(filterId: Long, tagName: String)

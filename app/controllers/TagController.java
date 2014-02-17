@@ -11,7 +11,6 @@ import static play.mvc.Controller.request;
 import play.mvc.Result;
 import static play.mvc.Results.badRequest;
 import static play.mvc.Results.ok;
-import services.TagsService;
 
 /**
  *
@@ -21,10 +20,6 @@ public class TagController extends Controller {
 
 	public static Result list() throws JsonProcessingException {
 		return ok(Json.toJson(Tag.all()));
-	}
-
-	public static Result listNames() throws JsonProcessingException {
-		return ok(Json.toJson(TagsService.getTagNames(Tag.all())));
 	}
 
     @BodyParser.Of(BodyParser.Json.class)

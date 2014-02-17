@@ -3,6 +3,7 @@ package utils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import models.Tag;
 import play.data.Form;
 
 /**
@@ -11,10 +12,10 @@ import play.data.Form;
  */
 public class JsonUtil {
 
-	public static String[] getTagNames(JsonNode tags) {
+	public static Tag[] getTagsFromNames(JsonNode tags) {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
-			return mapper.readValue(tags.traverse(), String[].class);
+			return mapper.readValue(tags.traverse(), Tag[].class);
 		} catch (NullPointerException | IOException ex) {
 			return null;
 		}

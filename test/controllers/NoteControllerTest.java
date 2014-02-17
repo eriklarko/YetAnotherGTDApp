@@ -7,15 +7,15 @@ import org.junit.Test;
  *
  * @author eriklark
  */
-public class TaggableControllerTest {
+public class NoteControllerTest {
 
 	@Test
-	public void testAddTaggable() {
-		TaggableController.save();
+	public void testAddNote() {
+		NoteController.save();
 	}
 
 	@Test
 	public void testListAll() throws JsonProcessingException {
-		TaggableController.list();
+		NoteController.list();
 	}
 }

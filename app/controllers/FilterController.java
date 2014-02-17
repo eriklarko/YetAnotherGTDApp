@@ -1,14 +1,9 @@
 package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import controllers.dto.FilterDTO;
-import controllers.dto.ManyTagNamesAndFilterDTO;
-import controllers.dto.TagNameAndFilterDTO;
-import java.util.Arrays;
-import java.util.NoSuchElementException;
+import com.google.common.collect.Sets;
 import models.Filter;
 import models.Tag;
-import play.data.Form;
 import play.libs.Json;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
@@ -17,7 +12,8 @@ import play.mvc.Result;
 import static play.mvc.Results.badRequest;
 import static play.mvc.Results.ok;
 import services.FilterService;
-import services.TaggableService;
+import services.NoteService;
+import services.TagNameService;
 import services.TagsService;
 import util.Validation;
 import utils.JsonUtil;
@@ -32,6 +28,15 @@ public class FilterController extends Controller {
 		return ok(Json.toJson(Filter.find.all()));
 	}
 
+	public static Result listNotes(Long id) {
+		Filter filter = Filter.find.byId(id);
+		if (filter == null) {
+			return badRequest("No filter with id " + id + " found.");
+		}
+
+		return ok(Json.toJson(NoteService.findNotesTaggedWith(filter.tags)));
+	}
+
 	@BodyParser.Of(BodyParser.Json.class)
 	public static Result save() {
 		JsonNode json = request().body().asJson();
@@ -40,97 +45,83 @@ public class FilterController extends Controller {
 		if (validation.hasErrors()) {
 			return badRequest(Json.toJson(validation.errors()));
 		} else {
-			String[] tagNames = JsonUtil.getTagNames(json.findValue("tags"));
+			Tag[] tags = JsonUtil.getTagsFromNames(json.findValue("tags"));
 			String name = validation.getParsed("name").iterator().next();
 
-			Filter newFilter = FilterService.createFilter(name, Arrays.asList(tagNames));
+			Filter newFilter = FilterService.createFilter(name, Sets.newHashSet(tags));
 			return ok(Json.toJson(newFilter));
 		}
 	}
 
-	private static Validation<String> validateSaveJson(JsonNode json) {
-		JsonNode name = json.findValue("name");
-		JsonNode tags = json.findValue("tags");
+	public static Result delete(Long id) {
+		Filter filter = Filter.find.byId(id);
+		if (filter == null) {
+			return badRequest("No filter with id " + id + " found.");
+		}
+		FilterService.remove(filter);
+		return ok();
+	}
 
-		String[] tagNames;
+	private static Validation<String> validateSaveJson(JsonNode json) {
+		JsonNode nameJson = json.get("name");
+		JsonNode tagsJson = json.get("tags");
+		System.out.println("NAME: " + nameJson);
+
+		Tag[] tags;
 		Validation<String> validation = new Validation<>();
-		if (tags == null || !tags.isArray()) {
+		if (tagsJson == null || !tagsJson.isArray()) {
 			validation.reject("tags", "No tags given");
 		} else {
-			tagNames = JsonUtil.getTagNames(tags);
-			if (tagNames == null || tagNames.length == 0 || JsonUtil.onlyEmptyStrings(tagNames)) {
+			tags = JsonUtil.getTagsFromNames(tagsJson);
+			if (tags == null || tags.length == 0 || TagsService.hasOnlyEmptyNames(Sets.newHashSet(tags))) {
 				validation.reject("tags", "No tags given");
 			} else {
-				validation.successfullyParsed("tags", tags.asText());
+				validation.successfullyParsed("tags", tagsJson.asText());
 			}
 		}
 
-		if (name == null || name.textValue().isEmpty()) {
+		if (nameJson == null || nameJson.textValue().isEmpty()) {
 			validation.reject("name", "No name given");
 		} else {
-			validation.successfullyParsed("name", name.asText());
+			validation.successfullyParsed("name", nameJson.asText());
 		}
 
 		return validation;
 	}
 
-    public static Result getTaggablesInFilter() {
-        JsonNode json = request().body().asJson();
-
-        Form<FilterDTO> f = JsonUtil.getFromJson(FilterDTO.class, json);
-		if (f.hasErrors()) {
-			return badRequest(f.errorsAsJson());
-		}
-
-        FilterDTO dto = f.get();
-		Filter filter = Filter.find.byId(dto.filterId);
+	public static Result getNotesInFilter(Long id) {
+		Filter filter = Filter.find.byId(id);
 		if (filter == null) {
-			return badRequest("Could not find filter with id " + dto.filterId);
+			return badRequest("Could not find filter with id " + id);
 		}
 
-        return ok(Json.toJson(TaggableService.findTaggablesTaggedWith(filter.tags)));
-    }
+		return ok(Json.toJson(NoteService.findNotesTaggedWith(filter.tags)));
+	}
 
-    public static Result addTags() {
-        JsonNode json = request().body().asJson();
-		Form<ManyTagNamesAndFilterDTO> f = JsonUtil.getFromJson(ManyTagNamesAndFilterDTO.class, json);
-
-        if(f.hasErrors()) {
-            return badRequest(f.errorsAsJson());
-        }
-
-        ManyTagNamesAndFilterDTO dto = f.get();
-		Filter filter = Filter.find.byId(dto.filterId);
+	public static Result addTag(Long filterId, String tagName) {
+		Filter filter = Filter.find.byId(filterId);
 		if (filter == null) {
-			return badRequest("Could not find taggable object with id " + dto.filterId);
+			return badRequest("Could not find filter with id " + filterId);
 		}
 
-		FilterService.addTags(filter, dto.tagNames);
+		Tag tag = TagNameService.findOrCreateTagFromName(tagName);
+
+		FilterService.addTag(filter, tag);
 		return ok(Json.toJson(filter));
-    }
+	}
 
-    public static Result removeTag() {
-        JsonNode json = request().body().asJson();
-		Form<TagNameAndFilterDTO> f = JsonUtil.getFromJson(TagNameAndFilterDTO.class, json);
-
-        if (f.hasErrors()) {
-            return badRequest(f.errorsAsJson());
-        }
-
-        TagNameAndFilterDTO dto = f.get();
-		Filter filter = Filter.find.byId(dto.filterId);
+	public static Result removeTag(Long filterId, String tagName) {
+		Filter filter = Filter.find.byId(filterId);
 		if (filter == null) {
-			return badRequest("Could not find filter with id " + dto.filterId);
+			return badRequest("Could not find filter with id " + filterId);
 		}
 
-		Tag tag;
-		try {
-			tag = TagsService.findByName(dto.tagName);
-		} catch (NoSuchElementException ex) {
-			return badRequest("Could not find tag with name " + dto.tagName);
+		Tag tag = TagsService.findByName(tagName);
+		if (tag == null) {
+			return badRequest("Could not find tag with name " + tagName);
 		}
 
 		FilterService.removeTagFromFilter(filter, tag);
 		return ok(Json.toJson(filter));
-    }
+	}
 }

@@ -1,9 +1,8 @@
 package services;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import models.Tag;
 import play.db.ebean.Transactional;
 
@@ -22,8 +21,8 @@ public class TagsService {
 		}
 	}
 
-	public static List<String> getTagNames(Collection<Tag> tags) {
-		List<String> tagNames = new ArrayList<>();
+	public static Set<String> getTagNames(Iterable<Tag> tags) {
+		Set<String> tagNames = new HashSet<>();
 		for(Tag tag : tags) {
 			tagNames.add(tag.name);
 		}
@@ -32,34 +31,28 @@ public class TagsService {
 	}
 
 	@Transactional
-	public static List<Tag> findOrCreateTags(Collection<String> tagNames) {
-		List<Tag> tags = new ArrayList<>(tagNames.size());
-		for (String tagName : tagNames) {
-			tags.add(findOrCreateTag(tagName));
+	public static Set<Tag> findOrCreateTags(Iterable<Tag> tagsToFindOrCreate) {
+		Set<Tag> tags = new HashSet<>();
+		for (Tag tag : tagsToFindOrCreate) {
+			tags.add(findOrCreateTag(tag));
 		}
 		return tags;
 	}
 
-	private static Tag findOrCreateTag(String tagName) {
-		try {
-			return findByName(tagName);
-		} catch (NoSuchElementException ex) {
-			return createNewTag(tagName);
+	private static Tag findOrCreateTag(Tag tag) {
+		if (tag.id == null) {
+			return TagNameService.findOrCreateTagFromName(tag.name);
+		} else {
+			return Tag.find.byId(tag.id);
 		}
 	}
 
-	private static Tag createNewTag(String tagName) {
-		Tag tag = new Tag();
-		tag.name = tagName;
-		tag.save();
-		return tag;
-	}
-
-	public static List<Tag> findTagsByName(Collection<String> tagNames) throws NoSuchElementException {
-		List<Tag> tags = new ArrayList<>(tagNames.size());
-		for(String tagName : tagNames) {
-			tags.add(findByName(tagName));
+	public static boolean hasOnlyEmptyNames(Iterable<Tag> tags) {
+		for(Tag tag : tags) {
+			if (!(tag.name == null || tag.name.trim().isEmpty())) {
+				return false;
+			}
 		}
-		return tags;
+		return true;
 	}
 }

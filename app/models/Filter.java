@@ -1,7 +1,7 @@
 package models;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -23,7 +23,7 @@ public class Filter extends Model {
 	public String name;
 
 	@ManyToMany
-	public List<Tag> tags = new LinkedList<>();
+	public Set<Tag> tags = new HashSet<>();
 
 	public static Finder<Long, Filter> find = new Finder(Long.class, Filter.class);
 }

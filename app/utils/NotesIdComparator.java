@@ -1,16 +1,16 @@
 package utils;
 
 import java.util.Comparator;
-import models.TaggableObject;
+import models.Note;
 
 /**
  *
  * @author eriklark
  */
-public class TaggablesIdComparator implements Comparator<TaggableObject> {
+public class NotesIdComparator implements Comparator<Note> {
 
 	@Override
-	public int compare(TaggableObject o1, TaggableObject o2) {
+	public int compare(Note o1, Note o2) {
 		if (o1.id < o2.id) {
 			return -1;
 		}
