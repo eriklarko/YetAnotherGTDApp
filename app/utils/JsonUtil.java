@@ -3,6 +3,7 @@ package utils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import play.data.Form;
 
 /**
  *
@@ -27,6 +28,11 @@ public class JsonUtil {
 		}
 		return true;
 	}
+
+    public static <T> Form<T> getFromJson(Class<T> clazz, JsonNode json) {
+        Form<T> f = new Form(clazz);
+        return f.bind(json);
+    }
 
 	private JsonUtil() {
 

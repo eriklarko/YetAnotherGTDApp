@@ -2,13 +2,15 @@ package controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
+import controllers.dto.ManyTagNamesAndTaggableDTO;
+import controllers.dto.TagNameAndTaggableDTO;
+import controllers.dto.TaggableDTO;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.NoSuchElementException;
 import models.Tag;
 import models.TaggableObject;
+import play.data.Form;
 import play.libs.Json;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
@@ -83,18 +85,16 @@ public class TaggableController extends Controller {
 	@BodyParser.Of(BodyParser.Json.class)
 	public static Result remove() {
 		JsonNode json = request().body().asJson();
-		JsonNode idNode = json.findValue("id");
+		Form<TaggableDTO> f = JsonUtil.getFromJson(TaggableDTO.class, json);
 
-		long id;
-		try {
-			id = Long.parseLong(idNode.asText());
-		} catch (NullPointerException | NumberFormatException ex) {
-			return badRequest("Empty or non-integral id");
-		}
+        if(f.hasErrors()) {
+            return badRequest(f.errorsAsJson());
+        }
 
-		TaggableObject taggable = TaggableObject.find.byId(id);
+		TaggableDTO dto = f.get();
+		TaggableObject taggable = TaggableObject.find.byId(dto.taggableId);
 		if (taggable == null) {
-			return badRequest("Could not find taggable object with id " + id);
+			return badRequest("Could not find taggable object with id " + dto.taggableId);
 		} else {
 			TaggableService.remove(taggable);
 			return ok();
@@ -104,54 +104,42 @@ public class TaggableController extends Controller {
 	@BodyParser.Of(BodyParser.Json.class)
 	public static Result tag() {
 		JsonNode json = request().body().asJson();
-		JsonNode taggableIdJson = json.findValue("taggableId");
-		JsonNode tagNamesJson = json.findValue("tagNames");
+        Form<ManyTagNamesAndTaggableDTO> f = JsonUtil.getFromJson(ManyTagNamesAndTaggableDTO.class, json);
 
-		long taggableId;
-		String[] tagNames;
-		try {
-			taggableId = Long.parseLong(taggableIdJson.asText());
-			tagNames = JsonUtil.getTagNames(tagNamesJson);
-		} catch (NullPointerException | NumberFormatException ex) {
-			return badRequest("Empty or non-integral ids");
+        if(f.hasErrors()) {
+            return badRequest(f.errorsAsJson());
+        }
+
+        ManyTagNamesAndTaggableDTO dto = f.get();
+        TaggableObject taggable = TaggableObject.find.byId(dto.taggableId);
+        if (taggable == null) {
+			return badRequest("Could not find taggable object with id " + dto.taggableId);
 		}
 
-		TaggableObject taggable = TaggableObject.find.byId(taggableId);
-		if (taggable == null) {
-			return badRequest("Could not find taggable object with id " + taggableId);
-		} else if (tagNames == null || JsonUtil.onlyEmptyStrings(tagNames)) {
-			return badRequest("No tags found");
-		}
-
-		TaggableService.addTags(taggable, Arrays.asList(tagNames));
-		return ok(Json.toJson(taggable));
+        TaggableService.addTags(taggable, dto.tagNames);
+        return ok(Json.toJson(taggable));
 	}
 
 	@BodyParser.Of(BodyParser.Json.class)
 	public static Result untag() {
 		JsonNode json = request().body().asJson();
-		JsonNode taggableIdJson = json.findValue("taggableId");
-		JsonNode tagNameJson = json.findValue("tagName");
+        Form<TagNameAndTaggableDTO> f = JsonUtil.getFromJson(TagNameAndTaggableDTO.class, json);
 
-		long taggableId;
-		String tagName;
-		try {
-			taggableId = Long.parseLong(taggableIdJson.asText());
-			tagName = tagNameJson.asText();
-		} catch (NullPointerException | NumberFormatException ex) {
-			return badRequest("Empty or non-integral ids");
-		}
+        if(f.hasErrors()) {
+            return badRequest(f.errorsAsJson());
+        }
 
-		TaggableObject taggable = TaggableObject.find.byId(taggableId);
+        TagNameAndTaggableDTO dto = f.get();
+		TaggableObject taggable = TaggableObject.find.byId(dto.taggableId);
 		if (taggable == null) {
-			return badRequest("Could not find taggable object with id " + taggableId);
+			return badRequest("Could not find taggable object with id " + dto.taggableId);
 		}
 
 		Tag tag;
 		try {
-			tag = TagsService.findByName(tagName);
+			tag = TagsService.findByName(dto.tagName);
 		} catch (NoSuchElementException ex) {
-			return badRequest("Could not find tag with name " + tagName);
+			return badRequest("Could not find tag with name " + dto.tagName);
 		}
 
 		TaggableService.removeTagFromTaggable(taggable, tag);
