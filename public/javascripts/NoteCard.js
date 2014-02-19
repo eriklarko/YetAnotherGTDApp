@@ -20,12 +20,37 @@ function NoteCard(note, removeNoteListener) {
             removeNoteListener(note.id);
         });
 
-        var div = $("<div></div>");
-        div.addClass("payload");
-        div.addClass("text");
-        div.append(payload);
-        div.append(removeBtn);
+        var payloadAsText = $("<div></div>");
+        payloadAsText.addClass("payload");
+        payloadAsText.addClass("text");
+        payloadAsText.append(payload);
+        
+        var payloadAsInput = $("<input type='text' />");
+        
+        
+        var wrapper = $("<div></div>");
+        wrapper.append(removeBtn);
+        wrapper.append(payloadAsText);
+        wrapper.append(payloadAsInput);
+        
+        
+        payloadAsText.on("click", function () {
+            payloadAsInput.val(payloadAsText.html());
+            payloadAsInput.focus();
+            
+            payloadAsText.hide();
+            payloadAsInput.show();
+        });
+        
+        payloadAsInput.on("focusout", function () {
+            payloadAsText.html(payloadAsInput.val());
+            
+            payloadAsInput.hide();
+            payloadAsText.show();
+            
+            // TODO: alert listener
+        });
 
-        return div;
+        return wrapper;
     }
 }

@@ -15,7 +15,8 @@
     margin-bottom: 0.5em;
 }
 
-.payload .remove {
+.remove {
+    font-size: 1.7em;
     text-decoration: none;
     color: #555;
 }
