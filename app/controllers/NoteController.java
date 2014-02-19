@@ -3,11 +3,8 @@ package controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.collect.Sets;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.NoSuchElementException;
-import models.Tag;
 import models.Note;
+import models.Tag;
 import play.libs.Json;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
@@ -80,7 +77,6 @@ public class NoteController extends Controller {
 		return validation;
 	}
 
-	@BodyParser.Of(BodyParser.Json.class)
 	public static Result remove(Long id) {
 		Note note = Note.find.byId(id);
 		if (note == null) {
@@ -91,7 +87,6 @@ public class NoteController extends Controller {
 		}
 	}
 
-	@BodyParser.Of(BodyParser.Json.class)
 	public static Result tag(Long noteId, String tagName) {
 		Note note = Note.find.byId(noteId);
 		if (note == null) {
@@ -104,18 +99,17 @@ public class NoteController extends Controller {
 		return ok(Json.toJson(note));
 	}
 
-	@BodyParser.Of(BodyParser.Json.class)
-	public static Result untag(Long noteId, String tagName) {
+	public static Result untag(Long noteId, Long tagId) {
 		Note note = Note.find.byId(noteId);
 		if (note == null) {
 			return badRequest("Could not find note with id " + noteId);
 		}
 
-		Tag tag = TagsService.findByName(tagName);
+		Tag tag = Tag.find.byId(tagId);
 		if (tag == null) {
-			return badRequest("Could not find tag with name " + tagName);
+			return badRequest("Could not find tag with id " + tagId);
 		}
-		
+
 		NoteService.removeTag(note, tag);
 		return ok(Json.toJson(note));
 	}

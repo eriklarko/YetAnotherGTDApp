@@ -110,15 +110,15 @@ public class FilterController extends Controller {
 		return ok(Json.toJson(filter));
 	}
 
-	public static Result removeTag(Long filterId, String tagName) {
+	public static Result removeTag(Long filterId, Long tagId) {
 		Filter filter = Filter.find.byId(filterId);
 		if (filter == null) {
 			return badRequest("Could not find filter with id " + filterId);
 		}
 
-		Tag tag = TagsService.findByName(tagName);
+		Tag tag = Tag.find.byId(tagId);
 		if (tag == null) {
-			return badRequest("Could not find tag with name " + tagName);
+			return badRequest("Could not find tag with id " + tagId);
 		}
 
 		FilterService.removeTagFromFilter(filter, tag);

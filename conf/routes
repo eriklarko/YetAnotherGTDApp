@@ -20,7 +20,7 @@ POST    /notes                              controllers.NoteController.save()
 DELETE  /notes/:id                          controllers.NoteController.remove(id: Long)
 
 POST    /notes/:noteId/tags/:tagName        controllers.NoteController.tag(noteId: Long, tagName: String)
-DELETE  /notes/:noteId/tags/:tagName        controllers.NoteController.untag(noteId: Long, tagName: String)
+DELETE  /notes/:noteId/tags/:tagId          controllers.NoteController.untag(noteId: Long, tagId: Long)
 
 ## Filters
 GET     /filters                            controllers.FilterController.list()
@@ -30,4 +30,4 @@ DELETE  /filters/:id                        controllers.FilterController.delete(
 
 GET     /filters/:id/notes                  controllers.FilterController.getNotesInFilter(id: Long)
 POST    /filters/:filterId/tags/:tagName    controllers.FilterController.addTag(filterId: Long, tagName: String)
-DELETE  /filters/:filterId/tags/:tagName    controllers.FilterController.removeTag(filterId: Long, tagName: String)
+DELETE  /filters/:filterId/tags/:tagId      controllers.FilterController.removeTag(filterId: Long, tagId: Long)

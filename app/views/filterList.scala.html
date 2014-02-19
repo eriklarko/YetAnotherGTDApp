@@ -29,7 +29,18 @@
     });
 
     function getTags() {
-        return $("#newFilterTags").tagsinput("filteredItems");
+        var tags = [];
+        $.each($("#newFilterTags").tagsinput("items"), function (i, tagWithIffyId) {
+            if (!isNumber(tagWithIffyId.id)) {
+                var newTag = {
+                    name: tagWithIffyId.name
+                };
+                tags.push(newTag);
+            } else {
+                tags.push(tag);
+            }
+        });
+        return tags;
     }
 
     function clearInput() {

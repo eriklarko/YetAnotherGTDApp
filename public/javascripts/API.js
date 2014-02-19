@@ -27,17 +27,15 @@ function addTagToFilter(filterId, tagName, successCallback) {
     $.ajax({
         url: "/filters/" + filterId + "/tags/" + tagName,
         type: "POST",
-        contentType: "application/json",
         success: successCallback,
         error: genericAjaxError
     });
 }
 
-function removeTagFromFilter(filterId, tagName, successCallback) {
+function removeTagFromFilter(filterId, tagId, successCallback) {
     $.ajax({
-        url: "/filters/" + filterId + "/tags/" + tagName,
+        url: "/filters/" + filterId + "/tags/" + tagId,
         type: "DELETE",
-        contentType: "application/json",
         success: successCallback,
         error: genericAjaxError
     });
@@ -82,26 +80,25 @@ function removeNote(noteId, successCallback) {
     $.ajax({
         url: "/notes/" + noteId,
         type: "DELETE",
-        contentType: "application/json",
         success: successCallback,
         error: genericAjaxError
     });
 }
 
-function addTagToNote(noteId, tagName) {
+function addTagToNote(noteId, tagName, successCallback) {
     $.ajax({
         url: "/notes/" + noteId + "/tags/" + tagName,
         type: "POST",
-        contentType: "application/json",
+        success: successCallback,
         error: genericAjaxError
     });
 }
 
-function removeTagFromNote(noteId, tagName) {
+function removeTagFromNote(noteId, tagName, successCallback) {
     $.ajax({
         url: "/notes/" + noteId + "/tags/" + tagName,
         type: "DELETE",
-        contentType: "application/json",
+        success: successCallback,
         error: genericAjaxError
     });
 }
@@ -109,6 +106,4 @@ function removeTagFromNote(noteId, tagName) {
 function genericAjaxError(xhr, status, error) {
     alert("ERROR\n" + xhr.responseText);
     console.log(xhr);
-    console.log(status);
-    console.log(error);
 }

@@ -1,6 +1,9 @@
 .card {
     margin: 0.5em;
-    padding: 0.5em;
+    padding-top: 0.5em;
+    padding-bottom: 0em;
+    padding-left: 1em;
+    padding-right: 1em;
     border: 0.1em solid #CCC;
     width: 15em;
     float: left;
@@ -25,4 +28,9 @@ input[type=text] {
 
 input.hint {
     color: #AAA;
+}
+
+.line-separator {
+    clear: both;
+    height: 0.6em;  
 }

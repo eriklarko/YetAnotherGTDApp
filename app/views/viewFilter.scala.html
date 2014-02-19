@@ -5,54 +5,34 @@
 @import services.TagsService
 @main("Todo list") {
 
+<div style="width: auto; display: inline-block; padding: 1em">
 @if(filter == null) {
   <h3>Showing all objects</h3>
 } else {
   <h3>Showing @filter.name</h3>
   <select multiple id="tags-summary"></select>
 }
-<div style="clear: both" />
+</div>
+<div style="clear: both"></div>
 <hr/>
 
 <div id="notes"></div>
 
-<div style="width: 15em" class="card">
+<div style="width: 17em" class="card">
     <h2>Add a new note</h2>
-
-    <input type="text" id="newPayload" placeholder="Payload" style="width: 97%"/>
-    <select multiple id="newTags"></select> <br/>
-    <input type="button" id="addBtn" value="Add" />
+    <br/>
+    
+    <input type="text" id="newPayload" placeholder="Payload" style="width: 100%" />
+    <div class="line-separator"></div>
+    <select multiple id="newTags" placeholder="Tags"></select>
+    <input type="button" id="addBtn" value="Add" style="float: right" />
+    <div class="line-separator"></div>
 </div>
 
 <script src="@routes.Assets.at("javascripts/NoteCard.js")" type="text/javascript"></script>
 <script type="text/javascript">
     $(document).ready(function() {
-
-
-        var numbers = new Bloodhound({
-  datumTokenizer: function(d) { return Bloodhound.tokenizers.whitespace(d.num); },
-  queryTokenizer: Bloodhound.tokenizers.whitespace,
-  local: [
-    { num: 'one' },
-    { num: 'two' },
-    { num: 'three' },
-    { num: 'four' },
-    { num: 'five' },
-    { num: 'six' },
-    { num: 'seven' },
-    { num: 'eight' },
-    { num: 'nine' },
-    { num: 'ten' }
-  ]
-});
-console.log(numbers);
-// initialize the bloodhound suggestion engine
-numbers.initialize();
-console.log(numbers);
-        $('#newPayload').typeahead(null, {source: numbers.ttAdapter()});
-
-
-        //setupTagsBox($('#newTags'));
+        setupTagsBox($('#newTags'));
 
         $("#addBtn").on("click", function () {
             addNote($("#newPayload").val(), getTags(), function(newObject) {
@@ -64,34 +44,28 @@ console.log(numbers);
         @if(filter == null) {
             loadAllObjects(showObjects);
         } else {
-            var tags = @Html(Json.stringify(Json.toJson(filter.tags)));
-
             loadObjectsInFilter(@filter.id, showObjects)
+
             setupTagsBox($("#tags-summary"), {
                 onAddTag: function (tag) {
-                    addTagToFilter(@filter.id, tag.name);
+                    addTagToFilter(@filter.id, tag.name, function (updatedFilter) {
+                        $.each(updatedFilter.tags, function(i, newTag) {
+                           if (newTag.name === tag.name) {
+                               tag.id = newTag.id;
+                           } 
+                        });
+                        loadObjectsInFilter(@filter.id, showObjects)
+                    });
                 },
                 onRemoveTag: function (tag) {
-                    removeTagFromFilter(@filter.id, tag.name);
+                    removeTagFromFilter(@filter.id, tag.id, function () {
+                        loadObjectsInFilter(@filter.id, showObjects)
+                    });
                 },
             });
 
-            console.log(tags);
+            var tags = @Html(Json.stringify(Json.toJson(filter.tags)));
             $("#tags-summary").tagsinput("addAll", tags);
-
-            /*$("#tags-summary").tagsInput({
-                onAddTag: function (tagName) {
-                    addTagToFilter(@filter.id, tagName, function () {
-                        loadObjectsInFilter(@filter.id, showObjects)
-                    });
-                },
-                onRemoveTag: function (tagName) {
-                    removeTagFromFilter(@filter.id, tagName, function () {
-                        loadObjectsInFilter(@filter.id, showObjects)
-                    });
-                }
-            });*/
-            //$("#tags-summary").importTags(tagsToLoad.join(","));
         }
     });
 
@@ -109,24 +83,41 @@ console.log(numbers);
             });
         });
         card.attr("id", "note-" + note.id);
-        $("#notes").append(card);
-
-        $.each(card.children("[tag-data]"), function (i, input) {
-            /*$(this).tagsInput({
-                onAddTag: function (tagName) {
-                  addTagToNote(note.id, [tagName]);
-                },
-                onRemoveTag: function (tagName) {
-                    removeTagFromNote(note.id, tagName);
-                }
-            });
-            $(this).importTags($(this).attr("tag-data"));*/
+        
+        var tagsRow = card.children(".tagsRow");
+        setupTagsBox(tagsRow, {
+            onAddTag: function (tag) {
+                addTagToNote(note.id, tag.name, function (updatedNote) {
+                    console.log(updatedNote);
+                    $.each(updatedNote.tags, function(i, newTag) {
+                        if (newTag.name === tag.name) {
+                            tag.id = newTag.id;
+                        } 
+                     });
+                });
+            },
+            onRemoveTag: function (tag) {
+                removeTagFromNote(note.id, tag.id);
+            }
         });
+        tagsRow.tagsinput("addAll", note.tags);
+        
+        $("#notes").append(card);
     }
 
-
     function getTags() {
-        return $("#newTags").tagsinput("filteredItems");
+        var tags = [];
+        $.each($("#newTags").tagsinput("items"), function (i, tagWithIffyId) {
+            if (!isNumber(tagWithIffyId.id)) {
+                var newTag = {
+                    name: tagWithIffyId.name
+                };
+                tags.push(newTag);
+            } else {
+                tags.push(tag);
+            }
+        });
+        return tags;
     }
 
     function clearInput() {

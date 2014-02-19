@@ -9,6 +9,7 @@ target
 .settings
 
 conf/evolutions
+nbproject
 
 # Package Files #
 *.jar

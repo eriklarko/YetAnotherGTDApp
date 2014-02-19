@@ -26,7 +26,6 @@
    */
   function TagsInput(element, options) {
     this.itemsArray = [];
-    this.valuesToIgnore = [];
 
     this.$element = $(element);
     this.$element.hide();
@@ -75,7 +74,6 @@
           itemAsObj[self.options.itemValue_orig] = item;
           itemAsObj[self.options.itemText_orig] = item;
           item = itemAsObj;
-          self.valuesToIgnore.push(self.options.itemValue(item));
       }
 
       // If SELECT but not multiple, remove current tag
@@ -165,7 +163,7 @@
         self.itemsArray.splice($.inArray(item, self.itemsArray), 1);
       }
 
-      self.options.onRemoveTag(self.removeValueIfNeedBe(item));
+      self.options.onRemoveTag(item);
 
       if (!dontPushVal)
         self.pushVal();
@@ -228,14 +226,6 @@
     items: function() {
       return this.itemsArray;
     },
-    filteredItems: function () {
-      var self = this;
-      var items = [];
-      $.each(this.itemsArray, function (i, item) {
-          items.push(self.removeValueIfNeedBe(item));
-      });
-      return items;
-    },
 
     /**
      * Assembly value by retrieving the value of each item, and set it on the
@@ -263,25 +253,14 @@
       makeOptionItemFunction(self.options, 'itemText');
       makeOptionItemFunction(self.options, 'tagClass');
 
-      self.removeValueIfNeedBe = function (item) {
-        var arrayIndex = $.inArray(self.options.itemValue(item), self.valuesToIgnore);
-        var removeId = arrayIndex >= 0;
-        if (removeId) {
-          var toReturn = {};
-          toReturn[self.options.itemText_orig] = self.options.itemText(item);
-          return toReturn;
-        } else {
-          return item;
-        }
-      }
-
       // for backwards compatibility, self.options.source is deprecated
       if (self.options.source)
         typeahead.source = self.options.source;
 
       if (typeahead.source && $.fn.typeahead) {
         makeOptionFunction(typeahead, 'source');
-
+        
+        self.$input.typeahead(null, typeahead);
         self.$input.typeahead({
           source: function (query, process) {
             console.log("source");
@@ -382,7 +361,7 @@
             if (self.options.freeInput && $.inArray(event.which, self.options.confirmKeys) >= 0) {
               var item = self.add($input.val());
               if (item !== undefined) {
-                self.options.onAddTag(self.removeValueIfNeedBe(item));
+                self.options.onAddTag(item);
               }
               $input.val('').change();
               event.preventDefault();

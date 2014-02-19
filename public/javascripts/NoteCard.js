@@ -2,7 +2,8 @@ function NoteCard(note, removeNoteListener) {
     var mainDiv = $("<div></div>");
     mainDiv.addClass("card");
 
-    var tags = new TagRow(note.tags);
+    var tags = $("<div></div>");
+    tags.addClass("tagsRow");
     var payload = new Payload(note.payload);
 
     mainDiv.append(payload);
@@ -26,15 +27,5 @@ function NoteCard(note, removeNoteListener) {
         div.append(removeBtn);
 
         return div;
-    }
-
-    function TagRow(tags) {
-        var tagNames = new Array();
-        $.each(tags, function (i, tag) {
-            tagNames.push(tag.name);
-        });
-        var input = $("<input type='text' />");
-        input.attr("tag-data", tagNames.join(","));
-        return input;
     }
 }

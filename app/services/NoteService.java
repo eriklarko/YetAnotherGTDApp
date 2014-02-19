@@ -1,11 +1,10 @@
 package services;
 
-import java.util.Collection;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.TreeSet;
-import models.Tag;
 import models.Note;
+import models.Tag;
 import play.db.ebean.Transactional;
 import utils.NotesIdComparator;
 
@@ -31,22 +30,8 @@ public class NoteService {
 	@Transactional
 	public static void remove(Note note) {
 		Set<Tag> tags = note.tags;
-		markUnusedTagsForDeletion(tags);
 		note.deleteManyToManyAssociations("tags");
 		note.delete();
-	}
-
-	private static void markUnusedTagsForDeletion(Iterable<Tag> candidates) {
-		for (Tag candidate : candidates) {
-			Set<Note> objectsWithTag = findNotesWithTag(candidate);
-			if (objectsWithTag.isEmpty()) {
-				candidate.delete();
-			}
-		}
-	}
-
-	private static Set<Note> findNotesWithTag(Tag tag) {
-		return Note.find.where().eq("tags.name", tag.name).findSet();
 	}
 
 	@Transactional
@@ -72,5 +57,9 @@ public class NoteService {
 			notes.addAll(findNotesWithTag(tag));
 		}
 		return notes;
+	}
+
+    public static Set<Note> findNotesWithTag(Tag tag) {
+		return Note.find.where().eq("tags.name", tag.name).findSet();
 	}
 }
