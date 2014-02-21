@@ -1,6 +1,5 @@
 package controllers;
 
-import java.util.Arrays;
 import models.Filter;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -22,8 +21,6 @@ public class Application extends Controller {
 		if (filter == null) {
 			return badRequest("No filter with id " + id + " found");
 		}
-
-		System.out.println("Tags in filter: " + Arrays.deepToString(filter.tags.toArray()));
         return ok(viewFilter.render(filter));
     }
 }

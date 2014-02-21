@@ -4,6 +4,7 @@ import java.util.concurrent.Semaphore;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
+import play.test.Helpers;
 import static play.test.Helpers.fakeApplication;
 import static play.test.Helpers.running;
 
@@ -31,7 +32,7 @@ class PlayIntegrationRule implements TestRule {
 			final Holder<Throwable> throwed = new Holder<>();
 			final Semaphore sem = new Semaphore(0);
 
-			running(fakeApplication(), new Runnable() {
+			running(fakeApplication(Helpers.inMemoryDatabase()), new Runnable() {
 
 				@Override
 				public void run() {

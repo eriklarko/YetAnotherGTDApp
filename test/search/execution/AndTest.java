@@ -2,30 +2,38 @@ package search.execution;
 
 import java.util.Arrays;
 import java.util.Collection;
-import junit.framework.Assert;
+import java.util.SortedSet;
+import models.Note;
+import models.Tag;
+import org.junit.Assert;
 import org.junit.Test;
 import search.And;
 import search.IdEq;
 import search.Node;
+import utils.PlayIntegrationTest;
 
 /**
  *
  * @author eriklark
  */
-public class AndTest {
+public class AndTest extends PlayIntegrationTest {
 
 	@Test
 	public void testSingleChain() {
-		Collection<Node<String>> literals = Arrays.<Node<String>>asList(
-				new IdEq<Long>("id", 1L),
-				new IdEq<Long>("id", 2L),
-				new IdEq<Long>("id", 3L)
+        Tag t1 = Util.createTag();
+        Tag t2 = Util.createTag();
+        Tag t3 = Util.createTag();
+
+		Collection<Node> literals = Arrays.<Node>asList(
+				new IdEq(t1.id),
+				new IdEq(t2.id),
+				new IdEq(t3.id)
 		);
 		And and = new And(literals);
 
-		String expected = "(id = 1 AND id = 2 AND id = 3)";
-		String actual = and.execute();
+        SortedSet<Note> expected = Util.createNotes(3, t1, t2, t3);
+        SortedSet<Note> actual = Util.sort(and.execute());
 
-		Assert.assertEquals(expected, actual);
+        Assert.assertArrayEquals(expected.toArray(), actual.toArray());
 	}
 }

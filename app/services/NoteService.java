@@ -68,4 +68,8 @@ public class NoteService {
     public static Set<Note> findNotesWithTag(Tag tag) {
 		return Note.find.where().eq("tags.name", tag.name).findSet();
 	}
+
+    public static Set<Note> findAllTagsOwnedBy(Long userId) {
+		return Note.find.findSet();
+	}
 }

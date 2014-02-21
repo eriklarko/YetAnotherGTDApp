@@ -11,31 +11,31 @@ import models.Note;
  *
  * @author eriklark
  */
-public class And implements Node {
+public class Or implements Node{
 
-    private final Collection<Node> children;
+	private final Collection<Node> children;
 
-    public And(Collection<Node> children) {
+	public Or(Collection<Node> children) {
         if (children.size() < 2) {
-            throw new IllegalArgumentException("And operations need at least two children");
+            throw new IllegalArgumentException("Or operations need at least two children");
         }
-        this.children = children;
-    }
+		this.children = children;
+	}
 
     public Collection<Node> getChildren() {
         return new LinkedList<>(children);
     }
 
-    @Override
-    public Set<Note> execute() {
-        Iterator<Node> it = children.iterator();
-        Set<Note> notes = new HashSet<>(it.next().execute());
+	@Override
+	public Set<Note> execute() {
+		Set<Note> notes = new HashSet<>();
 
-        while (it.hasNext()) {
-            notes.retainAll(it.next().execute());
-        }
-        return notes;
-    }
+        Iterator<Node> it = children.iterator();
+		while(it.hasNext()) {
+			notes.addAll(it.next().execute());
+		}
+		return notes;
+	}
 
     @Override
     public String toString() {
@@ -46,7 +46,7 @@ public class And implements Node {
             sb.append(it.next().toString());
 
             if (it.hasNext()) {
-                sb.append(" AND ");
+                sb.append(" OR ");
             }
         }
         sb.append(")");

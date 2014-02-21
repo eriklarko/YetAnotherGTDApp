@@ -25,10 +25,10 @@ DELETE  /notes/:noteId/tags/:tagId          controllers.NoteController.untag(not
 
 ## Filters
 GET     /filters                            controllers.FilterController.list()
-GET     /filters/:id                        controllers.FilterController.listNotes(id: Long)
 POST    /filters                            controllers.FilterController.save()
 DELETE  /filters/:id                        controllers.FilterController.delete(id: Long)
 
-GET     /filters/:id/notes                  controllers.FilterController.getNotesInFilter(id: Long)
-POST    /filters/:filterId/tags/:tagName    controllers.FilterController.addTag(filterId: Long, tagName: String)
-DELETE  /filters/:filterId/tags/:tagId      controllers.FilterController.removeTag(filterId: Long, tagId: Long)
+GET     /filters/:id/notes                  controllers.FilterController.listNotes(id: Long)
+
+
+POST    /search                             controllers.SearchController.asd()

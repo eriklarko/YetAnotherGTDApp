@@ -1,6 +1,5 @@
 package models;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -29,10 +28,6 @@ public class Note extends Model {
     public String payload;
 
     public static Finder<Long, Note> find = new Finder(Long.class, Note.class);
-
-    public static Collection<Note> all() {
-        return find.all();
-    }
 
 	@Override
 	public int hashCode() {

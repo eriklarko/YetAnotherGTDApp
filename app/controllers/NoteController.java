@@ -27,7 +27,7 @@ public class NoteController extends Controller {
 	 * @throws JsonProcessingException
 	 */
 	public static Result list() throws JsonProcessingException {
-		return ok(Json.toJson(Note.all()));
+		return ok(Json.toJson(NoteService.findAllTagsOwnedBy(Long.MIN_VALUE)));
 	}
 
 	/**

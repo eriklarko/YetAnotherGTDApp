@@ -1,10 +1,13 @@
 package search;
 
+import java.util.Set;
+import models.Note;
+
 /**
  *
  * @author eriklark
  */
-public interface Node<T> {
+public interface Node {
 
-	abstract T execute();
+	abstract Set<Note> execute();
 }

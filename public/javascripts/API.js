@@ -8,34 +8,16 @@ function getAllFilters(successCallback) {
     });
 }
 
-function addFilter(name, tags, successCallback) {
+function addFilter(name, searchTree, successCallback) {
     $.ajax({
         url: "/filters",
         type: "POST",
         dataType: "json",
         contentType: "application/json",
         data: JSON.stringify({
-            tags: tags,
             name: name,
+            searchTree: searchTree
         }),
-        success: successCallback,
-        error: genericAjaxError
-    });
-}
-
-function addTagToFilter(filterId, tagName, successCallback) {
-    $.ajax({
-        url: "/filters/" + filterId + "/tags/" + tagName,
-        type: "POST",
-        success: successCallback,
-        error: genericAjaxError
-    });
-}
-
-function removeTagFromFilter(filterId, tagId, successCallback) {
-    $.ajax({
-        url: "/filters/" + filterId + "/tags/" + tagId,
-        type: "DELETE",
         success: successCallback,
         error: genericAjaxError
     });
