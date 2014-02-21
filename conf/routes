@@ -18,6 +18,7 @@ POST    /tags                               controllers.TagController.save()
 GET     /notes                              controllers.NoteController.list()
 POST    /notes                              controllers.NoteController.save()
 DELETE  /notes/:id                          controllers.NoteController.remove(id: Long)
+PUT     /notes/:id                          controllers.NoteController.updatePayload(id: Long)
 
 POST    /notes/:noteId/tags/:tagName        controllers.NoteController.tag(noteId: Long, tagName: String)
 DELETE  /notes/:noteId/tags/:tagId          controllers.NoteController.untag(noteId: Long, tagId: Long)

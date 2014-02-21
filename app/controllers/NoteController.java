@@ -38,6 +38,9 @@ public class NoteController extends Controller {
 	@BodyParser.Of(BodyParser.Json.class)
 	public static Result save() {
 		JsonNode json = request().body().asJson();
+		if (json == null) {
+			return badRequest("Expected json");
+		}
 
 		Validation<String> validation = validateSaveJson(json);
 		if (validation.hasErrors()) {
@@ -75,6 +78,30 @@ public class NoteController extends Controller {
 		}
 
 		return validation;
+	}
+
+	@BodyParser.Of(BodyParser.Json.class)
+	public static Result updatePayload(Long id) {
+		JsonNode json = request().body().asJson();
+
+		String payload;
+		try {
+			payload = json.get("payload").asText();
+		} catch (NullPointerException ex) {
+			return badRequest(Json.toJson("No payload specified"));
+		}
+
+		if (payload.isEmpty()) {
+			return badRequest(Json.toJson("No payload specified"));
+		}
+
+		Note note = Note.find.byId(id);
+		if (note == null) {
+			return badRequest("Unable to find note with id " + id);
+		}
+
+		NoteService.updatePayload(note, payload);
+		return ok(Json.toJson(note));
 	}
 
 	public static Result remove(Long id) {

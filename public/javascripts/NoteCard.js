@@ -24,32 +24,28 @@ function NoteCard(note, removeNoteListener) {
         payloadAsText.addClass("payload");
         payloadAsText.addClass("text");
         payloadAsText.append(payload);
-        
-        var payloadAsInput = $("<input type='text' />");
-        
-        
+        payloadAsText.editable({
+            type: 'text',
+            showbuttons: false,
+
+            url: function (params) {
+                var deferred = new $.Deferred;
+                updatePayload(note.id, params.value,
+                    function () {
+                        deferred.resolve();
+                    }, function (xhr) {
+                        deferred.reject(xhr);
+                })
+
+                return deferred.promise();
+            }
+        });
+
         var wrapper = $("<div></div>");
         wrapper.append(removeBtn);
         wrapper.append(payloadAsText);
-        wrapper.append(payloadAsInput);
-        
-        
-        payloadAsText.on("click", function () {
-            payloadAsInput.val(payloadAsText.html());
-            payloadAsInput.focus();
-            
-            payloadAsText.hide();
-            payloadAsInput.show();
-        });
-        
-        payloadAsInput.on("focusout", function () {
-            payloadAsText.html(payloadAsInput.val());
-            
-            payloadAsInput.hide();
-            payloadAsText.show();
-            
-            // TODO: alert listener
-        });
+
+
 
         return wrapper;
     }

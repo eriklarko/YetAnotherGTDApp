@@ -23,6 +23,12 @@ public class NoteService {
 		return toCreate;
 	}
 
+	@Transactional
+	public static void updatePayload(Note note, String payload) {
+		note.payload = payload;
+		note.save();
+	}
+
 	/**
 	 * Removes a note. If there are tags which are no longer connected to
 	 * any note, they are marked for deletion.

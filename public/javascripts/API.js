@@ -76,6 +76,20 @@ function addNote(payload, tags, successCallback) {
     });
 }
 
+function updatePayload(noteId, payload, successCallback, errorCallback) {
+    $.ajax({
+        url: "/notes/" + noteId,
+        type: "PUT",
+        dataType: "json",
+        contentType: "application/json",
+        data: JSON.stringify({
+            payload: payload
+        }),
+        success: successCallback,
+        error: errorCallback || genericAjaxError
+    });
+}
+
 function removeNote(noteId, successCallback) {
     $.ajax({
         url: "/notes/" + noteId,
