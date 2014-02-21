@@ -23,8 +23,8 @@ public class Note extends Model {
     @ManyToMany
     public Set<Tag> tags = new HashSet<>();
 
-    @Column
-	@NotNull
+    @Lob
+    @NotNull
     public String payload;
 
     public static Finder<Long, Note> find = new Finder(Long.class, Note.class);
