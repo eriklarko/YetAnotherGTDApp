@@ -26,7 +26,7 @@ public class JsonToSearchTreeTest {
 
         Node actual = JsonToSearchTree.parse(jn);
         Assert.assertTrue("Type is wrong", actual instanceof IdEq);
-        Assert.assertEquals((Long) 1L, ((IdEq) actual).getId());
+        Assert.assertEquals((Long) 1L, ((IdEq) actual).getTag());
     }
 
     @Test

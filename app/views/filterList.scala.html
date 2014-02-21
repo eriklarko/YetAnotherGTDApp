@@ -15,18 +15,43 @@
         setupTagsBox($("#newFilterTags"));
 
         $("#createFilterBtn").on("click", function() {
-            addFilter($("#newFilterName").val(), getTags(), function (newFilter) {
+            addFilter($("#newFilterName").val(), getSearchTree(), function (newFilter) {
                 clearInput();
                 appendFilter(newFilter);
-            })
+            });
         });
 
         getAllFilters(function(filters) {
             $.each(filters, function(i , filter) {
                 appendFilter(filter);
             });
-        })
+        });
     });
+    
+    function getSearchTree() {
+        var tagsOr = {
+            type: "or",
+            children: []
+        };
+        $.each(getTags(), function (i, tag) {
+           tagsOr.children.push({
+              type: "ideq",
+              id: tag.id,
+              name: tag.name
+           });
+        });
+        
+        return {
+            type: "and",
+            children: [{
+                type: "not",
+                child: {
+                    type: "ideq",
+                    name: "archive"
+                }
+            }, tagsOr]
+        };
+    }
 
     function getTags() {
         var tags = [];
@@ -37,7 +62,7 @@
                 };
                 tags.push(newTag);
             } else {
-                tags.push(tag);
+                tags.push(tagWithIffyId);
             }
         });
         return tags;

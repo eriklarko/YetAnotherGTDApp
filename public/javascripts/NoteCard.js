@@ -27,6 +27,7 @@ function NoteCard(note, removeNoteListener) {
         payloadAsText.editable({
             type: 'text',
             showbuttons: false,
+            mode: "inline",
 
             url: function (params) {
                 var deferred = new $.Deferred;
@@ -35,7 +36,7 @@ function NoteCard(note, removeNoteListener) {
                         deferred.resolve();
                     }, function (xhr) {
                         deferred.reject(xhr);
-                })
+                });
 
                 return deferred.promise();
             }
@@ -44,8 +45,6 @@ function NoteCard(note, removeNoteListener) {
         var wrapper = $("<div></div>");
         wrapper.append(removeBtn);
         wrapper.append(payloadAsText);
-
-
 
         return wrapper;
     }

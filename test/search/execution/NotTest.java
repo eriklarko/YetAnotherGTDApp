@@ -23,7 +23,7 @@ public class NotTest extends PlayIntegrationTest {
         Note noteToFind = Util.createNote(t1);
         Note n2 = Util.createNote(t2);
 
-        Not not = new Not(new IdEq(t2.id));
+        Not not = new Not(new IdEq(t2));
 
         SortedSet<Note> expected = Util.sort(noteToFind);
         SortedSet<Note> actual = Util.sort(not.execute());

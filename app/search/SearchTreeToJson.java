@@ -70,7 +70,8 @@ public class SearchTreeToJson {
     private static Map<String, Object> parseIdEq(IdEq ideq) {
         Map<String, Object> toReturn = new HashMap<>();
         toReturn.put("type", "ideq");
-        toReturn.put("id", ideq.getId());
+        toReturn.put("id", ideq.getTag().id);
+        toReturn.put("name", ideq.getTag().name);
 
         return toReturn;
     }

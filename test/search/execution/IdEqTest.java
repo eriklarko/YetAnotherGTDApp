@@ -16,16 +16,10 @@ import utils.PlayIntegrationTest;
  */
 public class IdEqTest extends PlayIntegrationTest {
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testTagNotFound() {
-        IdEq ideq = new IdEq(Long.MIN_VALUE);
-        ideq.execute();
-    }
-
     @Test
     public void testNoMatchingNotes() {
         Tag tagToFind = Util.createTag();
-        IdEq ideq = new IdEq(tagToFind.id);
+        IdEq ideq = new IdEq(tagToFind);
 
         Set<Note> actual = ideq.execute();
 
@@ -36,7 +30,7 @@ public class IdEqTest extends PlayIntegrationTest {
     public void testOneNoteOneTag() {
         Tag tagToFind = Util.createTag();
         Note noteToFind = Util.createNote(tagToFind);
-        IdEq ideq = new IdEq(tagToFind.id);
+        IdEq ideq = new IdEq(tagToFind);
 
         Set<Note> expected = Sets.newHashSet(noteToFind);
         Set<Note> actual = ideq.execute();
@@ -52,7 +46,7 @@ public class IdEqTest extends PlayIntegrationTest {
         Tag random3 = Util.createTag();
 
         Note noteToFind = Util.createNote(random1, random2, tagToFind, random3);
-        IdEq ideq = new IdEq(tagToFind.id);
+        IdEq ideq = new IdEq(tagToFind);
 
         Set<Note> expected = Sets.newHashSet(noteToFind);
         Set<Note> actual = ideq.execute();
@@ -63,7 +57,7 @@ public class IdEqTest extends PlayIntegrationTest {
     @Test
     public void testManyNotesOneTag() {
         Tag tagToFind = Util.createTag();
-        IdEq ideq = new IdEq(tagToFind.id);
+        IdEq ideq = new IdEq(tagToFind);
 
         Set<Note> expected = Util.createNotes(3, tagToFind);
         Set<Note> actual = Util.sort(ideq.execute());
@@ -77,7 +71,7 @@ public class IdEqTest extends PlayIntegrationTest {
         Tag random1 = Util.createTag();
         Tag random2 = Util.createTag();
         Tag random3 = Util.createTag();
-        IdEq ideq = new IdEq(tagToFind.id);
+        IdEq ideq = new IdEq(tagToFind);
 
         Set<Note> expected = Util.createNotes(3, random1, random2, tagToFind, random3);
         Set<Note> actual = Util.sort(ideq.execute());

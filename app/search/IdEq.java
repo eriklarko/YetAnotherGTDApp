@@ -11,28 +11,23 @@ import services.NoteService;
  */
 public class IdEq implements Node {
 
-	private final Long id;
+	private final Tag tag;
 
-	public IdEq(Long id) {
-		this.id = id;
+	public IdEq(Tag tag) {
+		this.tag = tag;
 	}
 
-    public Long getId() {
-        return id;
+    public Tag getTag() {
+        return tag;
     }
 
 	@Override
 	public Set<Note> execute() {
-        Tag tag = Tag.find.byId(id);
-        if (tag == null) {
-            throw new IllegalArgumentException("No tag with id " + id + " found");
-        }
-
-		return NoteService.findNotesWithTag(tag);
+        return NoteService.findNotesWithTag(tag);
 	}
 
     @Override
     public String toString() {
-        return "tag.id == " + id;
+        return "tag.id == " + tag;
     }
 }

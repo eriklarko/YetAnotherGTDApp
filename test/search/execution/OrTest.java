@@ -24,8 +24,8 @@ public class OrTest extends PlayIntegrationTest {
         Tag t2 = Util.createTag();
 
         Collection<Node> literals = Arrays.<Node>asList(
-                new IdEq(t1.id),
-                new IdEq(t2.id)
+                new IdEq(t1),
+                new IdEq(t2)
         );
         Or or = new Or(literals);
 

@@ -33,13 +33,6 @@
 
         <script type="text/javascript">
             $(function() {
-                $.fn.editable.defaults.mode = 'inline';
-                $.fn.editable.defaults.ajaxOptions = {
-                    type: "PUT",
-                    dataType: "json",
-                    contentType: "application/json"
-                };
-
                 // hook up placeholder text on any input with a placeholder attribute
                 $('input[placeholder]').inputHints();
             });

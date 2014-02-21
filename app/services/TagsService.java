@@ -55,4 +55,9 @@ public class TagsService {
 		}
 		return true;
 	}
+
+    public static void updateName(Tag tag, String newName) {
+        tag.name = newName;
+        tag.save();
+    }
 }

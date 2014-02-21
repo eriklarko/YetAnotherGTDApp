@@ -25,9 +25,9 @@ public class AndTest extends PlayIntegrationTest {
         Tag t3 = Util.createTag();
 
 		Collection<Node> literals = Arrays.<Node>asList(
-				new IdEq(t1.id),
-				new IdEq(t2.id),
-				new IdEq(t3.id)
+				new IdEq(t1),
+				new IdEq(t2),
+				new IdEq(t3)
 		);
 		And and = new And(literals);
 

@@ -116,6 +116,23 @@
       $tag.data('item', item);
       self.findInputWrapper().before($tag);
       $tag.after(' ');
+      
+      
+      $tag.editable({
+          type: 'text',
+          mode: "popup",
+          url: function (params) {
+                var deferred = new $.Deferred;
+                updateTagName(self.options.itemValue(item), params.value,
+                    function () {
+                        deferred.resolve();
+                    }, function (xhr) {
+                        deferred.reject(xhr);
+                });
+
+                return deferred.promise();
+            }
+      });
 
 
       // add <option /> if item represents a value not present in one of the <select />'s options
@@ -309,7 +326,7 @@
       }
 
       self.$container.on('click', $.proxy(function(event) {
-        self.$input.focus();
+        //self.$input.focus();
       }, self));
 
       self.$container.on('keydown', 'input', $.proxy(function(event) {

@@ -3,6 +3,7 @@
 @import helper._
 @import play.libs.Json
 @import services.TagsService
+@import search.SearchTreeToJson
 @main("Todo list") {
 
 <div style="width: auto; display: inline-block; padding: 1em">
@@ -35,7 +36,7 @@
         setupTagsBox($('#newTags'));
 
         $("#addBtn").on("click", function () {
-            addNote($("#newPayload").val(), getTags(), function(newObject) {
+            addNote($("#newPayload").val(), getNewTags(), function(newObject) {
                 clearInput();
                 appendObject (newObject);
             });
@@ -48,8 +49,10 @@
 
             setupTagsBox($("#tags-summary"), {
                 onAddTag: function (tag) {
-                    addTagToFilter(@filter.id, tag.name, function (updatedFilter) {
-                        $.each(updatedFilter.tags, function(i, newTag) {
+                    
+                    updateFilter(@filter.id, "@filter.name", getSearchTree(getTagsById("tags-summary")), function (updatedFilter) {
+                         var tags = findTags(updatedFilter.searchTree);
+                         $.each(tags, function(i, newTag) {
                            if (newTag.name === tag.name) {
                                tag.id = newTag.id;
                            } 
@@ -58,16 +61,47 @@
                     });
                 },
                 onRemoveTag: function (tag) {
-                    removeTagFromFilter(@filter.id, tag.id, function () {
+                    updateFilter(@filter.id, "@filter.name", getSearchTree(getTagsById("tags-summary")), function () {
                         loadObjectsInFilter(@filter.id, showObjects)
                     });
                 },
             });
-
-            var tags = @Html(Json.stringify(Json.toJson(filter.tags)));
+            
+            var searchTree = @Html(Json.stringify(SearchTreeToJson.parse(filter.getSearchTree())));
+            tags = findTags(searchTree);
             $("#tags-summary").tagsinput("addAll", tags);
         }
     });
+    
+    function makeObj(id, name) {
+        return {
+          id: id,
+          name: name
+        };
+    }
+    
+    function findTags(searchTree, tags) {
+        if (tags === undefined) {
+            var tags = [];
+        }
+        
+        if (searchTree.type === "ideq") {
+            if (searchTree.name !== "archive") {
+                tags.push({
+                    id: searchTree.id,
+                    name: searchTree.name
+                });
+            }
+        } else if (searchTree.child !== undefined) {
+            return findTags(searchTree.child, tags)
+        } else if (searchTree.children !== undefined) {
+            $.each(searchTree.children, function(i, child) {
+                findTags(child, tags)
+            });
+        }
+        
+        return tags;
+    }
 
     function showObjects(objects) {
         $("#notes").html("");
@@ -104,17 +138,46 @@
         
         $("#notes").append(card);
     }
+    
+    function getSearchTree(tags) {
+        var tagsOr = {
+            type: "or",
+            children: []
+        };
+        $.each(tags, function (i, tag) {
+           tagsOr.children.push({
+              type: "ideq",
+              id: tag.id,
+              name: tag.name
+           });
+        });
+        
+        return {
+            type: "and",
+            children: [{
+                type: "not",
+                child: {
+                    type: "ideq",
+                    name: "archive"
+                }
+            }, tagsOr]
+        };
+    }
 
-    function getTags() {
+    function getNewTags() {
+        return getTagsById("newTags");
+    }
+    
+    function getTagsById(id) {
         var tags = [];
-        $.each($("#newTags").tagsinput("items"), function (i, tagWithIffyId) {
+        $.each($("#" + id).tagsinput("items"), function (i, tagWithIffyId) {
             if (!isNumber(tagWithIffyId.id)) {
                 var newTag = {
                     name: tagWithIffyId.name
                 };
                 tags.push(newTag);
             } else {
-                tags.push(tag);
+                tags.push(tagWithIffyId);
             }
         });
         return tags;

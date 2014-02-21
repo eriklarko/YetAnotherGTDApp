@@ -13,6 +13,7 @@ GET     /assets/*file                       controllers.Assets.at(path="/public"
 ## Tags
 GET     /tags                               controllers.TagController.list()
 POST    /tags                               controllers.TagController.save()
+PUT     /tags/:id                           controllers.TagController.updateName(id: Long)
 
 ## Notes
 GET     /notes                              controllers.NoteController.list()
@@ -26,9 +27,8 @@ DELETE  /notes/:noteId/tags/:tagId          controllers.NoteController.untag(not
 ## Filters
 GET     /filters                            controllers.FilterController.list()
 POST    /filters                            controllers.FilterController.save()
+PUT     /filters/:id                        controllers.FilterController.update(id: Long)
 DELETE  /filters/:id                        controllers.FilterController.delete(id: Long)
 
+GET     /filters/:id/searchTree             controllers.FilterController.getSearchTree(id: Long)
 GET     /filters/:id/notes                  controllers.FilterController.listNotes(id: Long)
-
-
-POST    /search                             controllers.SearchController.asd()

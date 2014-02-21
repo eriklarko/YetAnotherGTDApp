@@ -24,4 +24,10 @@ public class FilterService {
 	public static void remove(Filter filter) {
 		filter.delete();
 	}
+
+    public static void updateFilter(Filter filter, String name, Node searchTree) {
+        filter.name = name;
+        filter.setSearchTree(searchTree);
+        filter.save();
+    }
 }

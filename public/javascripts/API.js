@@ -23,9 +23,24 @@ function addFilter(name, searchTree, successCallback) {
     });
 }
 
-function loadObjectsInFilter(filterId, successCallback) {
+function updateFilter(filterId, name, searchTree, successCallback) {
     $.ajax({
         url: "/filters/" + filterId,
+        type: "PUT",
+        dataType: "json",
+        contentType: "application/json",
+        data: JSON.stringify({
+            name: name,
+            searchTree: searchTree
+        }),
+        success: successCallback,
+        error: genericAjaxError
+    });
+}
+
+function loadObjectsInFilter(filterId, successCallback) {
+    $.ajax({
+        url: "/filters/" + filterId + "/notes",
         type: "GET",
         contentType: "application/json",
         success: successCallback,
@@ -96,6 +111,20 @@ function removeTagFromNote(noteId, tagName, successCallback) {
         type: "DELETE",
         success: successCallback,
         error: genericAjaxError
+    });
+}
+
+function updateTagName(tagId, tagName, successCallback, errorCallback) {
+    $.ajax({
+        url: "/tags/" + tagId,
+        type: "PUT",
+        dataType: "json",
+        contentType: "application/json",
+        data: JSON.stringify({
+            name: tagName
+        }),
+        success: successCallback,
+        error: errorCallback || genericAjaxError
     });
 }
 

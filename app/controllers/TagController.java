@@ -11,6 +11,7 @@ import static play.mvc.Controller.request;
 import play.mvc.Result;
 import static play.mvc.Results.badRequest;
 import static play.mvc.Results.ok;
+import services.TagsService;
 
 /**
  *
@@ -36,4 +37,28 @@ public class TagController extends Controller {
             return ok(Json.toJson(toCreate));
         }
     }
+
+    @BodyParser.Of(BodyParser.Json.class)
+	public static Result updateName(Long id) {
+		JsonNode json = request().body().asJson();
+
+		String newName;
+		try {
+			newName = json.get("name").asText();
+		} catch (NullPointerException ex) {
+			return badRequest(Json.toJson("No name specified"));
+		}
+
+		if (newName.isEmpty()) {
+			return badRequest(Json.toJson("No name specified"));
+		}
+
+		Tag tag = Tag.find.byId(id);
+		if (tag == null) {
+			return badRequest("Unable to find tag with id " + id);
+		}
+
+		TagsService.updateName(tag, newName);
+		return ok(Json.toJson(tag));
+	}
 }
