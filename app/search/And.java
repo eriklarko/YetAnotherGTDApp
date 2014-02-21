@@ -16,9 +16,6 @@ public class And implements Node {
     private final Collection<Node> children;
 
     public And(Collection<Node> children) {
-        if (children.size() < 2) {
-            throw new IllegalArgumentException("And operations need at least two children");
-        }
         this.children = children;
     }
 

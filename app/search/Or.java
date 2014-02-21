@@ -16,9 +16,6 @@ public class Or implements Node{
 	private final Collection<Node> children;
 
 	public Or(Collection<Node> children) {
-        if (children.size() < 2) {
-            throw new IllegalArgumentException("Or operations need at least two children");
-        }
 		this.children = children;
 	}
 
