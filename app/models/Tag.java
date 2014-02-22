@@ -34,7 +34,7 @@ public class Tag extends Model {
 	public int hashCode() {
 		int hash = 7;
 		if(this.id == null) {
-			hash = 23 * hash + Objects.hashCode(this.name);
+			hash = 23 * hash + Objects.hashCode(this.name.toLowerCase());
 		} else {
 			hash = 23 * hash + Objects.hashCode(this.id);
 		}
@@ -53,7 +53,7 @@ public class Tag extends Model {
 
 
 		if(this.id == null) {
-			return Objects.equals(this.name, other.name);
+			return Objects.equals(this.name.toLowerCase(), other.name.toLowerCase());
 		} else {
 			return Objects.equals(this.id, other.id);
 		}

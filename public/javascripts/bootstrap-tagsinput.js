@@ -71,7 +71,7 @@
 
       if(self.options && typeof(item) !== "object") {
           var itemAsObj = {}
-          itemAsObj[self.options.itemValue_orig] = item;
+          itemAsObj[self.options.itemValue_orig] = item.toLowerCase();
           itemAsObj[self.options.itemText_orig] = item;
           item = itemAsObj;
       }

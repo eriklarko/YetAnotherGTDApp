@@ -13,7 +13,7 @@ import play.db.ebean.Transactional;
 public class TagsService {
 
 	public static Tag findByName(String name) throws NoSuchElementException {
-		Tag found = Tag.find.where().eq("name", name).findUnique();
+		Tag found = Tag.find.where().ieq("name", name).findUnique();
 		if (found == null) {
 			throw new NoSuchElementException("No tag with name " + name + " found");
 		} else {
