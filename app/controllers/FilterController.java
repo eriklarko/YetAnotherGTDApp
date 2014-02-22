@@ -1,6 +1,8 @@
 package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.util.List;
 import models.Filter;
@@ -25,8 +27,18 @@ import services.TagNameService;
 public class FilterController extends Controller {
 
     public static Result list() {
-        return ok(Json.toJson(Filter.find.all()));
+		ArrayNode filters = new ObjectMapper().createArrayNode();
+		for (Filter filter : Filter.find.all()) {
+			filters.add(filterToJson(filter));
+		}
+        return ok(Json.toJson(filters));
     }
+
+	private static ObjectNode filterToJson(Filter filter) {
+		ObjectNode filterAsJson = (ObjectNode) Json.toJson(filter);
+		filterAsJson.put("searchTree", SearchTreeToJson.parse(filter.getSearchTree()));
+		return filterAsJson;
+	}
 
     public static Result listNotes(Long id) {
         Filter filter = Filter.find.byId(id);
@@ -55,7 +67,7 @@ public class FilterController extends Controller {
         Node searchTree = JsonToSearchTree.parse(json.get("searchTree"));
 
         Filter newFilter = FilterService.createFilter(name, searchTree);
-        return ok(Json.toJson(newFilter));
+        return ok(filterToJson(newFilter));
     }
 
     @BodyParser.Of(BodyParser.Json.class)
@@ -69,10 +81,7 @@ public class FilterController extends Controller {
         Filter f = Filter.find.byId(id);
         FilterService.updateFilter(f, name, searchTree);
 
-        ObjectNode node = (ObjectNode) Json.toJson(f);
-        node.put("searchTree", SearchTreeToJson.parse(f.getSearchTree()));
-
-        return ok(node);
+        return ok(filterToJson(f));
     }
 
     private static void findNewTagsAndCreateThem(JsonNode json) {

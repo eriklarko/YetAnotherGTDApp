@@ -16,22 +16,23 @@ var tagsBloodhound = new Bloodhound({
 });
 tagsBloodhound.initialize();
 
-var defaultOptions = {
-    itemValue: "id",
-    itemText: "name",
-    onAddTag: function(tag) {
-    },
-    onRemoveTag: function(tag) {
-    },
-    typeahead: {
-        name: 'tags',
-        displayKey: 'name',
-        source: tagsBloodhound.ttAdapter()
-    }
-};
+
 
 
 function setupTagsBox(jQueryObj, options) {
+    var defaultOptions = {
+        itemValue: "id",
+        itemText: "name",
+        onAddTag: function(tag) {
+        },
+        onRemoveTag: function(tag) {
+        },
+        typeahead: {
+            name: 'tags',
+            displayKey: 'name',
+            source: tagsBloodhound.ttAdapter()
+        }
+    };
     options = $.extend(defaultOptions, options);
     jQueryObj.tagsinput(options);
 }

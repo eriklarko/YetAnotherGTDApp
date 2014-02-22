@@ -3,6 +3,8 @@ function Payload() {
     var richId = ("asdasdasd" + Math.random()).replace(".", "");
 
     var simpleInput = $("<input type='text' placeholder='Payload' />");
+    simpleInput.css("width", "100%");
+
     var richInput = $("<textarea placeholder='Payload'></textarea>");
     richInput.attr("id", richId);
     var switchModeButton = $("<button></button>");

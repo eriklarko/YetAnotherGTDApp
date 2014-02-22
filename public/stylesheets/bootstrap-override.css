@@ -9,3 +9,16 @@ hr {
 .editable-container.editable-inline {
     width: 88%;
 }
+
+fieldset {
+    border: 1px solid #c0c0c0;
+    margin: 1em;
+    padding: 1em;
+}
+
+legend {
+    border-bottom: 0em;
+    margin-bottom: 0em;
+    width: auto;
+    padding: 0.5em;
+}

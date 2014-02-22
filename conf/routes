@@ -3,7 +3,7 @@
 # ~~~~
 
 # Home page
-GET     /                                   controllers.Application.filterList()
+GET     /                                   controllers.Application.combined()
 GET     /all                                controllers.Application.viewAllNotes()
 GET     /filter/view/:id                    controllers.Application.viewFilter(id: Long)
 
