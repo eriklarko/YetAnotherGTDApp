@@ -13,7 +13,7 @@ function NoteCard(note, removeNoteListener) {
     return mainDiv;
 
     function Payload(payload) {
-        var removeBtn = $("<a href='#' title='Remove'>x</a>");
+        var removeBtn = $("<a href='#' title='Archive'>x</a>");
         removeBtn.css("float", "right");
         removeBtn.addClass("remove");
         removeBtn.on('click', function () {
