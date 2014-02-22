@@ -59,6 +59,7 @@ function FiltersView(options) {
 
     function buildNewFilterView() {
         var name = $("<input type='text' placeholder='Filter name' />");
+        name.css("width", "100%");
         var tags = $("<select multiple placeholder='Tags'></select>");
         var addBtn = $("<button>Create</button>");
         addBtn.css("float", "right");
@@ -73,6 +74,7 @@ function FiltersView(options) {
         wrapper.css("width", "17em");
         wrapper.append("<legend>New filter</legend>");
         wrapper.append(name);
+        wrapper.append("<div class='line-separator'></div>");
         wrapper.append(tags);
         wrapper.append(addBtn);
 
