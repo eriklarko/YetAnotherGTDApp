@@ -13,6 +13,7 @@
     font-size: 1.7em;
     color: #555;
     margin-bottom: 0.5em;
+    word-wrap: break-word;
 }
 
 .remove {
@@ -33,5 +34,5 @@ input.hint {
 
 .line-separator {
     clear: both;
-    height: 0.6em;  
+    height: 0.6em;
 }

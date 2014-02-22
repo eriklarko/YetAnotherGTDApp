@@ -116,8 +116,8 @@
       $tag.data('item', item);
       self.findInputWrapper().before($tag);
       $tag.after(' ');
-      
-      
+
+
       $tag.editable({
           type: 'text',
           mode: "popup",
@@ -276,7 +276,7 @@
 
       if (typeahead.source && $.fn.typeahead) {
         makeOptionFunction(typeahead, 'source');
-        
+
         self.$input.typeahead(null, typeahead);
         self.$input.typeahead({
           source: function (query, process) {
@@ -326,7 +326,7 @@
       }
 
       self.$container.on('click', $.proxy(function(event) {
-        //self.$input.focus();
+        self.$input.focus();
       }, self));
 
       self.$container.on('keydown', 'input', $.proxy(function(event) {

@@ -22,7 +22,7 @@
 <div style="width: 17em" class="card">
     <h2>Add a new note</h2>
     <br/>
-    
+
     <input type="text" id="newPayload" placeholder="Payload" style="width: 100%" />
     <div class="line-separator"></div>
     <select multiple id="newTags" placeholder="Tags"></select>
@@ -49,13 +49,13 @@
 
             setupTagsBox($("#tags-summary"), {
                 onAddTag: function (tag) {
-                    
+
                     updateFilter(@filter.id, "@filter.name", getSearchTree(getTagsById("tags-summary")), function (updatedFilter) {
                          var tags = findTags(updatedFilter.searchTree);
                          $.each(tags, function(i, newTag) {
                            if (newTag.name === tag.name) {
                                tag.id = newTag.id;
-                           } 
+                           }
                         });
                         loadObjectsInFilter(@filter.id, showObjects)
                     });
@@ -66,25 +66,25 @@
                     });
                 },
             });
-            
+
             var searchTree = @Html(Json.stringify(SearchTreeToJson.parse(filter.getSearchTree())));
             tags = findTags(searchTree);
             $("#tags-summary").tagsinput("addAll", tags);
         }
     });
-    
+
     function makeObj(id, name) {
         return {
           id: id,
           name: name
         };
     }
-    
+
     function findTags(searchTree, tags) {
         if (tags === undefined) {
             var tags = [];
         }
-        
+
         if (searchTree.type === "ideq") {
             if (searchTree.name !== "archive") {
                 tags.push({
@@ -99,7 +99,7 @@
                 findTags(child, tags)
             });
         }
-        
+
         return tags;
     }
 
@@ -112,21 +112,21 @@
 
     function appendObject(note) {
         var card = new NoteCard(note, function (noteId) {
-            removeNote(noteId, function() {
-                $("#note-" + noteId).remove();
+            addTagToNote(noteId, "archive", function(updatedNote) {
+                tagsRow.tagsinput("removeAll");
+                tagsRow.tagsinput("addAll", updatedNote.tags);
             });
         });
         card.attr("id", "note-" + note.id);
-        
+
         var tagsRow = card.children(".tagsRow");
         setupTagsBox(tagsRow, {
             onAddTag: function (tag) {
                 addTagToNote(note.id, tag.name, function (updatedNote) {
-                    console.log(updatedNote);
                     $.each(updatedNote.tags, function(i, newTag) {
                         if (newTag.name === tag.name) {
                             tag.id = newTag.id;
-                        } 
+                        }
                      });
                 });
             },
@@ -135,10 +135,10 @@
             }
         });
         tagsRow.tagsinput("addAll", note.tags);
-        
+
         $("#notes").append(card);
     }
-    
+
     function getSearchTree(tags) {
         var tagsOr = {
             type: "or",
@@ -151,7 +151,7 @@
               name: tag.name
            });
         });
-        
+
         return {
             type: "and",
             children: [{
@@ -167,7 +167,7 @@
     function getNewTags() {
         return getTagsById("newTags");
     }
-    
+
     function getTagsById(id) {
         var tags = [];
         $.each($("#" + id).tagsinput("items"), function (i, tagWithIffyId) {
