@@ -23,25 +23,39 @@
     <h2>Add a new note</h2>
     <br/>
 
-    <input type="text" id="newPayload" placeholder="Payload" style="width: 100%" />
+    <div id="newPayload"></div>
+
     <div class="line-separator"></div>
+
     <select multiple id="newTags" placeholder="Tags"></select>
+
     <input type="button" id="addBtn" value="Add" style="float: right" />
     <div class="line-separator"></div>
 </div>
 
+<script src="@routes.Assets.at("javascripts/Payload.js")" type="text/javascript"></script>
 <script src="@routes.Assets.at("javascripts/NoteCard.js")" type="text/javascript"></script>
 <script type="text/javascript">
+    var newPayload = new Payload();
     $(document).ready(function() {
-        setupTagsBox($('#newTags'));
 
+        $("#newPayload").append(newPayload.ui);
+
+        setupTagsBox($('#newTags'));
+        setupAddNoteButton();
+        loadNotes();
+    });
+
+    function setupAddNoteButton() {
         $("#addBtn").on("click", function () {
-            addNote($("#newPayload").val(), getNewTags(), function(newObject) {
+            addNote(newPayload.val(), getNewTags(), function(newObject) {
                 clearInput();
                 appendObject (newObject);
             });
         });
+    }
 
+    function loadNotes() {
         @if(filter == null) {
             loadAllObjects(showObjects);
         } else {
@@ -71,13 +85,6 @@
             tags = findTags(searchTree);
             $("#tags-summary").tagsinput("addAll", tags);
         }
-    });
-
-    function makeObj(id, name) {
-        return {
-          id: id,
-          name: name
-        };
     }
 
     function findTags(searchTree, tags) {
@@ -184,7 +191,7 @@
     }
 
     function clearInput() {
-        $("#newPayload").val("");
+        newPayload.empty();
         $("#newTags").tagsinput('removeAll');
     }
 </script>
