@@ -10,7 +10,7 @@ function FilterView(options) {
         var notesHolder = $("<div></div>");
         cards.append(notesHolder);
         cards.append(new NewNoteView(function(newNote) {
-            cards.append(buildNote(newNote));
+            notesHolder.append(buildNote(newNote));
         }));
 
         self.options.appendTo.empty();

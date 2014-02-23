@@ -31,6 +31,7 @@ public class NoteService extends BaseService<Note> {
 		toCreate.payload = payload;
 		toCreate.tags = TagService.instance().findOrCreateTags(tags);
 		toCreate.save();
+		toCreate.saveManyToManyAssociations("tags");
 		return toCreate;
 	}
 
