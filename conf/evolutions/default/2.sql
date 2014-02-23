@@ -6,15 +6,15 @@ create table user (
   password                  varchar(255),
   constraint pk_user primary key (id))
 ;
+insert into user (id, email, password) values (1, 'hej@hej.hej', 'lol');
 
 
+alter table filter add column owner_id bigint not null default 1;
+alter table filter add column starred boolean default false;
 
-alter table filter add column owner_id bigint not null,
-alter table filter add column starred boolean,
+alter table note add column owner_id bigint not null default 1;
 
-alter table note add column owner_id bigint not null,
-
-alter table tag add column owner_id bigint not null,
+alter table tag add column owner_id bigint not null default 1;
 
 
 
@@ -32,9 +32,9 @@ create index ix_tag_owner_3 on tag (owner_id);
 
 # --- !Downs
 
-drop index if exists ix_filter_owner_1
-drop index if exists ix_note_owner_2
-drop index if exists ix_tag_owner_3
+drop index if exists ix_filter_owner_1;
+drop index if exists ix_note_owner_2;
+drop index if exists ix_tag_owner_3;
 
 alter table filter drop column owner_id;
 alter table filter drop column starred;
