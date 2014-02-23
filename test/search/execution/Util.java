@@ -40,7 +40,7 @@ public class Util {
     }
 
     public static Note createNote(Tag... tags) {
-         return NoteService.create(UUID.randomUUID().toString(), Sets.newHashSet(tags));
+         return NoteService.instance().create(UUID.randomUUID().toString(), Sets.newHashSet(tags));
     }
 
     public static SortedSet<Note> createNotes(int count, Tag... tags) {

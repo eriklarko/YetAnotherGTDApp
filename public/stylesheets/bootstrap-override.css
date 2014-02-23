@@ -12,7 +12,6 @@ hr {
 
 fieldset {
     border: 1px solid #c0c0c0;
-    margin: 1em;
     padding: 1em;
 }
 
@@ -20,5 +19,6 @@ legend {
     border-bottom: 0em;
     margin-bottom: 0em;
     width: auto;
-    padding: 0.5em;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
 }

@@ -1,5 +1,6 @@
 package services;
 
+import java.util.Collection;
 import models.Filter;
 import play.db.ebean.Transactional;
 import search.Node;
@@ -8,11 +9,26 @@ import search.Node;
  *
  * @author eriklark
  */
-public class FilterService {
+public class FilterService extends BaseService<Filter> {
+
+	private static final FilterService instance = new FilterService();
+
+	public static FilterService instance() {
+		return instance;
+	}
+
+	private FilterService() {
+		super(Filter.class);
+	}
+
+	public Collection<Filter> getAllCurrentUsersFilters() {
+		return find().findList();
+	}
 
 	@Transactional
-	public static Filter createFilter(String name, Node searchTree) {
+	public Filter createFilter(String name, Node searchTree) {
 		Filter filter = new Filter();
+		filter.owner = UserService.getCurrentUser();
 		filter.name = name;
 		filter.setSearchTree(searchTree);
 		filter.save();
@@ -21,13 +37,23 @@ public class FilterService {
 	}
 
 	@Transactional
-	public static void remove(Filter filter) {
+	public void remove(Filter filter) {
 		filter.delete();
 	}
 
-    public static void updateFilter(Filter filter, String name, Node searchTree) {
+    public void updateFilter(Filter filter, String name, Node searchTree) {
         filter.name = name;
         filter.setSearchTree(searchTree);
         filter.save();
     }
+
+	public void star(Filter filter) {
+		filter.starred = true;
+		filter.save();
+	}
+
+	public void unstar(Filter filter) {
+		filter.starred = false;
+		filter.save();
+	}
 }

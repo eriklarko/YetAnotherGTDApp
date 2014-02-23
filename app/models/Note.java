@@ -3,11 +3,11 @@ package models;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import javax.persistence.Column;
 import javax.persistence.Lob;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import play.db.ebean.Model;
 
@@ -21,14 +21,16 @@ public class Note extends Model {
     @Id
     public Long id;
 
+	@ManyToOne
+	@NotNull
+	public User owner;
+
     @ManyToMany
     public Set<Tag> tags = new HashSet<>();
 
     @Lob
     @NotNull
     public String payload;
-
-    public static Finder<Long, Note> find = new Finder(Long.class, Note.class);
 
 	@Override
 	public int hashCode() {

@@ -5,7 +5,6 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import models.Tag;
 import play.db.ebean.Transactional;
-import static services.TagsService.findByName;
 
 /**
  *
@@ -24,23 +23,16 @@ public class TagNameService {
 
 	public static Tag findOrCreateTagFromName(String tagName) {
 		try {
-			return findByName(tagName);
+			return TagService.instance().findByName(tagName);
 		} catch (NoSuchElementException ex) {
-			return createNewTagFromName(tagName);
+			return TagService.instance().createNewTagFromName(tagName);
 		}
-	}
-
-	private static Tag createNewTagFromName(String tagName) {
-		Tag tag = new Tag();
-		tag.name = tagName;
-		tag.save();
-		return tag;
 	}
 
 	public static Set<Tag> findTagsByName(Iterable<String> tagNames) throws NoSuchElementException {
 		Set<Tag> tags = new HashSet<>();
 		for(String tagName : tagNames) {
-			tags.add(findByName(tagName));
+			tags.add(TagService.instance().findByName(tagName));
 		}
 		return tags;
 	}

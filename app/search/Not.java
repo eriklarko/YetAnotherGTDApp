@@ -22,7 +22,7 @@ public class Not implements Node {
 
 	@Override
 	public Set<Note> execute() {
-        Set<Note> universe = NoteService.findAllTagsOwnedBy(Long.MIN_VALUE);
+        Set<Note> universe = NoteService.instance().findAllCurrentUsersNotes();
         Set<Note> notesToRemove = child.execute();
         universe.removeAll(notesToRemove);
 

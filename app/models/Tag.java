@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotEmpty;
 import play.db.ebean.Model;
 
@@ -19,16 +21,14 @@ public class Tag extends Model {
     @Id
     public Long id;
 
+	@ManyToOne
+	@NotNull
+	public User owner;
+
     @Column
     @Lob
 	@NotEmpty
 	public String name;
-
-    public static Finder<Long, Tag> find = new Finder(Long.class, Tag.class);
-
-    public static Collection<Tag> all() {
-        return find.all();
-    }
 
 	@Override
 	public int hashCode() {

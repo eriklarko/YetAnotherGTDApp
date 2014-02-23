@@ -12,19 +12,30 @@ import utils.NotesIdComparator;
  *
  * @author eriklark
  */
-public class NoteService {
+public class NoteService extends BaseService<Note> {
+
+	private static final NoteService instance = new NoteService();
+
+	public static NoteService instance() {
+		return instance;
+	}
+
+	private NoteService() {
+		super(Note.class);
+	}
 
 	@Transactional
-	public static Note create(String payload, Iterable<Tag> tags) {
+	public Note create(String payload, Iterable<Tag> tags) {
 		Note toCreate = new Note();
+		toCreate.owner = UserService.getCurrentUser();
 		toCreate.payload = payload;
-		toCreate.tags = TagsService.findOrCreateTags(tags);
+		toCreate.tags = TagService.instance().findOrCreateTags(tags);
 		toCreate.save();
 		return toCreate;
 	}
 
 	@Transactional
-	public static void updatePayload(Note note, String payload) {
+	public void updatePayload(Note note, String payload) {
 		note.payload = payload;
 		note.save();
 	}
@@ -34,14 +45,13 @@ public class NoteService {
 	 * any note, they are marked for deletion.
 	 */
 	@Transactional
-	public static void remove(Note note) {
-		Set<Tag> tags = note.tags;
+	public void remove(Note note) {
 		note.deleteManyToManyAssociations("tags");
 		note.delete();
 	}
 
 	@Transactional
-	public static void removeTag(Note note, Tag tagToRemove) throws NoSuchElementException {
+	public void removeTag(Note note, Tag tagToRemove) throws NoSuchElementException {
 		boolean tagRemoved = note.tags.remove(tagToRemove);
 
 		if (tagRemoved) {
@@ -52,12 +62,12 @@ public class NoteService {
 	}
 
 	@Transactional
-	public static void addTag(Note note, Tag tag) {
+	public void addTag(Note note, Tag tag) {
 		note.tags.add(tag);
 		note.save();
 	}
 
-	public static Set<Note> findNotesTaggedWith(Iterable<Tag> tags) {
+	public Set<Note> findNotesTaggedWith(Iterable<Tag> tags) {
 		Set<Note> notes = new TreeSet<>(new NotesIdComparator());
 		for (Tag tag : tags) {
 			notes.addAll(findNotesWithTag(tag));
@@ -65,11 +75,11 @@ public class NoteService {
 		return notes;
 	}
 
-    public static Set<Note> findNotesWithTag(Tag tag) {
-		return Note.find.where().eq("tags.name", tag.name).findSet();
+    public Set<Note> findNotesWithTag(Tag tag) {
+		return find().eq("tags.name", tag.name).findSet();
 	}
 
-    public static Set<Note> findAllTagsOwnedBy(Long userId) {
-		return Note.find.findSet();
+    public Set<Note> findAllCurrentUsersNotes() {
+		return find().findSet();
 	}
 }

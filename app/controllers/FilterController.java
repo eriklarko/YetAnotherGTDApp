@@ -28,7 +28,7 @@ public class FilterController extends Controller {
 
     public static Result list() {
 		ArrayNode filters = new ObjectMapper().createArrayNode();
-		for (Filter filter : Filter.find.all()) {
+		for (Filter filter : FilterService.instance().getAllCurrentUsersFilters()) {
 			filters.add(filterToJson(filter));
 		}
         return ok(Json.toJson(filters));
@@ -41,7 +41,7 @@ public class FilterController extends Controller {
 	}
 
     public static Result listNotes(Long id) {
-        Filter filter = Filter.find.byId(id);
+        Filter filter = FilterService.instance().byId(id);
         if (filter == null) {
             return badRequest("No filter with id " + id + " found.");
         }
@@ -50,7 +50,7 @@ public class FilterController extends Controller {
     }
 
     public static Result getSearchTree(Long id) {
-        Filter filter = Filter.find.byId(id);
+        Filter filter = FilterService.instance().byId(id);
         if (filter == null) {
             return badRequest("No filter with id " + id + " found.");
         }
@@ -66,7 +66,7 @@ public class FilterController extends Controller {
         findNewTagsAndCreateThem(json);
         Node searchTree = JsonToSearchTree.parse(json.get("searchTree"));
 
-        Filter newFilter = FilterService.createFilter(name, searchTree);
+        Filter newFilter = FilterService.instance().createFilter(name, searchTree);
         return ok(filterToJson(newFilter));
     }
 
@@ -78,8 +78,8 @@ public class FilterController extends Controller {
         findNewTagsAndCreateThem(json);
         Node searchTree = JsonToSearchTree.parse(json.get("searchTree"));
 
-        Filter f = Filter.find.byId(id);
-        FilterService.updateFilter(f, name, searchTree);
+        Filter f = FilterService.instance().byId(id);
+        FilterService.instance().updateFilter(f, name, searchTree);
 
         return ok(filterToJson(f));
     }
@@ -101,11 +101,11 @@ public class FilterController extends Controller {
     }
 
     public static Result delete(Long id) {
-        Filter filter = Filter.find.byId(id);
+        Filter filter = FilterService.instance().byId(id);
         if (filter == null) {
             return badRequest("No filter with id " + id + " found.");
         }
-        FilterService.remove(filter);
+        FilterService.instance().remove(filter);
         return ok();
     }
 }

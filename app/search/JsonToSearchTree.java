@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import java.util.Collection;
 import java.util.LinkedList;
 import models.Tag;
+import services.TagService;
 
 /**
  *
@@ -56,7 +57,7 @@ public class JsonToSearchTree {
 
     private static IdEq parseIdEq(JsonNode json) {
         Long tagId = Long.parseLong(json.get("id").asText());
-        Tag tag = Tag.find.byId(tagId);
+        Tag tag = TagService.instance().byId(tagId);
         if (tag == null) {
             throw new IllegalArgumentException("No tag with id " + tagId + " found");
         }

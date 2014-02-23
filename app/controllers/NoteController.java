@@ -11,7 +11,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import services.NoteService;
 import services.TagNameService;
-import services.TagsService;
+import services.TagService;
 import util.Validation;
 import utils.JsonUtil;
 
@@ -27,7 +27,7 @@ public class NoteController extends Controller {
 	 * @throws JsonProcessingException
 	 */
 	public static Result list() throws JsonProcessingException {
-		return ok(Json.toJson(NoteService.findAllTagsOwnedBy(Long.MIN_VALUE)));
+		return ok(Json.toJson(NoteService.instance().findAllCurrentUsersNotes()));
 	}
 
 	/**
@@ -49,7 +49,7 @@ public class NoteController extends Controller {
 			Tag[] tags = JsonUtil.getTagsFromNames(json.get("tags"));
 			String payload = validation.getParsed("payload").iterator().next();
 
-			Note newNote = NoteService.create(payload, Sets.newHashSet(tags));
+			Note newNote = NoteService.instance().create(payload, Sets.newHashSet(tags));
 			return ok(Json.toJson(newNote));
 		}
 	}
@@ -64,7 +64,7 @@ public class NoteController extends Controller {
 			validation.reject("tags", "No tags given");
 		} else {
 			tags = JsonUtil.getTagsFromNames(tagsJson);
-			if (tags == null || tags.length == 0 || TagsService.hasOnlyEmptyNames(Sets.newHashSet(tags))) {
+			if (tags == null || tags.length == 0 || TagService.instance().hasOnlyEmptyNames(Sets.newHashSet(tags))) {
 				validation.reject("tags", "No tags given");
 			} else {
 				validation.successfullyParsed("tags", tagsJson.asText());
@@ -95,49 +95,49 @@ public class NoteController extends Controller {
 			return badRequest(Json.toJson("No payload specified"));
 		}
 
-		Note note = Note.find.byId(id);
+		Note note = NoteService.instance().byId(id);
 		if (note == null) {
 			return badRequest("Unable to find note with id " + id);
 		}
 
-		NoteService.updatePayload(note, payload);
+		NoteService.instance().updatePayload(note, payload);
 		return ok(Json.toJson(note));
 	}
 
 	public static Result remove(Long id) {
-		Note note = Note.find.byId(id);
+		Note note = NoteService.instance().byId(id);
 		if (note == null) {
 			return badRequest("Could not find note with id " + id);
 		} else {
-			NoteService.remove(note);
+			NoteService.instance().remove(note);
 			return ok();
 		}
 	}
 
 	public static Result tag(Long noteId, String tagName) {
-		Note note = Note.find.byId(noteId);
+		Note note = NoteService.instance().byId(noteId);
 		if (note == null) {
 			return badRequest("Could not find note with id " + noteId);
 		}
 
 		Tag tag = TagNameService.findOrCreateTagFromName(tagName);
 
-		NoteService.addTag(note, tag);
+		NoteService.instance().addTag(note, tag);
 		return ok(Json.toJson(note));
 	}
 
 	public static Result untag(Long noteId, Long tagId) {
-		Note note = Note.find.byId(noteId);
+		Note note = NoteService.instance().byId(noteId);
 		if (note == null) {
 			return badRequest("Could not find note with id " + noteId);
 		}
 
-		Tag tag = Tag.find.byId(tagId);
+		Tag tag = TagService.instance().byId(tagId);
 		if (tag == null) {
 			return badRequest("Could not find tag with id " + tagId);
 		}
 
-		NoteService.removeTag(note, tag);
+		NoteService.instance().removeTag(note, tag);
 		return ok(Json.toJson(note));
 	}
 }

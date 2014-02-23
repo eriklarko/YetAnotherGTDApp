@@ -1,17 +1,21 @@
 @import helper._
 @main("Todo list") {
 
-<div>
-    <h2>Here be your filtards</h2>
-    <div id="filters"></div>
-</div>
+<div id="filters"></div>
 <hr/>
 <div id="filter"></div>
 
-<script src="@routes.Assets.at("javascripts/FiltersView.js")" type="text/javascript"></script>
-<script src="@routes.Assets.at("javascripts/FilterView.js")" type="text/javascript"></script>
-<script src="@routes.Assets.at("javascripts/NoteCard.js")" type="text/javascript"></script>
-<script src="@routes.Assets.at("javascripts/Payload.js")" type="text/javascript"></script>
+<script src="@routes.Assets.at("javascripts/common/Popup.js")" type="text/javascript"></script>
+
+<script src="@routes.Assets.at("javascripts/note/Payload.js")" type="text/javascript"></script>
+<script src="@routes.Assets.at("javascripts/note/NoteCard.js")" type="text/javascript"></script>
+<script src="@routes.Assets.at("javascripts/note/NewNoteView.js")" type="text/javascript"></script>
+
+<script src="@routes.Assets.at("javascripts/filter/NewFilterView.js")" type="text/javascript"></script>
+<script src="@routes.Assets.at("javascripts/filter/FilterSearchTreeView.js")" type="text/javascript"></script>
+
+<script src="@routes.Assets.at("javascripts/filter/FiltersView.js")" type="text/javascript"></script>
+<script src="@routes.Assets.at("javascripts/filter/FilterView.js")" type="text/javascript"></script>
 <script type="text/javascript">
     var filtersView = new FiltersView({
         filters: "all",

@@ -13,11 +13,25 @@ import play.db.ebean.Transactional;
  *
  * @author eriklark
  */
-public class TagsService {
+public class TagService extends BaseService<Tag> {
 
-	public static Tag findByName(String name) throws NoSuchElementException {
+	private static final TagService instance = new TagService();
+
+	public static TagService instance() {
+		return instance;
+	}
+
+	private TagService() {
+		super(Tag.class);
+	}
+
+	public Set<Tag> getAllCurrentUsersTags() {
+		return find().findSet();
+	}
+
+	public Tag findByName(String name) throws NoSuchElementException {
 		try {
-			Tag found = Tag.find.where().ieq("name", name).findUnique();
+			Tag found = find().ieq("name", name).findUnique();
 			if (found == null) {
 				throw new NoSuchElementException("No tag with name " + name + " found");
 			} else {
@@ -30,19 +44,19 @@ public class TagsService {
 		}
 	}
 
-	private static void findAndRemoveDuplicates(String name) {
-		List<Tag> tagsWithConflictingNames = Tag.find.where().ieq("name", name).findList();
+	private void findAndRemoveDuplicates(String name) {
+		List<Tag> tagsWithConflictingNames = find().ieq("name", name).findList();
 		Iterator<Tag> it = tagsWithConflictingNames.iterator();
 		if (it.hasNext()) {
 			it.next();
 
-			while(it.hasNext()) {
+			while (it.hasNext()) {
 				it.next().delete();
 			}
 		}
 	}
 
-	public static Set<String> getTagNames(Iterable<Tag> tags) {
+	public Set<String> getTagNames(Iterable<Tag> tags) {
 		Set<String> tagNames = new HashSet<>();
 		for (Tag tag : tags) {
 			tagNames.add(tag.name);
@@ -52,7 +66,7 @@ public class TagsService {
 	}
 
 	@Transactional
-	public static Set<Tag> findOrCreateTags(Iterable<Tag> tagsToFindOrCreate) {
+	public Set<Tag> findOrCreateTags(Iterable<Tag> tagsToFindOrCreate) {
 		Set<Tag> tags = new HashSet<>();
 		for (Tag tag : tagsToFindOrCreate) {
 			tags.add(findOrCreateTag(tag));
@@ -60,15 +74,15 @@ public class TagsService {
 		return tags;
 	}
 
-	private static Tag findOrCreateTag(Tag tag) {
+	private Tag findOrCreateTag(Tag tag) {
 		if (tag.id == null) {
 			return TagNameService.findOrCreateTagFromName(tag.name);
 		} else {
-			return Tag.find.byId(tag.id);
+			return byId(tag.id);
 		}
 	}
 
-	public static boolean hasOnlyEmptyNames(Iterable<Tag> tags) {
+	public boolean hasOnlyEmptyNames(Iterable<Tag> tags) {
 		for (Tag tag : tags) {
 			if (!(tag.name == null || tag.name.trim().isEmpty())) {
 				return false;
@@ -77,7 +91,15 @@ public class TagsService {
 		return true;
 	}
 
-	public static void updateName(Tag tag, String newName) {
+	public static Tag createNewTagFromName(String tagName) {
+		Tag tag = new Tag();
+		tag.owner = UserService.getCurrentUser();
+		tag.name = tagName;
+		tag.save();
+		return tag;
+	}
+
+	public void updateName(Tag tag, String newName) {
 		tag.name = newName;
 		tag.save();
 	}

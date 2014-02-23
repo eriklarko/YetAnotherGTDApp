@@ -7,7 +7,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 import play.db.ebean.Model;
 import search.JsonToSearchTree;
 import search.Node;
@@ -24,16 +26,21 @@ public class Filter extends Model {
 	@Id
 	public Long id;
 
+	@ManyToOne
+	@NotNull
+	public User owner;
+
 	@Column
 	public String name;
 
 	@Lob
 	String searchTree;
 
+	@Column
+	public boolean starred;
+
     @Transient
     private Node searchTreeCache;
-
-	public static Finder<Long, Filter> find = new Finder(Long.class, Filter.class);
 
     public Node getSearchTree() {
         if (this.searchTreeCache == null) {

@@ -11,7 +11,7 @@ import static play.mvc.Controller.request;
 import play.mvc.Result;
 import static play.mvc.Results.badRequest;
 import static play.mvc.Results.ok;
-import services.TagsService;
+import services.TagService;
 
 /**
  *
@@ -20,7 +20,7 @@ import services.TagsService;
 public class TagController extends Controller {
 
 	public static Result list() throws JsonProcessingException {
-		return ok(Json.toJson(Tag.all()));
+		return ok(Json.toJson(TagService.instance().getAllCurrentUsersTags()));
 	}
 
     @BodyParser.Of(BodyParser.Json.class)
@@ -53,12 +53,12 @@ public class TagController extends Controller {
 			return badRequest(Json.toJson("No name specified"));
 		}
 
-		Tag tag = Tag.find.byId(id);
+		Tag tag = TagService.instance().byId(id);
 		if (tag == null) {
 			return badRequest("Unable to find tag with id " + id);
 		}
 
-		TagsService.updateName(tag, newName);
+		TagService.instance().updateName(tag, newName);
 		return ok(Json.toJson(tag));
 	}
 }

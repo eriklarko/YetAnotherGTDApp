@@ -3,6 +3,7 @@ package controllers;
 import models.Filter;
 import play.mvc.Controller;
 import play.mvc.Result;
+import services.FilterService;
 import views.html.combinedView;
 import views.html.filterList;
 import views.html.viewFilter;
@@ -22,7 +23,7 @@ public class Application extends Controller {
 	}
 
 	public static Result viewFilter(Long id) {
-		Filter filter = Filter.find.byId(id);
+		Filter filter = FilterService.instance().byId(id);
 		if (filter == null) {
 			return badRequest("No filter with id " + id + " found");
 		}

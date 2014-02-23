@@ -23,7 +23,7 @@ public class IdEq implements Node {
 
 	@Override
 	public Set<Note> execute() {
-        return NoteService.findNotesWithTag(tag);
+        return NoteService.instance().findNotesWithTag(tag);
 	}
 
     @Override
