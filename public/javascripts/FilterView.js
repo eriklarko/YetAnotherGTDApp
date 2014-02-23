@@ -35,7 +35,29 @@ function FilterView(options) {
             searchTree.css("width", "17em");
             searchTree.append(tagsInput);
 
-            setupTagsBox(tagsInput);
+            setupTagsBox(tagsInput, {
+               onAddTag: function (tag) {
+
+                    updateFilter(filter.id, filter.name, getSearchTree(getTagsFromTagsInput(tagsInput)), function (updatedFilter) {
+                         var tags = findTagsInSearchTree(updatedFilter.searchTree);
+                         $.each(tags, function(i, newTag) {
+                           if (newTag.name === tag.name) {
+                               tag.id = newTag.id;
+                           }
+                        });
+                        loadObjectsInFilter(filter.id, function(notes) {
+                            showNotes(notes, cards);
+                        });
+                    });
+                },
+                onRemoveTag: function (tag) {
+                    updateFilter(filter.id, filter.name, getSearchTree(getTagsFromTagsInput(tagsInput)), function () {
+                        loadObjectsInFilter(filter.id, function (notes) {
+                            showNotes(notes, cards);
+                        });
+                    });
+                }
+            });
             tagsInput.tagsinput("addAll", tags);
             return searchTree;
 

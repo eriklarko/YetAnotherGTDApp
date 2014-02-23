@@ -5,21 +5,19 @@ var tagsBloodhound = new Bloodhound({
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     limit: 10,
     prefetch: {
-        url: '/tags',
+        url: window.location.origin + '/tags',
         filter: function(list) {
-            console.log(list);
             return $.map(list, function(tag) {
                 return {name: tag.name};
             });
         }
     }
 });
+
 tagsBloodhound.initialize();
 
-
-
-
 function setupTagsBox(jQueryObj, options) {
+
     var defaultOptions = {
         itemValue: "id",
         itemText: "name",

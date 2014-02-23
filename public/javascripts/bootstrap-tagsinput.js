@@ -278,7 +278,7 @@
         makeOptionFunction(typeahead, 'source');
 
         self.$input.typeahead(null, typeahead);
-        self.$input.typeahead({
+        /*self.$input.typeahead({
           source: function (query, process) {
             console.log("source");
             function processItems(items) {
@@ -322,7 +322,7 @@
             var regex = new RegExp( '(' + this.query + ')', 'gi' );
             return text.replace( regex, "<strong>$1</strong>" );
           }
-        });
+        });*/
       }
 
       self.$container.on('click', $.proxy(function(event) {
