@@ -10,7 +10,6 @@ function Popup(content, trigger) {
 
     trigger.on("click", function () {
         var triggerLoc = trigger.offset();
-        console.log(triggerLoc);
         popup.css("top", triggerLoc.top + "px");
         popup.css("left", triggerLoc.left + trigger.width() + 25 + "px");
 

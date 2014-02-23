@@ -59,9 +59,6 @@ function loadAllObjects(successCallback) {
 }
 
 function addNote(payload, tags, successCallback) {
-    console.log("Adding new note");
-    console.log(payload);
-    console.log(tags);
     $.ajax({
         url: "/notes",
         type: "POST",
