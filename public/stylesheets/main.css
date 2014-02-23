@@ -41,3 +41,9 @@ input.hint {
     font-size: 3em;
     margin-right: 0.5em;
 }
+
+.hamburger-wrapper {
+    border: 0.1em solid black;
+    padding: 0.2em;
+    background-color: white;
+}

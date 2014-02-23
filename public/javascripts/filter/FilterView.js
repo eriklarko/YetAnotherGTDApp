@@ -7,33 +7,41 @@ function FilterView(options) {
 
     self.setFilter = function (filter) {
         var cards = buildCards();
-
-        self.options.appendTo.empty();
-        self.options.appendTo.append(buildHeader());
-        self.options.appendTo.append("shows tags matching");
-        self.options.appendTo.append(new FilterSearchTreeView(filter, function (updatedFilter) {
-            loadObjectsInFilter(updatedFilter.id, function (notes) {
-                showNotes(notes, cards);
-            });
-        }));
-
-        self.options.appendTo.append(cards);
-        self.options.appendTo.append(new NewNoteView(function(newNote) {
+        var notesHolder = $("<div></div>");
+        cards.append(notesHolder);
+        cards.append(new NewNoteView(function(newNote) {
             cards.append(buildNote(newNote));
         }));
 
+        self.options.appendTo.empty();
+        self.options.appendTo.append(buildHeader());
+
+        self.options.appendTo.append(cards);
+
         loadObjectsInFilter(filter.id, function(notes) {
-            showNotes(notes, cards);
+            showNotes(notes, notesHolder);
         });
 
         function buildHeader() {
+            var wrapper = $("<div></div>");
+
             var header = $("<h2></h2>");
             header.append("Filter " + filter.name);
-            return header;
+            wrapper.append(header);
+
+            wrapper.append("shows tags matching");
+            wrapper.append(new FilterSearchTreeView(filter, function (updatedFilter) {
+                loadObjectsInFilter(updatedFilter.id, function (notes) {
+                    showNotes(notes, notesHolder);
+                });
+            }));
+
+
+            return wrapper;
         }
 
         function buildCards() {
-            var cards = $("<div></div>");
+            var cards = $("<div class='cards'></div>");
             return cards;
         }
 

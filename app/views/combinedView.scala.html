@@ -3,9 +3,28 @@
 
 <div id="filters"></div>
 <hr/>
-<div id="filter"></div>
+<div>
+    <div id="hamburger">
+        <input type="text" placeholder="Search notes" />
+        <br/>
+        <br/>
+        All Filters:
+        <ul>
+            <li>a</li>
+            <li>a</li>
+            <li>a</li>
+            <li>a</li>
+            <li>a</li>
+            <li>a</li>
+            <li>a</li>
+        </ul>
+
+    </div>
+    <div id="filter" style="float: left; width: 100%; margin-top: 1em"></div>
+</div>
 
 <script src="@routes.Assets.at("javascripts/common/Popup.js")" type="text/javascript"></script>
+<script src="@routes.Assets.at("javascripts/common/Hamburg.js")" type="text/javascript"></script>
 
 <script src="@routes.Assets.at("javascripts/note/Payload.js")" type="text/javascript"></script>
 <script src="@routes.Assets.at("javascripts/note/NoteCard.js")" type="text/javascript"></script>
@@ -14,7 +33,7 @@
 <script src="@routes.Assets.at("javascripts/filter/NewFilterView.js")" type="text/javascript"></script>
 <script src="@routes.Assets.at("javascripts/filter/FilterSearchTreeView.js")" type="text/javascript"></script>
 
-<script src="@routes.Assets.at("javascripts/filter/FiltersView.js")" type="text/javascript"></script>
+<script src="@routes.Assets.at("javascripts/filter/StarredFiltersView.js")" type="text/javascript"></script>
 <script src="@routes.Assets.at("javascripts/filter/FilterView.js")" type="text/javascript"></script>
 <script type="text/javascript">
     var filtersView = new FiltersView({
@@ -31,6 +50,10 @@
     }
 
     $(document).ready(function() {
+        new Hamburg({
+            object: $("#hamburger"),
+        });
+
         filtersView.populate();
     });
 </script>
