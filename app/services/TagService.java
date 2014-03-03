@@ -30,6 +30,7 @@ public class TagService extends BaseService<Tag> {
 	}
 
 	public Tag findByName(String name) throws NoSuchElementException {
+		// TODO: Return optional.
 		try {
 			Tag found = find().ieq("name", name).findUnique();
 			if (found == null) {
@@ -48,10 +49,12 @@ public class TagService extends BaseService<Tag> {
 		List<Tag> tagsWithConflictingNames = find().ieq("name", name).findList();
 		Iterator<Tag> it = tagsWithConflictingNames.iterator();
 		if (it.hasNext()) {
-			it.next();
+			Tag keep = it.next();
 
 			while (it.hasNext()) {
-				it.next().delete();
+				// TODO: Move all note-tag-references to the keep tag instead.
+				Tag toDelete = it.next();
+				toDelete.delete();
 			}
 		}
 	}
