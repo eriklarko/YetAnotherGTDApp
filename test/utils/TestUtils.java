@@ -1,21 +1,25 @@
-package search.execution;
+package utils;
 
 import com.google.common.collect.Sets;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.UUID;
 import models.Note;
 import models.Tag;
+import org.junit.Assert;
 import services.NoteService;
 import services.TagNameService;
+import utils.TagsIdComparator;
 
 /**
  *
  * @author Thinner
  */
-public class Util {
+public class TestUtils {
 
     private static final Comparator<Note> NOTE_ID_COMPARATOR = new Comparator<Note>() {
 
@@ -55,6 +59,14 @@ public class Util {
         return TagNameService.findOrCreateTagFromName(UUID.randomUUID().toString());
     }
 
-    private Util() {
+	public static void assertListEquals(List<Tag> expected, List<Tag> actual) {
+		TagsIdComparator comparator = new TagsIdComparator();
+		Collections.sort(expected, comparator);
+		Collections.sort(actual, comparator);
+
+		Assert.assertArrayEquals(expected.toArray(), actual.toArray());
+	}
+
+    private TestUtils() {
     }
 }

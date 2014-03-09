@@ -1,6 +1,7 @@
 
 package search.execution;
 
+import utils.TestUtils;
 import com.google.common.collect.Sets;
 import java.util.Set;
 import models.Note;
@@ -18,7 +19,7 @@ public class IdEqTest extends PlayIntegrationTest {
 
     @Test
     public void testNoMatchingNotes() {
-        Tag tagToFind = Util.createTag();
+        Tag tagToFind = TestUtils.createTag();
         IdEq ideq = new IdEq(tagToFind);
 
         Set<Note> actual = ideq.execute();
@@ -28,8 +29,8 @@ public class IdEqTest extends PlayIntegrationTest {
 
     @Test
     public void testOneNoteOneTag() {
-        Tag tagToFind = Util.createTag();
-        Note noteToFind = Util.createNote(tagToFind);
+        Tag tagToFind = TestUtils.createTag();
+        Note noteToFind = TestUtils.createNote(tagToFind);
         IdEq ideq = new IdEq(tagToFind);
 
         Set<Note> expected = Sets.newHashSet(noteToFind);
@@ -40,12 +41,12 @@ public class IdEqTest extends PlayIntegrationTest {
 
     @Test
     public void testOneNoteManyTags() {
-        Tag tagToFind = Util.createTag();
-        Tag random1 = Util.createTag();
-        Tag random2 = Util.createTag();
-        Tag random3 = Util.createTag();
+        Tag tagToFind = TestUtils.createTag();
+        Tag random1 = TestUtils.createTag();
+        Tag random2 = TestUtils.createTag();
+        Tag random3 = TestUtils.createTag();
 
-        Note noteToFind = Util.createNote(random1, random2, tagToFind, random3);
+        Note noteToFind = TestUtils.createNote(random1, random2, tagToFind, random3);
         IdEq ideq = new IdEq(tagToFind);
 
         Set<Note> expected = Sets.newHashSet(noteToFind);
@@ -56,25 +57,25 @@ public class IdEqTest extends PlayIntegrationTest {
 
     @Test
     public void testManyNotesOneTag() {
-        Tag tagToFind = Util.createTag();
+        Tag tagToFind = TestUtils.createTag();
         IdEq ideq = new IdEq(tagToFind);
 
-        Set<Note> expected = Util.createNotes(3, tagToFind);
-        Set<Note> actual = Util.sort(ideq.execute());
+        Set<Note> expected = TestUtils.createNotes(3, tagToFind);
+        Set<Note> actual = TestUtils.sort(ideq.execute());
 
         Assert.assertArrayEquals(expected.toArray(), actual.toArray());
     }
 
     @Test
     public void testManyNotesManyTags() {
-        Tag tagToFind = Util.createTag();
-        Tag random1 = Util.createTag();
-        Tag random2 = Util.createTag();
-        Tag random3 = Util.createTag();
+        Tag tagToFind = TestUtils.createTag();
+        Tag random1 = TestUtils.createTag();
+        Tag random2 = TestUtils.createTag();
+        Tag random3 = TestUtils.createTag();
         IdEq ideq = new IdEq(tagToFind);
 
-        Set<Note> expected = Util.createNotes(3, random1, random2, tagToFind, random3);
-        Set<Note> actual = Util.sort(ideq.execute());
+        Set<Note> expected = TestUtils.createNotes(3, random1, random2, tagToFind, random3);
+        Set<Note> actual = TestUtils.sort(ideq.execute());
 
         Assert.assertArrayEquals(expected.toArray(), actual.toArray());
     }

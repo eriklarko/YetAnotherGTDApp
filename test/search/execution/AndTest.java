@@ -1,5 +1,6 @@
 package search.execution;
 
+import utils.TestUtils;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.SortedSet;
@@ -20,9 +21,9 @@ public class AndTest extends PlayIntegrationTest {
 
 	@Test
 	public void testSingleChain() {
-        Tag t1 = Util.createTag();
-        Tag t2 = Util.createTag();
-        Tag t3 = Util.createTag();
+        Tag t1 = TestUtils.createTag();
+        Tag t2 = TestUtils.createTag();
+        Tag t3 = TestUtils.createTag();
 
 		Collection<Node> literals = Arrays.<Node>asList(
 				new IdEq(t1),
@@ -31,8 +32,8 @@ public class AndTest extends PlayIntegrationTest {
 		);
 		And and = new And(literals);
 
-        SortedSet<Note> expected = Util.createNotes(3, t1, t2, t3);
-        SortedSet<Note> actual = Util.sort(and.execute());
+        SortedSet<Note> expected = TestUtils.createNotes(3, t1, t2, t3);
+        SortedSet<Note> actual = TestUtils.sort(and.execute());
 
         Assert.assertArrayEquals(expected.toArray(), actual.toArray());
 	}

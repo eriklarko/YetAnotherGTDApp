@@ -19,17 +19,18 @@ public class PlayIntegrationTest {
     public static FakeApplication app;
     public static String createDdl = "";
     public static String dropDdl = "";
+	public static final String dbName = "test";
 
 	@Rule
 	public PlayIntegrationRule r = new PlayIntegrationRule();
 
     @BeforeClass
     public static void startApp() throws IOException {
-        app = Helpers.fakeApplication(Helpers.inMemoryDatabase());
+        app = Helpers.fakeApplication(Helpers.inMemoryDatabase(dbName));
         Helpers.start(app);
 
         // Reading the evolution file
-        String evolutionContent = FileUtils.readFileToString(app.getWrappedApplication().getFile("conf/evolutions/default/1.sql"));
+        String evolutionContent = FileUtils.readFileToString(app.getWrappedApplication().getFile("conf/evolutions/" +dbName+ "/1.sql"));
         // Splitting the String to get Create & Drop DDL
         String[] splittedEvolutionContent = evolutionContent.split("# --- !Ups");
         String[] upsDowns = splittedEvolutionContent[1].split("# --- !Downs");

@@ -1,5 +1,6 @@
 package search.execution;
 
+import utils.TestUtils;
 import java.util.SortedSet;
 import models.Note;
 import models.Tag;
@@ -17,16 +18,16 @@ public class NotTest extends PlayIntegrationTest {
 
     @Test
     public void twoNotes() {
-        Tag t1 = Util.createTag();
-        Tag t2 = Util.createTag();
+        Tag t1 = TestUtils.createTag();
+        Tag t2 = TestUtils.createTag();
 
-        Note noteToFind = Util.createNote(t1);
-        Note n2 = Util.createNote(t2);
+        Note noteToFind = TestUtils.createNote(t1);
+        Note n2 = TestUtils.createNote(t2);
 
         Not not = new Not(new IdEq(t2));
 
-        SortedSet<Note> expected = Util.sort(noteToFind);
-        SortedSet<Note> actual = Util.sort(not.execute());
+        SortedSet<Note> expected = TestUtils.sort(noteToFind);
+        SortedSet<Note> actual = TestUtils.sort(not.execute());
 
         Assert.assertArrayEquals(expected.toArray(), actual.toArray());
     }

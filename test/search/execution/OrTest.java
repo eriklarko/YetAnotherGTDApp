@@ -1,5 +1,6 @@
 package search.execution;
 
+import utils.TestUtils;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.SortedSet;
@@ -20,8 +21,8 @@ public class OrTest extends PlayIntegrationTest {
 
     @Test
     public void testSimple() {
-        Tag t1 = Util.createTag();
-        Tag t2 = Util.createTag();
+        Tag t1 = TestUtils.createTag();
+        Tag t2 = TestUtils.createTag();
 
         Collection<Node> literals = Arrays.<Node>asList(
                 new IdEq(t1),
@@ -29,11 +30,11 @@ public class OrTest extends PlayIntegrationTest {
         );
         Or or = new Or(literals);
 
-        Note n1 = Util.createNote(t1);
-        Note n2 = Util.createNote(t2);
+        Note n1 = TestUtils.createNote(t1);
+        Note n2 = TestUtils.createNote(t2);
 
-        SortedSet<Note> expected = Util.sort(n1, n2);
-        SortedSet<Note> actual = Util.sort(or.execute());
+        SortedSet<Note> expected = TestUtils.sort(n1, n2);
+        SortedSet<Note> actual = TestUtils.sort(or.execute());
 
         Assert.assertArrayEquals(expected.toArray(), actual.toArray());
     }
