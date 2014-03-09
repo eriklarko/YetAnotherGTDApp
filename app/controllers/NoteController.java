@@ -3,6 +3,7 @@ package controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.collect.Sets;
+import java.util.Arrays;
 import models.Note;
 import models.Tag;
 import play.libs.Json;
@@ -12,7 +13,7 @@ import play.mvc.Result;
 import services.NoteService;
 import services.TagNameService;
 import services.TagService;
-import util.Validation;
+import utils.Validation;
 import utils.JsonUtil;
 
 /**
@@ -81,26 +82,35 @@ public class NoteController extends Controller {
 	}
 
 	@BodyParser.Of(BodyParser.Json.class)
-	public static Result updatePayload(Long id) {
+	public static Result update(Long id) {
 		JsonNode json = request().body().asJson();
-
-		String payload;
-		try {
-			payload = json.get("payload").asText();
-		} catch (NullPointerException ex) {
-			return badRequest(Json.toJson("No payload specified"));
-		}
-
-		if (payload.isEmpty()) {
-			return badRequest(Json.toJson("No payload specified"));
-		}
 
 		Note note = NoteService.instance().byId(id);
 		if (note == null) {
 			return badRequest("Unable to find note with id " + id);
 		}
 
-		NoteService.instance().updatePayload(note, payload);
+		if (json.get("payload") != null) {
+			String payload = json.get("payload").asText();
+			if (payload.isEmpty()) {
+				return badRequest(Json.toJson("No payload specified"));
+			}
+			NoteService.instance().updatePayload(note, payload);
+		}
+
+		if (json.get("tags") != null) {
+			if (!json.get("tags").isArray()) {
+				return badRequest(Json.toJson("Tags needs to be an array"));
+			}
+
+			Tag[] tags = JsonUtil.getTagsFromNames(json.get("tags"));
+			if (tags == null || TagService.instance().hasOnlyEmptyNames(Sets.newHashSet(tags))) {
+				return badRequest(Json.toJson("You must specify non-empty tag names"));
+			}
+
+			NoteService.instance().replaceTags(note, Arrays.asList(tags));
+		}
+
 		return ok(Json.toJson(note));
 	}
 

@@ -14,8 +14,9 @@ public class Application extends Controller {
 		return ok(filterList.render());
 	}
 
-	public static Result combined() {
-		return ok(combinedView.render());
+	public static Result combined(Long filterId) {
+		Filter filter = FilterService.instance().byId(filterId);
+		return ok(combinedView.render(filter));
 	}
 
 	public static Result viewAllNotes() {

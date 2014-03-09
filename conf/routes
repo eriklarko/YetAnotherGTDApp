@@ -3,7 +3,7 @@
 # ~~~~
 
 # Home page
-GET     /                                   controllers.Application.combined()
+GET     /                                   controllers.Application.combined(filterId: Long ?= -1L)
 GET     /all                                controllers.Application.viewAllNotes()
 GET     /filter/view/:id                    controllers.Application.viewFilter(id: Long)
 
@@ -19,7 +19,7 @@ PUT     /tags/:id                           controllers.TagController.updateName
 GET     /notes                              controllers.NoteController.list()
 POST    /notes                              controllers.NoteController.save()
 DELETE  /notes/:id                          controllers.NoteController.remove(id: Long)
-PUT     /notes/:id                          controllers.NoteController.updatePayload(id: Long)
+PUT     /notes/:id                          controllers.NoteController.update(id: Long)
 
 POST    /notes/:noteId/tags/:tagName        controllers.NoteController.tag(noteId: Long, tagName: String)
 DELETE  /notes/:noteId/tags/:tagId          controllers.NoteController.untag(noteId: Long, tagId: Long)

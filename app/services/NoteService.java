@@ -1,5 +1,6 @@
 package services;
 
+import java.util.Collection;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.TreeSet;
@@ -60,6 +61,13 @@ public class NoteService extends BaseService<Note> {
 		} else {
 			throw new NoSuchElementException("Unable to find tag " + tagToRemove.name + " in note " + note.id);
 		}
+	}
+
+	@Transactional
+	public void replaceTags(Note note, Collection<Tag> tags) {
+		note.tags.clear();
+		note.tags.addAll(tags);
+		note.save();
 	}
 
 	@Transactional
