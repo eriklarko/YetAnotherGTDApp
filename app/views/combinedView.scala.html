@@ -1,4 +1,8 @@
+@(filter: Filter)
+
 @import helper._
+@import play.libs.Json
+
 @main("Todo list") {
 
 <div id="filters"></div>
@@ -26,9 +30,10 @@
 <script src="@routes.Assets.at("javascripts/common/Popup.js")" type="text/javascript"></script>
 <script src="@routes.Assets.at("javascripts/common/Hamburg.js")" type="text/javascript"></script>
 
-<script src="@routes.Assets.at("javascripts/note/cards/Payload.js")" type="text/javascript"></script>
+<script src="@routes.Assets.at("javascripts/note/Payload.js")" type="text/javascript"></script>
 <script src="@routes.Assets.at("javascripts/note/cards/NoteCard.js")" type="text/javascript"></script>
 <script src="@routes.Assets.at("javascripts/note/cards/NewNoteView.js")" type="text/javascript"></script>
+<script src="@routes.Assets.at("javascripts/note/cards/CardView.js")" type="text/javascript"></script>
 
 <script src="@routes.Assets.at("javascripts/filter/NewFilterView.js")" type="text/javascript"></script>
 <script src="@routes.Assets.at("javascripts/filter/FilterSearchTreeView.js")" type="text/javascript"></script>
@@ -46,6 +51,7 @@
     });
 
     function changeFilter(filter) {
+        window.history.pushState("hej", "Sometitle", "?filterId=" + filter.id);
         filterView.setFilter(filter);
     }
 
@@ -55,6 +61,11 @@
         });
 
         filtersView.populate();
+
+        @if(filter != null) {
+            var preselectedFilter = @Html(Json.stringify(Json.toJson(filter)))
+            changeFilter(preselectedFilter);
+        }
     });
 </script>
 }

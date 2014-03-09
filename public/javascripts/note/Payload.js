@@ -66,5 +66,54 @@ function Payload() {
             switchModeButton.html("To rich");
         }
     }
+
+    function SimpleMode() {
+
+        var input = $("<input type='text' placeholder='Payload' />");
+        input.css("width", "100%");
+
+        this.enter = function (parent) {
+            parent.val =  function () {
+                return input.val();
+            };
+            parent.empty = function () {
+                input.val("");
+            };
+
+            input.show();
+        };
+
+        this.leave = function (parent) {
+
+        };
+
+        this.show = function () {
+            var payloadAsText = $("<div></div>");
+            payloadAsText.addClass("payload");
+            payloadAsText.addClass("text");
+            payloadAsText.append(payload);
+            payloadAsText.editable({
+                type: 'text',
+                showbuttons: false,
+                mode: "inline",
+
+                url: function (params) {
+                    var deferred = new $.Deferred;
+                    updatePayload(note.id, params.value,
+                        function () {
+                            deferred.resolve();
+                        }, function (xhr) {
+                            deferred.reject(xhr);
+                    });
+
+                    return deferred.promise();
+                }
+            });
+        };
+    }
+
+    function RichTextMode() {
+
+    }
 }
 
