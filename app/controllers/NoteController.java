@@ -108,7 +108,7 @@ public class NoteController extends Controller {
 				return badRequest(Json.toJson("You must specify non-empty tag names"));
 			}
 
-			NoteService.instance().replaceTags(note, Arrays.asList(tags));
+			NoteService.instance().replaceTags(note, TagService.instance().findOrCreateTags(Arrays.asList(tags)));
 		}
 
 		return ok(Json.toJson(note));
