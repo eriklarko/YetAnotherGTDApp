@@ -32,3 +32,11 @@ DELETE  /filters/:id                        controllers.FilterController.delete(
 
 GET     /filters/:id/searchTree             controllers.FilterController.getSearchTree(id: Long)
 GET     /filters/:id/notes                  controllers.FilterController.listNotes(id: Long)
+
+
+
+
+
+################################################################################
+### MAINTENANCE
+GET     /maintenance/trimtagnames           controllers.Maintenance.doMaintenance(which="trim-tag-names")

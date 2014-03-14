@@ -4,15 +4,16 @@ function FilterView(options) {
         appendTo: $("<div></div>"),
         view: new CardView()
     };
-    self.options = $.extend(defaultOptions, options);
+    options = $.extend(defaultOptions, options);
 
     self.setFilter = function (filter) {
-        self.options.appendTo.empty();
-        self.options.appendTo.append(buildHeader());
+        options.appendTo.empty();
+        options.appendTo.append(buildHeader());
+        options.appendTo.append("<br/>");
 
-        self.options.appendTo.append(self.options.view.gui);
+        options.appendTo.append(options.view.gui);
 
-        loadObjectsInFilter(filter.id, self.options.view.showNotes);
+        loadObjectsInFilter(filter.id, options.view.showNotes);
 
         function buildHeader() {
             var wrapper = $("<div></div>");
@@ -23,7 +24,7 @@ function FilterView(options) {
 
             wrapper.append("shows tags matching");
             wrapper.append(new FilterSearchTreeView(filter, function (updatedFilter) {
-                loadObjectsInFilter(updatedFilter.id, self.options.view.showNotes);
+                loadObjectsInFilter(updatedFilter.id, options.view.showNotes);
             }));
 
             return wrapper;

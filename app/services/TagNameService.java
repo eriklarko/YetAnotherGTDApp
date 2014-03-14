@@ -1,7 +1,7 @@
 package services;
 
 import java.util.HashSet;
-import java.util.NoSuchElementException;
+import removewhenjava8.Optional;
 import java.util.Set;
 import models.Tag;
 import play.db.ebean.Transactional;
@@ -22,17 +22,21 @@ public class TagNameService {
 	}
 
 	public static Tag findOrCreateTagFromName(String tagName) {
-		try {
-			return TagService.instance().findByName(tagName);
-		} catch (NoSuchElementException ex) {
+		Optional<Tag> tag = TagService.instance().findByName(tagName);
+		if (tag.isPresent()) {
+			return tag.get();
+		} else {
 			return TagService.instance().createNewTagFromName(tagName);
 		}
 	}
 
-	public static Set<Tag> findTagsByName(Iterable<String> tagNames) throws NoSuchElementException {
+	public static Set<Tag> findTagsByName(Iterable<String> tagNames) {
 		Set<Tag> tags = new HashSet<>();
 		for(String tagName : tagNames) {
-			tags.add(TagService.instance().findByName(tagName));
+			Optional<Tag> tag = TagService.instance().findByName(tagName);
+			if (tag.isPresent()) {
+				tags.add(tag.get());
+			}
 		}
 		return tags;
 	}

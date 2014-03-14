@@ -22,3 +22,7 @@ legend {
     padding-left: 0.5em;
     padding-right: 0.5em;
 }
+
+.bootstrap-tagsinput {
+    margin-bottom: 0px;
+}

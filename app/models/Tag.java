@@ -1,6 +1,5 @@
 package models;
 
-import java.util.Collection;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;

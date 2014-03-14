@@ -17,12 +17,12 @@ public class NoteServiceTest extends PlayIntegrationTest {
 
 	@Test
 	public void testReplaceTags() {
-		Note n = NoteService.instance().create("hej", Arrays.asList(TagService.createNewTagFromName("asd")));
+		Note n = NoteService.instance().create("hej", Arrays.asList(TagService.instance().createNewTagFromName("asd")));
 
 		List<Tag> tags = Arrays.asList(
-				TagService.createNewTagFromName("a"),
-				TagService.createNewTagFromName("b"),
-				TagService.createNewTagFromName("c")
+				TagService.instance().createNewTagFromName("a"),
+				TagService.instance().createNewTagFromName("b"),
+				TagService.instance().createNewTagFromName("c")
 		);
 		NoteService.instance().replaceTags(n, tags);
 		n = NoteService.instance().byId(n.id);

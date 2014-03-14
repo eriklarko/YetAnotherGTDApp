@@ -8,12 +8,13 @@ function FiltersView(options) {
         appendTo: $("<div></div>"),
         onFilterChanged: function (newFilter) {}
     };
-    self.options = $.extend(defaultOptions, options);
+    options = $.extend(defaultOptions, options);
+
     self.tr = $("<tr></tr>");
     self.populate = function () {
-        if (self.options.filters === "all") {
+        if (options.filters === "all") {
             getAllFilters(function (filters) {
-                self.options.filters = filters;
+                options.filters = filters;
                 render();
             });
         } else {
@@ -32,12 +33,12 @@ function FiltersView(options) {
         var table = $("<table></table>");
         table.append(self.tr);
 
-        self.options.appendTo.empty();
-        self.options.appendTo.append(table);
+        options.appendTo.empty();
+        options.appendTo.append(table);
     }
 
     function renderFilters(appendTo) {
-        $.each(self.options.filters, function(i, filter) {
+        $.each(options.filters, function(i, filter) {
             var view = buildFilterView(filter);
 
             var td = $("<td></td>");
@@ -68,7 +69,7 @@ function FiltersView(options) {
         var link = $("<a href='#'>" + filter.name + "</a>");
         link.addClass("filter");
         link.on("click", function () {
-           self.options.onFilterChanged(filter);
+           options.onFilterChanged(filter);
         });
         return link;
     }

@@ -3,9 +3,10 @@ package services;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.NoSuchElementException;
+import removewhenjava8.Optional;
 import java.util.Set;
 import javax.persistence.PersistenceException;
+import models.Note;
 import models.Tag;
 import play.db.ebean.Transactional;
 
@@ -29,14 +30,13 @@ public class TagService extends BaseService<Tag> {
 		return find().findSet();
 	}
 
-	public Tag findByName(String name) throws NoSuchElementException {
-		// TODO: Return optional.
+	public Optional<Tag> findByName(String name) {
 		try {
 			Tag found = find().ieq("name", name).findUnique();
 			if (found == null) {
-				throw new NoSuchElementException("No tag with name " + name + " found");
+				return Optional.empty();
 			} else {
-				return found;
+				return Optional.of(found);
 			}
 		} catch (PersistenceException ex) {
 			findAndRemoveDuplicates(name);
@@ -52,8 +52,13 @@ public class TagService extends BaseService<Tag> {
 			Tag keep = it.next();
 
 			while (it.hasNext()) {
-				// TODO: Move all note-tag-references to the keep tag instead.
 				Tag toDelete = it.next();
+				Iterable<Note> notes = NoteService.instance().findNotesWithTag(toDelete);
+				for (Note note : notes) {
+					NoteService.instance().addTag(note, keep);
+					NoteService.instance().removeTag(note, toDelete);
+				}
+
 				toDelete.delete();
 			}
 		}
@@ -94,7 +99,8 @@ public class TagService extends BaseService<Tag> {
 		return true;
 	}
 
-	public static Tag createNewTagFromName(String tagName) {
+	@Transactional
+	public Tag createNewTagFromName(String tagName) {
 		Tag tag = new Tag();
 		tag.owner = UserService.getCurrentUser();
 		tag.name = tagName;

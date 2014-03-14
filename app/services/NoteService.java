@@ -66,9 +66,7 @@ public class NoteService extends BaseService<Note> {
 	@Transactional
 	public void replaceTags(Note note, Collection<Tag> tags) {
 		note.tags.clear();
-		note.deleteManyToManyAssociations("tags");
 		note.tags.addAll(tags);
-		note.saveManyToManyAssociations("tags");
 		note.save();
 	}
 
@@ -76,14 +74,6 @@ public class NoteService extends BaseService<Note> {
 	public void addTag(Note note, Tag tag) {
 		note.tags.add(tag);
 		note.save();
-	}
-
-	public Set<Note> findNotesTaggedWith(Iterable<Tag> tags) {
-		Set<Note> notes = new TreeSet<>(new NotesIdComparator());
-		for (Tag tag : tags) {
-			notes.addAll(findNotesWithTag(tag));
-		}
-		return notes;
 	}
 
     public Set<Note> findNotesWithTag(Tag tag) {
