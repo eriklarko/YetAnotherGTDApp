@@ -83,4 +83,8 @@ public class NoteService extends BaseService<Note> {
     public Set<Note> findAllCurrentUsersNotes() {
 		return find().findSet();
 	}
+
+	public Set<Note> findNotesWithPayloadMatchingQuery(String query) {
+		return find().like("payload", query.toLowerCase()).findSet();
+	}
 }

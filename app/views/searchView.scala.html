@@ -1,0 +1,21 @@
+@(query: String, tags: Collection[Tag], notes: Collection[Note])
+
+@import helper._
+@import play.libs.Json
+
+@main {
+
+<div id="notes"></div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        var notes = @Html(Json.stringify(Json.toJson(notes)));
+        var notesView = new CardView();
+        notesView.showNotes(notes)
+
+        $("#notes").append(notesView.gui);
+    });
+</script>
+}

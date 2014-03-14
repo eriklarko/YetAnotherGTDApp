@@ -1,5 +1,6 @@
 package services;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -111,5 +112,9 @@ public class TagService extends BaseService<Tag> {
 	public void updateName(Tag tag, String newName) {
 		tag.name = newName;
 		tag.save();
+	}
+
+	public Set<Tag> findTagsWithNameMatchingQuery(String query) {
+		return find().like("name", query.toLowerCase()).findSet();
 	}
 }

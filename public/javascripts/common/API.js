@@ -128,6 +128,16 @@ function updateTagName(tagId, tagName, successCallback, errorCallback) {
     });
 }
 
+function searchPayloadsAndTagNames(query, successCallback) {
+    $.ajax({
+        url: "/search/payloadsAndTagNames/" + query,
+        type: "GET",
+        dataType: "json",
+        success: successCallback,
+        error: genericAjaxError
+    });
+}
+
 function genericAjaxError(xhr, status, error) {
     alert("ERROR\n" + xhr.responseText);
     console.log(xhr);

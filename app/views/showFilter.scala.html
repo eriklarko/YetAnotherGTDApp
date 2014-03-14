@@ -1,0 +1,20 @@
+@(filter: Filter)
+
+@import helper._
+@import play.libs.Json
+
+@main {
+
+<div id="filter"></div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        @if(filter != null) {
+            var preselectedFilter = @Html(Json.stringify(Json.toJson(filter)))
+            changeFilter(preselectedFilter);
+        }
+    });
+</script>
+}

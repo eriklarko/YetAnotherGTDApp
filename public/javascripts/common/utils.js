@@ -38,3 +38,7 @@ function setupTagsBox(jQueryObj, options) {
 function isNumber(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
 }
+
+function setUrl(url) {
+    window.history.pushState("hej", "Sometitle", url);
+}

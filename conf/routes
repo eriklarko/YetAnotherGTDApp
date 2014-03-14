@@ -3,9 +3,10 @@
 # ~~~~
 
 # Home page
-GET     /                                   controllers.Application.combined(filterId: Long ?= -1L)
+GET     /                                   controllers.Application.showFilter(filterId: Long ?= -1L)
+#ET     /search/:query                      controllers.Application.searchView(query: String)
+GET     /tag/:tagId                         controllers.Application.listNotesWithTag(tagId: Long)
 GET     /all                                controllers.Application.viewAllNotes()
-GET     /filter/view/:id                    controllers.Application.viewFilter(id: Long)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file                       controllers.Assets.at(path="/public", file)
@@ -33,7 +34,8 @@ DELETE  /filters/:id                        controllers.FilterController.delete(
 GET     /filters/:id/searchTree             controllers.FilterController.getSearchTree(id: Long)
 GET     /filters/:id/notes                  controllers.FilterController.listNotes(id: Long)
 
-
+## Search
+GET     /search/payloadsAndTagNames/:query  controllers.SearchController.findPayloadsAndTagNames(query: String)
 
 
 
