@@ -71,7 +71,7 @@ public class SearchTreeToJson {
         Map<String, Object> toReturn = new HashMap<>();
         toReturn.put("type", "ideq");
         toReturn.put("id", ideq.getTag().id);
-        toReturn.put("name", ideq.getTag().name);
+        toReturn.put("name", ideq.getTag().getName());
 
         return toReturn;
     }

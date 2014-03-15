@@ -1,6 +1,6 @@
 package services;
 
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -40,6 +40,7 @@ public class TagService extends BaseService<Tag> {
 				return Optional.of(found);
 			}
 		} catch (PersistenceException ex) {
+			System.out.println("There was a problem finding tag >" +name+ "<");
 			findAndRemoveDuplicates(name);
 
 			return findByName(name);
@@ -56,6 +57,8 @@ public class TagService extends BaseService<Tag> {
 				Tag toDelete = it.next();
 				Iterable<Note> notes = NoteService.instance().findNotesWithTag(toDelete);
 				for (Note note : notes) {
+					System.out.println("Note " + note.id + " has the tag to remove. " + Arrays.deepToString(note.tags.toArray()));
+
 					NoteService.instance().addTag(note, keep);
 					NoteService.instance().removeTag(note, toDelete);
 				}
@@ -68,7 +71,7 @@ public class TagService extends BaseService<Tag> {
 	public Set<String> getTagNames(Iterable<Tag> tags) {
 		Set<String> tagNames = new HashSet<>();
 		for (Tag tag : tags) {
-			tagNames.add(tag.name);
+			tagNames.add(tag.getName());
 		}
 
 		return tagNames;
@@ -85,7 +88,7 @@ public class TagService extends BaseService<Tag> {
 
 	private Tag findOrCreateTag(Tag tag) {
 		if (tag.id == null) {
-			return TagNameService.findOrCreateTagFromName(tag.name);
+			return TagNameService.findOrCreateTagFromName(tag.getName());
 		} else {
 			return byId(tag.id);
 		}
@@ -93,7 +96,7 @@ public class TagService extends BaseService<Tag> {
 
 	public boolean hasOnlyEmptyNames(Iterable<Tag> tags) {
 		for (Tag tag : tags) {
-			if (!(tag.name == null || tag.name.trim().isEmpty())) {
+			if (!(tag.getName() == null || tag.getName().trim().isEmpty())) {
 				return false;
 			}
 		}
@@ -104,14 +107,16 @@ public class TagService extends BaseService<Tag> {
 	public Tag createNewTagFromName(String tagName) {
 		Tag tag = new Tag();
 		tag.owner = UserService.getCurrentUser();
-		tag.name = tagName;
+		tag.setName(tagName);
 		tag.save();
 		return tag;
 	}
 
-	public void updateName(Tag tag, String newName) {
-		tag.name = newName;
+	public Tag updateName(Tag tag, String newName) {
+		tag.setName(newName);
 		tag.save();
+
+		return tag;
 	}
 
 	public Set<Tag> findTagsWithNameMatchingQuery(String query) {

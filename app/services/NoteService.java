@@ -3,11 +3,9 @@ package services;
 import java.util.Collection;
 import java.util.NoSuchElementException;
 import java.util.Set;
-import java.util.TreeSet;
 import models.Note;
 import models.Tag;
 import play.db.ebean.Transactional;
-import utils.NotesIdComparator;
 
 /**
  *
@@ -59,7 +57,7 @@ public class NoteService extends BaseService<Note> {
 		if (tagRemoved) {
 			note.save();
 		} else {
-			throw new NoSuchElementException("Unable to find tag " + tagToRemove.name + " in note " + note.id);
+			throw new NoSuchElementException("Unable to find tag " + tagToRemove.getName() + " in note " + note.id);
 		}
 	}
 
@@ -77,7 +75,7 @@ public class NoteService extends BaseService<Note> {
 	}
 
     public Set<Note> findNotesWithTag(Tag tag) {
-		return find().eq("tags.name", tag.name).findSet();
+		return find().eq("tags.id", tag.id).findSet();
 	}
 
     public Set<Note> findAllCurrentUsersNotes() {

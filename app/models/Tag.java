@@ -27,7 +27,15 @@ public class Tag extends Model {
     @Column
     @Lob
 	@NotEmpty
-	public String name;
+	String name;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name.trim();
+	}
 
 	@Override
 	public int hashCode() {
