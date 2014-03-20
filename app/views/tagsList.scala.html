@@ -1,0 +1,26 @@
+@main {
+
+<div id="tags"></div>
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        findAllTagsWithNumberOfNotes(showTags);
+    });
+
+    function showTags(tags) {
+        $.each(tags, function(i, tag) {
+            console.log(tag);
+            var wrapper = $("<div></div>");
+
+            var tagName = $("<a href='/tag/" +tag.id+ "'></a>");
+            tagName.append(tag.name);
+
+            wrapper.append(tagName);
+            wrapper.append(" (" + tag.numNotes + ")");
+
+            $("#tags").append(wrapper);
+        });
+    }
+</script>
+}

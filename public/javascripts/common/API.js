@@ -138,6 +138,16 @@ function searchPayloadsAndTagNames(query, successCallback) {
     });
 }
 
+function findAllTagsWithNumberOfNotes(successCallback) {
+    $.ajax({
+        url: "/tags/withNumNotes",
+        type: "GET",
+        dataType: "json",
+        success: successCallback,
+        error: genericAjaxError
+    });
+}
+
 function genericAjaxError(xhr, status, error) {
     alert("ERROR\n" + xhr.responseText);
     console.log(xhr);

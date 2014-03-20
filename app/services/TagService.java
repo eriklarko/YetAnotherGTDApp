@@ -63,6 +63,9 @@ public class TagService extends BaseService<Tag> {
 					NoteService.instance().removeTag(note, toDelete);
 				}
 
+				// TODO Find all filters referencing the tag to remove and update them
+				//FilterService.instance().
+
 				toDelete.delete();
 			}
 		}
@@ -120,6 +123,6 @@ public class TagService extends BaseService<Tag> {
 	}
 
 	public Set<Tag> findTagsWithNameMatchingQuery(String query) {
-		return find().like("name", query.toLowerCase()).findSet();
+		return find().ilike("name", query).findSet();
 	}
 }

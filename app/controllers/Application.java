@@ -9,12 +9,21 @@ import services.NoteService;
 import services.TagService;
 import views.html.notesList;
 import views.html.showFilter;
+import views.html.tagsList;
 
 public class Application extends Controller {
+
+	public static Result home() {
+		return ok(showFilter.render(null));
+	}
 
 	public static Result showFilter(Long filterId) {
 		Filter filter = FilterService.instance().byId(filterId);
 		return ok(showFilter.render(filter));
+	}
+
+	public static Result listTags() {
+		return ok(tagsList.render());
 	}
 
 	public static Result listNotesWithTag(Long tagId) {

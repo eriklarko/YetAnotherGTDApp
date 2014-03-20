@@ -60,22 +60,13 @@
         <hr/>
         <div>
             <div id="hamburger">
-                <input id="searchQuery" type="text" placeholder="Search notes" /> <button id="searchButton">?</button>
+                <input id="searchQuery" type="text" placeholder="Search notes and tags" /> <button id="searchButton">?</button>
                 <br/>
                 <br/>
-                All Filters:
-                <ul>
-                    <li>a</li>
-                    <li>a</li>
-                    <li>a</li>
-                    <li>a</li>
-                    <li>a</li>
-                    <li>a</li>
-                    <li>a</li>
-                </ul>
-
+                All tags:
+                <ul id="tagsList"></ul>
             </div>
-            <div id="content" style="float: left; width: 100%; margin-top: 1em">@content</div>
+            <div id="content" style="float: left; width: 100%; margin-top: 1em; margin-left: 2em">@content</div>
         </div>
 
 
@@ -83,7 +74,10 @@
             var filtersView = new FiltersView({
                 filters: "all",
                 appendTo: $("#filters"),
-                onFilterChanged: changeFilter
+                onFilterChanged: function (filter) {
+                    setUrl("?filterId=" + filter.id);
+                    filterView.setFilter(filter);
+                }
             });
 
             var filterView = new FilterView({
@@ -107,21 +101,30 @@
                 });
 
                 var btn = $("<button>+</button>");
-                var newNoteView = new NewNoteView();
-                var popup = new Popup(newNoteView, btn, "right");
+                Popup(new NewNoteView(), btn, "right");
                 $("#newNote").append(btn);
 
                 filtersView.populate();
+
+                findAllTagsWithNumberOfNotes(populateTagsList);
             });
 
-            function changeFilter(filter) {
-                setUrl("?filterId=" + filter.id);
-                filterView.setFilter(filter);
+            function populateTagsList(tags) {
+                $.each(tags, function(i, tag) {
+                    var wrapper = $("<div></div>");
+
+                    var tagName = $("<a href='/tag/" +tag.id+ "'></a>");
+                    tagName.append(tag.name);
+
+                    wrapper.append(tagName);
+                    wrapper.append(" (" + tag.numNotes + ")");
+
+                    $("#tagsList").append(wrapper);
+                });
             }
 
             function showSearchResults(query, matches) {
                 //setUrl("/search/"+query);
-                console.log(matches);
 
                 var tagNames = $("<div></div>");
                 tagNames.append("<h3>" + matches.tags.length + " tag(s) matched your query</h3>");
