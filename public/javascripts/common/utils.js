@@ -42,3 +42,7 @@ function isNumber(n) {
 function setUrl(url) {
     window.history.pushState("hej", "Sometitle", url);
 }
+
+function moveTo(url) {
+    window.location.pathname = url;
+}

@@ -1,0 +1,23 @@
+@(tag: Tag)
+
+@import helper._
+@import play.libs.Json
+@import services.NoteService
+
+@main {
+
+<h3>Showing tag @tag.getName()</h3>
+<div id="notes"></div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        var notes = @Html(Json.stringify(Json.toJson(NoteService.instance().findNotesWithTag(tag))));
+        var notesView = new CardView();
+        notesView.showNotes(notes)
+
+        $("#notes").append(notesView.gui);
+    });
+</script>
+}

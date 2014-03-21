@@ -1,15 +1,19 @@
 package controllers;
 
+import java.util.Collection;
 import models.Filter;
+import models.Note;
 import models.Tag;
 import play.mvc.Controller;
 import play.mvc.Result;
 import services.FilterService;
 import services.NoteService;
 import services.TagService;
-import views.html.notesList;
+import views.html.searchView;
 import views.html.showFilter;
 import views.html.tagsList;
+import views.html.tagList;
+import views.html.notesList;
 
 public class Application extends Controller {
 
@@ -28,7 +32,7 @@ public class Application extends Controller {
 
 	public static Result listNotesWithTag(Long tagId) {
 		Tag tag = TagService.instance().byId(tagId);
-		return ok(notesList.render(NoteService.instance().findNotesWithTag(tag)));
+		return ok(tagList.render(tag));
 	}
 
 	public static Result viewAllNotes() {
@@ -36,6 +40,10 @@ public class Application extends Controller {
 	}
 
 	public static Result searchView(String query) {
-		return ok();
+		query = "%" + query + "%";
+		Collection<Note> notes = NoteService.instance().findNotesWithPayloadMatchingQuery(query);
+		Collection<Tag> tags = TagService.instance().findTagsWithNameMatchingQuery(query);
+
+		return ok(searchView.render(query, tags, notes));
 	}
 }

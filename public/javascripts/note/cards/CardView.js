@@ -4,9 +4,9 @@ function CardView() {
     this.gui = $("<div class='cards'></div>");
 
     this.gui.append(notesHolder);
-    this.gui.append(new NewNoteView(function(newNote) {
+    /*this.gui.append(new NewNoteView(function(newNote) {
         notesHolder.append(buildCard(newNote));
-    }));
+    }));*/
 
     this.showNotes = function (notes) {
         notesHolder.empty();
@@ -23,6 +23,9 @@ function CardView() {
             });
         });
         card.attr("id", "note-" + note.id);
+        card.css("width", "15em");
+        card.css("float", "left");
+        card.css("margin", "0.5em");
 
         var tagsRow = card.children(".tagsRow");
         setupTagsBox(tagsRow, {

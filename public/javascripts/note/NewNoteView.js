@@ -25,6 +25,7 @@ function NewNoteView(newNoteCallback) {
     wrapper.append(tags);
     wrapper.append("<div class='line-separator'></div>");
     wrapper.append(addBtn);
+    wrapper.append("<div style=\"clear: both; height: 0.5em\"></div>");
 
     setupTagsBox(tags);
     return wrapper;

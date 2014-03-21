@@ -8,6 +8,7 @@ GET     /filter/:filterId                   controllers.Application.showFilter(f
 GET     /tags                               controllers.Application.listTags()
 GET     /tag/:tagId                         controllers.Application.listNotesWithTag(tagId: Long)
 GET     /all                                controllers.Application.viewAllNotes()
+GET     /search/:query                      controllers.Application.searchView(query: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file                       controllers.Assets.at(path="/public", file)
