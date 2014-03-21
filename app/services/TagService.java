@@ -125,4 +125,8 @@ public class TagService extends BaseService<Tag> {
 	public Set<Tag> findTagsWithNameMatchingQuery(String query) {
 		return find().ilike("name", query).findSet();
 	}
+
+	public Tag getArchiveTag() {
+		return TagNameService.findOrCreateTagFromName("archive");
+	}
 }

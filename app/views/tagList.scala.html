@@ -1,4 +1,4 @@
-@(tag: Tag)
+@(tag: Tag, notes: Collection[Note])
 
 @import helper._
 @import play.libs.Json
@@ -13,7 +13,7 @@
 <script type="text/javascript">
 
     $(document).ready(function() {
-        var notes = @Html(Json.stringify(Json.toJson(NoteService.instance().findNotesWithTag(tag))));
+        var notes = @Html(Json.stringify(Json.toJson(notes)));
         var notesView = new CardView();
         notesView.showNotes(notes)
 

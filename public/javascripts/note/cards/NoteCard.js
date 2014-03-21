@@ -9,7 +9,7 @@ function NoteCard(note, removeNoteListener) {
     mainDiv.append(payload);
     mainDiv.append(tags);
 
-    mainDiv.append("<div style='clear: both'></div>");
+    mainDiv.append("<div style='clear: both; height: 0.5em'></div>");
     return mainDiv;
 
     function Payload(payload) {

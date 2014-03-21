@@ -9,7 +9,10 @@ function NewNoteView(newNoteCallback) {
 
         addNote(payload, tags, function (newNote) {
             clearInput();
-            newNoteCallback(newNote);
+
+            if (newNoteCallback !== undefined) {
+                newNoteCallback(newNote);
+            }
         });
     });
 

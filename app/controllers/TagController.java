@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.util.Arrays;
 import java.util.Set;
 import models.Tag;
 import play.data.Form;
@@ -15,7 +16,11 @@ import static play.mvc.Controller.request;
 import play.mvc.Result;
 import static play.mvc.Results.badRequest;
 import static play.mvc.Results.ok;
-import services.NoteService;
+import removewhenjava8.Optional;
+import search.And;
+import search.IdEq;
+import search.Node;
+import search.Not;
 import services.TagService;
 
 /**
@@ -29,11 +34,22 @@ public class TagController extends Controller {
 	}
 
 	public static Result listWithNumberOfNotes() {
+		boolean removeArchived = true;
+		
+		Tag archiveTag = TagService.instance().getArchiveTag();
+
 		ArrayNode toReturn = new ArrayNode(JsonNodeFactory.instance);
 		Set<Tag> allTags = TagService.instance().getAllCurrentUsersTags();
 		for (Tag tag : allTags) {
+			Node searchTree = new IdEq(tag);
+			if (tag.id != archiveTag.id && removeArchived) {
+				searchTree = new And(Arrays.asList(new Node[]{
+					new Not(new IdEq(archiveTag)),
+					searchTree
+				}));
+			}
 			ObjectNode tagJson = (ObjectNode) Json.toJson(tag);
-			tagJson.put("numNotes", Json.toJson(NoteService.instance().findNotesWithTag(tag)).size());
+			tagJson.put("numNotes", Json.toJson(searchTree.execute().size()));
 
 			toReturn.add(tagJson);
 		}

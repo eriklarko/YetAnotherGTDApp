@@ -22,10 +22,27 @@ function FilterView(options) {
             header.append("Filter " + filter.name);
             wrapper.append(header);
 
+            var searchTreeView = new FilterSearchTreeView({
+                onAddTag: function (tag) {
+                    updateFilter(filter.id, filter.name, searchTreeView.getSearchTree(), function (updatedFilter) {
+                        var tags = searchTreeView.findTagsInSearchTree(updatedFilter.searchTree);
+                        $.each(tags, function(i, newTag) {
+                          if (newTag.name === tag.name) {
+                              tag.id = newTag.id;
+                          }
+                        });
+                        loadObjectsInFilter(updatedFilter.id, options.view.showNotes);
+                    });
+                },
+                onRemoveTag: function (tag) {
+                    updateFilter(filter.id, filter.name, searchTreeView.getSearchTree(), function (updatedFilter) {
+                        loadObjectsInFilter(updatedFilter.id, options.view.showNotes);
+                    });
+                },
+                searchTree: filter.searchTree
+            });
             wrapper.append("shows tags matching");
-            wrapper.append(new FilterSearchTreeView(filter, function (updatedFilter) {
-                loadObjectsInFilter(updatedFilter.id, options.view.showNotes);
-            }));
+            wrapper.append(searchTreeView.gui);
 
             return wrapper;
         }

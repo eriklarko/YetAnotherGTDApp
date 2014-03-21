@@ -1,34 +1,14 @@
-function FilterSearchTreeView(filter, onTreeChanged) {
-    var tagsInput = $("<select multiple placeholder='Tags'></select>");
-    var tags = findTagsInSearchTree(filter.searchTree);
+function FilterSearchTreeView(options) {
+    var self = this;
+    var defaultOptions = {
+        onAddTag: undefined,
+        onRemoveTag: undefined,
+        onTreeChanged: undefined,
+        searchTree: {}
+    };
+    options = $.extend(defaultOptions, options);
 
-    var searchTree = $("<div></div>");
-    searchTree.css("width", "17em");
-    searchTree.append(tagsInput);
-
-    setupTagsBox(tagsInput, {
-       onAddTag: function (tag) {
-
-            updateFilter(filter.id, filter.name, getSearchTree(getTagsFromTagsInput(tagsInput)), function (updatedFilter) {
-                 var tags = findTagsInSearchTree(updatedFilter.searchTree);
-                 $.each(tags, function(i, newTag) {
-                   if (newTag.name === tag.name) {
-                       tag.id = newTag.id;
-                   }
-                });
-                onTreeChanged(updatedFilter);
-            });
-        },
-        onRemoveTag: function (tag) {
-            updateFilter(filter.id, filter.name, getSearchTree(getTagsFromTagsInput(tagsInput)), function (updatedFilter) {
-                onTreeChanged(updatedFilter);
-            });
-        }
-    });
-    tagsInput.tagsinput("addAll", tags);
-    return searchTree;
-
-    function findTagsInSearchTree(searchTree, foundTags) {
+    this.findTagsInSearchTree = function (searchTree, foundTags) {
         if (foundTags === undefined) {
             var foundTags = [];
         }
@@ -41,21 +21,22 @@ function FilterSearchTreeView(filter, onTreeChanged) {
                 });
             }
         } else if (searchTree.child !== undefined) {
-            return findTagsInSearchTree(searchTree.child, foundTags);
+            return self.findTagsInSearchTree(searchTree.child, foundTags);
         } else if (searchTree.children !== undefined) {
             $.each(searchTree.children, function(i, child) {
-                findTagsInSearchTree(child, foundTags);
+                self.findTagsInSearchTree(child, foundTags);
             });
         }
 
         return foundTags;
-    }
+    };
 
-    function getSearchTree(tags) {
+    this.getSearchTree = function () {
         var tagsOr = {
             type: "or",
             children: []
         };
+        var tags = getTags();
         $.each(tags, function (i, tag) {
            tagsOr.children.push({
               type: "ideq",
@@ -64,21 +45,25 @@ function FilterSearchTreeView(filter, onTreeChanged) {
            });
         });
 
-        return {
-            type: "and",
-            children: [{
-                type: "not",
-                child: {
-                    type: "ideq",
-                    name: "archive"
-                }
-            }, tagsOr]
-        };
-    }
+        if (false && tags.contains(archive)) {
+            return tagsOr;
+        } else {
+            return {
+                type: "and",
+                children: [{
+                    type: "not",
+                    child: {
+                        type: "ideq",
+                        name: "archive"
+                    }
+                }, tagsOr]
+            };
+        }
+    };
 
-    function getTagsFromTagsInput(input) {
+    function getTags () {
         var tags = [];
-        $.each(input.tagsinput("items"), function (i, tagWithIffyId) {
+        $.each(tagsInput.tagsinput("items"), function (i, tagWithIffyId) {
             if (!isNumber(tagWithIffyId.id)) {
                 var newTag = {
                     name: tagWithIffyId.name
@@ -90,5 +75,18 @@ function FilterSearchTreeView(filter, onTreeChanged) {
         });
         return tags;
     }
+
+    var tagsInput = $("<select multiple placeholder='Tags'></select>");
+
+    this.gui = $("<div></div>");
+    this.gui.css("width", "17em");
+    this.gui.append(tagsInput);
+
+    setupTagsBox(tagsInput, {
+        onAddTag: options.onAddTag,
+        onRemoveTag: options.onRemoveTag
+    });
+    var tags = self.findTagsInSearchTree(options.searchTree);
+    tagsInput.tagsinput("addAll", tags);
 }
 

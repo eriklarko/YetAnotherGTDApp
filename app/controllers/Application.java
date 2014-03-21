@@ -1,11 +1,17 @@
 package controllers;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import models.Filter;
 import models.Note;
 import models.Tag;
 import play.mvc.Controller;
 import play.mvc.Result;
+import search.And;
+import search.IdEq;
+import search.Node;
+import search.Not;
 import services.FilterService;
 import services.NoteService;
 import services.TagService;
@@ -32,7 +38,20 @@ public class Application extends Controller {
 
 	public static Result listNotesWithTag(Long tagId) {
 		Tag tag = TagService.instance().byId(tagId);
-		return ok(tagList.render(tag));
+		Tag archiveTag = TagService.instance().getArchiveTag();
+
+		Collection<Note> notes;
+		if (tag.id == archiveTag.id) {
+			notes = NoteService.instance().findNotesWithTag(tag);
+		} else {
+			Node searchTree = new And(Arrays.asList(new Node[]{
+				new Not(new IdEq(archiveTag)),
+				new IdEq(tag)
+			}));
+			notes = searchTree.execute();
+		}
+
+		return ok(tagList.render(tag, notes));
 	}
 
 	public static Result viewAllNotes() {
