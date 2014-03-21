@@ -54,7 +54,7 @@
     <body>
         <table style="width: 100%; margin: 0.5em;">
             <tr>
-                <td style="border-right: 0.1em solid black; padding-right: 0.5em">
+                <td style="border-right: 0.1em solid black; padding-right: 0.5em" valign="top">
                     <div id="newNote"></div>
                     <br/>
                     <div style="white-space: nowrap">
@@ -93,7 +93,7 @@
 
                 $("#searchButton").on("click", function () {
                     var query = $("#searchQuery").val();
-                    moveTo("search/payloadsAndTagNames/" + query);
+                    moveTo("search/" + query);
                 });
 
                 $("#newNote").append(new NewNoteView());
@@ -107,8 +107,11 @@
                 $.each(tags, function(i, tag) {
                     var wrapper = $("<div></div>");
 
-                    var tagName = $("<a href='/tag/" +tag.id+ "'></a>");
+                    var tagName = $("<a href='#'></a>");
                     tagName.append(tag.name);
+                    tagName.on("click", function () {
+                        moveTo("/tag/" + tag.id);
+                    });
 
                     wrapper.append(tagName);
                     wrapper.append(" (" + tag.numNotes + ")");
