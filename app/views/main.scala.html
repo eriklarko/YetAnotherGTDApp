@@ -79,11 +79,16 @@
 
 
         <script type="text/javascript">
+            var filterView = new FilterView({
+                appendTo: $("#content"),
+                //view: new ListView()
+            });
             var filtersView = new FiltersView({
                 filters: "all",
                 appendTo: $("#filters"),
                 onFilterChanged: function (filter) {
-                    moveTo("/filter/" + filter.id);
+                    setUrl("/filter/" + filter.id);
+                    filterView.setFilter(filter);
                 }
             });
 
@@ -93,7 +98,13 @@
 
                 $("#searchButton").on("click", function () {
                     var query = $("#searchQuery").val();
-                    moveTo("search/" + query);
+
+                    searchPayloadsAndTagNames(query, function (matches){
+                        setUrl("/search/" + query);
+                        var searchView = new SearchView(query, matches);
+                        $("#content").empty();
+                        $("#content").append(searchView);
+                    });
                 });
 
                 $("#newNote").append(new NewNoteView());

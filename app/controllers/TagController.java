@@ -16,7 +16,6 @@ import static play.mvc.Controller.request;
 import play.mvc.Result;
 import static play.mvc.Results.badRequest;
 import static play.mvc.Results.ok;
-import removewhenjava8.Optional;
 import search.And;
 import search.IdEq;
 import search.Node;
@@ -35,7 +34,7 @@ public class TagController extends Controller {
 
 	public static Result listWithNumberOfNotes() {
 		boolean removeArchived = true;
-		
+
 		Tag archiveTag = TagService.instance().getArchiveTag();
 
 		ArrayNode toReturn = new ArrayNode(JsonNodeFactory.instance);
