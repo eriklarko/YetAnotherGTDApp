@@ -50,6 +50,7 @@
         <script src="@routes.Assets.at("javascripts/filter/FilterView.js")" type="text/javascript"></script>
 
         <script src="@routes.Assets.at("javascripts/SearchView.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.at("javascripts/TagList.js")" type="text/javascript"></script>
     </head>
     <body>
         <table style="width: 100%; margin: 0.5em;">
@@ -63,7 +64,7 @@
                     <br/>
                     <div>
                         All tags:
-                        <ul id="tagsList"></ul>
+                        <div id="tagsList"></div>
                     </div>
                 </td>
                 <td style="width: 100%" valign="top">
@@ -115,20 +116,8 @@
             });
 
             function populateTagsList(tags) {
-                $.each(tags, function(i, tag) {
-                    var wrapper = $("<div></div>");
-
-                    var tagName = $("<a href='#'></a>");
-                    tagName.append(tag.name);
-                    tagName.on("click", function () {
-                        moveTo("/tag/" + tag.id);
-                    });
-
-                    wrapper.append(tagName);
-                    wrapper.append(" (" + tag.numNotes + ")");
-
-                    $("#tagsList").append(wrapper);
-                });
+                $("#tagsList").empty();
+                $("#tagsList").append(new TagList(tags));
             }
         </script>
     </body>
