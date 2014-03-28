@@ -64,8 +64,11 @@ public class NoteService extends BaseService<Note> {
 	@Transactional
 	public void replaceTags(Note note, Collection<Tag> tags) {
 		note.tags.clear();
+		note.deleteManyToManyAssociations("tags");
+
 		note.tags.addAll(tags);
 		note.save();
+		note.saveManyToManyAssociations("tags");
 	}
 
 	@Transactional
