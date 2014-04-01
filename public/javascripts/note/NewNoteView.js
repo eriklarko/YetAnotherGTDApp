@@ -1,5 +1,5 @@
 function NewNoteView(newNoteCallback) {
-    var newPayload = new Payload();
+    var newPayload = new NewPayload();
 
     var addBtn = $("<button>Add</button>");
     addBtn.css("float", "right");

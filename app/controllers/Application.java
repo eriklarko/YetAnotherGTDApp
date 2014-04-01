@@ -37,6 +37,10 @@ public class Application extends Controller {
 
 	public static Result listNotesWithTag(Long tagId) {
 		Tag tag = TagService.instance().byId(tagId);
+		if (tag == null) {
+			return badRequest("Unknown tag");
+		}
+
 		Tag archiveTag = TagService.instance().getArchiveTag();
 
 		Collection<Note> notes;
