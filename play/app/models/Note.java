@@ -30,7 +30,15 @@ public class Note extends Model {
 
     @Lob
     @NotNull
-    public String payload;
+    private String payload;
+
+    public String getPayload() {
+        return payload;
+    }
+
+    public void setPayload(String payload) {
+        this.payload = payload;
+    }
 
 	@Override
 	public int hashCode() {

@@ -5,9 +5,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
+import models.Note;
 import models.Tag;
 import play.data.Form;
 import play.libs.Json;
@@ -21,7 +24,9 @@ import search.And;
 import search.IdEq;
 import search.Node;
 import search.Not;
+import services.NoteService;
 import services.TagService;
+import views.html.tagList;
 
 /**
  *
@@ -94,5 +99,32 @@ public class TagController extends Controller {
 
 		TagService.instance().updateName(tag, newName);
 		return ok(Json.toJson(tag));
+	}
+
+    public static Result listNotesWithTag(Long tagId) {
+		Tag tag = TagService.instance().byId(tagId);
+		if (tag == null) {
+			return badRequest("Unknown tag");
+		}
+
+		Tag archiveTag = TagService.instance().getArchiveTag();
+
+		Collection<Note> notes;
+		if (Objects.equals(tag.id, archiveTag.id)) {
+			notes = NoteService.instance().findNotesWithTag(tag);
+		} else {
+            Collection<Node> children = new ArrayList<>();
+			Node searchTree = new And(null, children);
+
+            Not notArchive = new Not(searchTree);
+            notArchive.setChild(new IdEq(notArchive, archiveTag));
+
+            children.add(notArchive);
+            children.add(new IdEq(searchTree, tag));
+
+			notes = searchTree.execute();
+		}
+
+		return ok(tagList.render(tag, notes));
 	}
 }

@@ -5,8 +5,6 @@
 # Home page
 GET     /                                   controllers.Application.home()
 GET     /filter/:filterId                   controllers.Application.showFilter(filterId: Long)
-GET     /tags                               controllers.Application.listTags()
-GET     /tag/:tagId                         controllers.Application.listNotesWithTag(tagId: Long)
 GET     /all                                controllers.Application.viewAllNotes()
 GET     /search/:query                      controllers.Application.searchView(query: String)
 
@@ -15,6 +13,7 @@ GET     /assets/*file                       controllers.Assets.at(path="/public"
 
 ## Tags
 GET     /tags                               controllers.TagController.list()
+GET     /tag/:tagId                         controllers.TagController.listNotesWithTag(tagId: Long)
 GET     /tags/withNumNotes                  controllers.TagController.listWithNumberOfNotes()
 POST    /tags                               controllers.TagController.save()
 PUT     /tags/:id                           controllers.TagController.updateName(id: Long)

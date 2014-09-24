@@ -27,7 +27,7 @@ public class NoteService extends BaseService<Note> {
 	public Note create(String payload, Iterable<Tag> tags) {
 		Note toCreate = new Note();
 		toCreate.owner = UserService.getCurrentUser();
-		toCreate.payload = payload;
+		toCreate.setPayload(payload);
 		toCreate.tags = TagService.instance().findOrCreateTags(tags);
 		toCreate.save();
 		toCreate.saveManyToManyAssociations("tags");
@@ -36,7 +36,7 @@ public class NoteService extends BaseService<Note> {
 
 	@Transactional
 	public void updatePayload(Note note, String payload) {
-		note.payload = payload;
+		note.setPayload(payload);
 		note.save();
 	}
 
