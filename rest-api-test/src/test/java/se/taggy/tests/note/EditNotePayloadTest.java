@@ -1,4 +1,4 @@
-package se.taggy.tests;
+package se.taggy.tests.note;
 
 /**
  *
