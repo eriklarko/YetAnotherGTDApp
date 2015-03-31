@@ -1,13 +1,18 @@
 package se.taggy.tests.util;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.function.BiConsumer;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.*;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLContextBuilder;
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
@@ -17,11 +22,15 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.junit.Assert;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.function.BiConsumer;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
-public abstract class TestBase {
+public class TestUtil {
+
+	private TestUtil() {
+	}
 
     public static enum Method {
         GET, POST, UPDATE, DELETE;
@@ -30,11 +39,11 @@ public abstract class TestBase {
     public static final String ENDPOINT = "https://176.58.98.122:8080";
     public static final ObjectMapper mapper = new ObjectMapper();
 
-    public void sendRequest(String resource, Method method, BiConsumer<HttpResponse, JsonNode> cb) {
+    public static void sendRequest(String resource, Method method, BiConsumer<HttpResponse, JsonNode> cb) {
         sendRequest(resource, null, method, cb);
     }
 
-    public void sendRequest(String resource, JsonNode json, Method method, BiConsumer<HttpResponse, JsonNode> cb) {
+    public static void sendRequest(String resource, JsonNode json, Method method, BiConsumer<HttpResponse, JsonNode> cb) {
         // TODO: Make sure we don't get ENDPOINT//resource or ENDPOINTresource. Exactly one slash
         String uri = ENDPOINT + resource;
         HttpUriRequest request;
@@ -65,7 +74,10 @@ public abstract class TestBase {
         sendRequest(request, cb);
     }
 
-    public void sendRequest(HttpUriRequest request, BiConsumer<HttpResponse, JsonNode> cb) {
+	/**
+	 * BLOCKING
+	 */
+    public static void sendRequest(HttpUriRequest request, BiConsumer<HttpResponse, JsonNode> cb) {
         try (CloseableHttpClient client = getHttpClient()) {
             try (CloseableHttpResponse response = client.execute(request)) {
                 HttpEntity entity = response.getEntity();
@@ -88,7 +100,7 @@ public abstract class TestBase {
         }
     }
 
-    public CloseableHttpClient getHttpClient() {
+    public static CloseableHttpClient getHttpClient() {
         try {
             SSLContextBuilder builder = new SSLContextBuilder();
             builder.loadTrustMaterial(null, new TrustSelfSignedStrategy());
@@ -100,7 +112,7 @@ public abstract class TestBase {
         }
     }
 
-    public void attachJson(HttpEntityEnclosingRequest request, JsonNode json) {
+    public static void attachJson(HttpEntityEnclosingRequest request, JsonNode json) {
         try {
             StringEntity input = new StringEntity(json.toString());
             input.setContentType("application/json");
@@ -110,11 +122,19 @@ public abstract class TestBase {
         }
     }
 
-    public void put(String resource, JsonNode json, BiConsumer<HttpResponse, JsonNode> cb) {
+	public static void get(String resource, JsonNode json, BiConsumer<HttpResponse, JsonNode> cb) {
+        sendRequest(resource, json, Method.GET, cb);
+    }
+
+    public static void put(String resource, JsonNode json, BiConsumer<HttpResponse, JsonNode> cb) {
         sendRequest(resource, json, Method.UPDATE, cb);
     }
 
-    public void post(String resource, ObjectNode json, BiConsumer<HttpResponse, JsonNode> cb) {
+    public static void post(String resource, ObjectNode json, BiConsumer<HttpResponse, JsonNode> cb) {
         sendRequest(resource, json, Method.POST, cb);
+    }
+
+	public static void delete(String resource, BiConsumer<HttpResponse, JsonNode> cb) {
+        sendRequest(resource, null, Method.DELETE, cb);
     }
 }

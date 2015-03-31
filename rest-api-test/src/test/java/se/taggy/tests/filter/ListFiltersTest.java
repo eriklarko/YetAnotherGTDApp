@@ -1,23 +1,42 @@
 package se.taggy.tests.filter;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import org.junit.Test;
-import se.taggy.tests.util.TestBase;
+import java.io.IOException;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.core.IsEqual.equalTo;
+import org.junit.Test;
 
-public class ListFiltersTest extends TestBase {
+import se.taggy.tests.util.TOrJson;
+import se.taggy.tests.util.TestUtil;
+
+import com.fasterxml.jackson.databind.JsonNode;
+
+public class ListFiltersTest {
+
+	public static TOrJson<Filter> loadFilter(int filterId) {
+		final AtomicReference<TOrJson> note = new AtomicReference<>();
+        TestUtil.sendRequest("/filters/" + filterId, TestUtil.Method.GET, (entity, responseAsJson) -> {
+			try {
+				Filter f = TestUtil.mapper.readValue(responseAsJson.toString(), Filter.class);
+				note.set(new TOrJson<>(f));
+			} catch (IOException ex) {
+				note.set(new TOrJson<>(responseAsJson));
+			}
+        });
+
+		return note.get();
+    }
 
     @Test
     public void testListAllFilters() {
-        Filter filter1 = AddFilterTest.unsafeAddFilter(this);
-        Filter filter2 = AddFilterTest.unsafeAddFilter(this);
-        Filter filter3 = AddFilterTest.unsafeAddFilter(this);
+        Filter filter1 = AddFilterTest.unsafeAddFilter();
+        Filter filter2 = AddFilterTest.unsafeAddFilter();
+        Filter filter3 = AddFilterTest.unsafeAddFilter();
 
-        sendRequest("/filters", Method.GET, (entity, body) -> {
+        TestUtil.sendRequest("/filters", TestUtil.Method.GET, (entity, body) -> {
 
             assertThat("Expected array", body.isArray());
             assertThat("Expected non-empty array", body.size(), is(greaterThan(0)));
@@ -29,16 +48,17 @@ public class ListFiltersTest extends TestBase {
             }
         });
 
-        RemoveFilterTest.removeFilter(this, filter1.getId());
-        RemoveFilterTest.removeFilter(this, filter2.getId());
-        RemoveFilterTest.removeFilter(this, filter3.getId());
+        RemoveFilterTest.removeFilter(filter1.getId());
+        RemoveFilterTest.removeFilter(filter2.getId());
+        RemoveFilterTest.removeFilter(filter3.getId());
     }
 
     @Test
     public void testGetSpecificFilter() {
-        AddFilterTest.addFilterAndThenRemoveIt(this, (addedFilter) -> {
+        AddFilterTest.addFilterAndThenRemoveIt((addedFilter) -> {
+			int filterId = addedFilter.getId();
 
-            sendRequest("/filters/" + addedFilter.getId(), Method.GET, (entity, body) -> {
+            TestUtil.sendRequest("/filters/" + filterId, TestUtil.Method.GET, (entity, body) -> {
                 System.out.println(body);
                 assertThat("Expected object", body.isObject());
                 assertThat("Expected non-empty object", body.size(), is(4));

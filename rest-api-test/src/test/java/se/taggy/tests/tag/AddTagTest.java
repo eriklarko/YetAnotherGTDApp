@@ -1,9 +1,5 @@
 package se.taggy.tests.tag;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.junit.Test;
-import se.taggy.tests.util.TestBase;
-
 import java.io.IOException;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -12,18 +8,22 @@ import java.util.function.Consumer;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static se.taggy.tests.tag.RemoveTagTest.removeTag;
+import org.junit.Test;
 
-public class AddTagTest extends TestBase {
+import se.taggy.tests.util.TestUtil;
 
-    public static Tag unsafeAddTag(TestBase base, String name) {
-        ObjectNode json = mapper.createObjectNode();
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+public class AddTagTest {
+
+    public static Tag unsafeAddTag(String name) {
+        ObjectNode json = TestUtil.mapper.createObjectNode();
         json.put("name", name);
 
         final AtomicReference<Tag> tag = new AtomicReference<>();
-        base.post("/tags", json, (response, responseAsJson) -> {
+        TestUtil.post("/tags", json, (response, responseAsJson) -> {
             try {
-                Tag tag1 = mapper.readValue(responseAsJson.toString(), Tag.class);
+                Tag tag1 = TestUtil.mapper.readValue(responseAsJson.toString(), Tag.class);
                 tag.set(tag1);
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -33,29 +33,29 @@ public class AddTagTest extends TestBase {
         return tag.get();
     }
 
-    public static void createTagAndThenRemoveIt(TestBase base, Consumer<Tag> cb) {
-        createTagAndThenRemoveIt(base, UUID.randomUUID().toString(), cb);
+    public static void createTagAndThenRemoveIt(Consumer<Tag> cb) {
+        createTagAndThenRemoveIt(UUID.randomUUID().toString(), cb);
     }
 
-    public static void createTagAndThenRemoveIt(TestBase base, String tagName, Consumer<Tag> cb) {
-        Tag tag = unsafeAddTag(base, tagName);
+    public static void createTagAndThenRemoveIt(String tagName, Consumer<Tag> cb) {
+        Tag tag = unsafeAddTag(tagName);
         cb.accept(tag);
-        removeTag(base, tag.getName());
+        RemoveTagTest.removeTag(tag.getName());
     }
 
     @Test
     public void testAddTag_uniqueName() {
         String tagName = UUID.randomUUID().toString();
 
-        createTagAndThenRemoveIt(this, tagName, (tag) -> {
+        createTagAndThenRemoveIt(tagName, (tag) -> {
             assertThat(tag.getName(), is(equalTo(tagName)));
         });
     }
 
     @Test
     public void testAddTag_duplicateName() {
-        createTagAndThenRemoveIt(this,  (firstTag) -> {
-            createTagAndThenRemoveIt(this, firstTag.getName(), secondTag -> {
+        createTagAndThenRemoveIt((firstTag) -> {
+            createTagAndThenRemoveIt(firstTag.getName(), secondTag -> {
                 assertThat(secondTag.getName(), is(equalTo(firstTag.getName())));
             });
         });
