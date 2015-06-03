@@ -1,0 +1,3 @@
+To start the server run
+shell> $(./setup-gopath.sh)
+shell> go run src/main.go
