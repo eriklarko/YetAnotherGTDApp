@@ -6,18 +6,21 @@ import (
 	"net/http/httputil"
 	"net/http"
 	"models"
+	"services"
 )
 
 func main() {
 	r := gin.Default()
-	r.POST("/notes", func(c *gin.Context) {
-		var note models.Note
-		c.BindJSON(&note)
-		fmt.Printf("Adding note, id: %d, payload: '%s', tags: %v\n", note.Id, note.Payload, note.Tags)
-
-		c.JSON(200, note)
-	})
+	r.POST("/notes", addNote)
 	r.RunTLS(":8080", "keys/dev.crt", "keys/dev.key") // listen and serve on 0.0.0.0:8080
+}
+
+func addNote(c *gin.Context) {
+	var note models.Note
+	c.BindJSON(&note)
+	note = *services.AddNote(&note)
+
+	c.JSON(200, note)
 }
 
 func dump(req *http.Request) {
