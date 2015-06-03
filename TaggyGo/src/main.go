@@ -11,13 +11,11 @@ import (
 func main() {
 	r := gin.Default()
 	r.POST("/notes", func(c *gin.Context) {
-		dump(c.Request)
-
 		var note models.Note
 		c.BindJSON(&note)
-		fmt.Printf("Adding note, payload: '%s', tags: %v\n", note.Payload, note.Tags)
+		fmt.Printf("Adding note, id: %d, payload: '%s', tags: %v\n", note.Id, note.Payload, note.Tags)
 
-		c.String(200, "")
+		c.JSON(200, note)
 	})
 	r.RunTLS(":8080", "keys/dev.crt", "keys/dev.key") // listen and serve on 0.0.0.0:8080
 }

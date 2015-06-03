@@ -1,6 +1,7 @@
 package models
 
 type Note struct {
-	Payload string `json:payload binding:required`
-	tags []string `json:tags binding:required`
+	Id int `json:"id" binding:optional`
+	Payload string `json:"payload" binding:required`
+	Tags []string `json:"tags" binding:required`
 }
