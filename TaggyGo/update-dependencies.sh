@@ -12,4 +12,5 @@ echo "GOPATH is now $GOPATH"
 
 echo "Downloading dependencies..."
 go get github.com/gin-gonic/gin
+go get github.com/rcrowley/go-metrics
 echo "Done!"

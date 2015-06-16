@@ -5,6 +5,7 @@ import (
 	"webapp"
 	"log"
 	"os"
+	"github.com/rcrowley/go-metrics"
 )
 
 func main() {
@@ -17,8 +18,17 @@ func main() {
 	}
 
 	ginEngine := gin.Default()
+	ginEngine.Use(goMetricsMiddleWare)
 	setupRoutes(ginEngine)
 	startTheServer(ginEngine)
+}
+
+// Measures the time each request takes and how often each endpoint is accessed.
+func goMetricsMiddleWare(c *gin.Context) {
+	key := c.Request.Method + ";" + c.Request.URL.Path
+
+	metrics.GetOrRegisterMeter("meter;" + key, metrics.DefaultRegistry).Mark(1)
+	metrics.GetOrRegisterTimer("timer;" + key, metrics.DefaultRegistry).Time(c.Next)
 }
 
 func setupProductionEnvironment() {
@@ -32,6 +42,10 @@ func setupDevEnvironment() {
 func setupRoutes(r *gin.Engine) {
 	setupTagRoutes(r)
 	setupNoteRoutes(r)
+
+	r.GET("/metrics", func (c *gin.Context){
+		metrics.WriteJSONOnce(metrics.DefaultRegistry, c.Writer)
+	})
 }
 
 func setupTagRoutes(r *gin.Engine) {
