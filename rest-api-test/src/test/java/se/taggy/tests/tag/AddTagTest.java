@@ -43,6 +43,11 @@ public class AddTagTest {
         RemoveTagTest.removeTag(tag.getName());
     }
 
+    @Test(expected = RuntimeException.class)
+    public void testAddTag_nullName() {
+        unsafeAddTag(null);
+    }
+
     @Test
     public void testAddTag_uniqueName() {
         String tagName = UUID.randomUUID().toString();

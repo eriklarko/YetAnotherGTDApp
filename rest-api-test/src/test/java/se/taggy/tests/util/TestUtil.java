@@ -36,7 +36,7 @@ public class TestUtil {
         GET, POST, UPDATE, DELETE;
     }
 
-    public static final String ENDPOINT = "https://176.58.98.122:8080";
+    public static final String ENDPOINT = "https://localhost:8080";
     public static final ObjectMapper mapper = new ObjectMapper();
 
     public static void sendRequest(String resource, Method method, BiConsumer<HttpResponse, JsonNode> cb) {

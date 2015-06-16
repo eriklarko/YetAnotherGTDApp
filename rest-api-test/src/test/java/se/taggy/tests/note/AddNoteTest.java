@@ -44,7 +44,7 @@ public class AddNoteTest {
 				Note note = TestUtil.mapper.readValue(body.toString(), Note.class);
 				n.set(note);
 			} catch (IOException e) {
-				throw new RuntimeException(e);
+				throw new RuntimeException("Json: " + body.toString(), e);
 			}
 		});
 
