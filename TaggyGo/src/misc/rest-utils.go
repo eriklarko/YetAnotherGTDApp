@@ -5,8 +5,8 @@ import (
 	"fmt"
 )
 
-type JsonError struct {
-	Message string
+type JsonMessage struct {
+	Message string `json:"message"`
 }
 
 

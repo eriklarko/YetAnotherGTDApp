@@ -40,6 +40,7 @@ func setupTagRoutes(r *gin.Engine) {
 
 func setupNoteRoutes(r *gin.Engine) {
 	r.POST("/notes", webapp.AddNote)
+	r.DELETE("/notes/:id", webapp.DeleteNote)
 }
 
 func startTheServer(r *gin.Engine) {
