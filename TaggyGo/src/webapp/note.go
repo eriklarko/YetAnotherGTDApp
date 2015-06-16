@@ -13,7 +13,6 @@ func AddNote(c *gin.Context) {
 	err, savedNote := services.AddNote(&note)
 
 	if err == nil {
-
 		c.JSON(200, savedNote)
 	} else {
 		c.JSON(400, misc.JsonError{Message: err.Error()})
