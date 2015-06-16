@@ -16,14 +16,9 @@ func main() {
 		setupDevEnvironment()
 	}
 
-	r := gin.Default()
-	setupRoutes(r)
-
-	log.Println("Starting the server")
-	err := r.RunTLS(":8080", "keys/dev.crt", "keys/dev.key") // listen and serve https on 0.0.0.0:8080
-	if err != nil {
-		log.Fatalf("Unable to start the server. %v\n", err)
-	}
+	ginEngine := gin.Default()
+	setupRoutes(ginEngine)
+	startTheServer(ginEngine)
 }
 
 func setupProductionEnvironment() {
@@ -45,4 +40,12 @@ func setupTagRoutes(r *gin.Engine) {
 
 func setupNoteRoutes(r *gin.Engine) {
 	r.POST("/notes", webapp.AddNote)
+}
+
+func startTheServer(r *gin.Engine) {
+	log.Println("Starting the server")
+	err := r.RunTLS(":8080", "keys/dev.crt", "keys/dev.key") // listen and serve https on 0.0.0.0:8080
+	if err != nil {
+		log.Fatalf("Unable to start the server. %v\n", err)
+	}
 }
