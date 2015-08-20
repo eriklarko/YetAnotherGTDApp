@@ -15,6 +15,7 @@ System.config({
     "eventemitter": "npm:eventemitter@0.3.3",
     "flux": "npm:flux@2.0.3",
     "jquery": "npm:jquery@3.0.0-alpha1",
+    "olahol/react-tagsinput": "github:olahol/react-tagsinput@1.4.3",
     "react": "npm:react@0.13.3",
     "react-router": "npm:react-router@0.13.3",
     "traceur": "github:jmcriffey/bower-traceur@0.0.88",

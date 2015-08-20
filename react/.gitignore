@@ -1,4 +1,6 @@
 tmp
+jspm_packages
+node_modules
 
 src/**/*.js
 src/**/*.map
