@@ -1,0 +1,51 @@
+{
+    "version": "1.5.0-alpha",
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "declaration": false,
+        "noImplicitAny": false,
+        "removeComments": true,
+        "noLib": false,
+        "preserveConstEnums": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "sourceMap": true,
+        "jsx": "react"
+    },
+    "filesGlob": [
+        "./**/*.ts",
+        "./**/*.tsx",
+        "!./node_modules/**/*.ts",
+        "!./typings/tsd.d.ts"
+    ],
+    "files": [
+        "./src/actions/note-action-creator.ts",
+        "./src/actions/route-action-creator.ts",
+        "./src/bootstrap.ts",
+        "./src/dispatcher.ts",
+        "./src/models/note-model.ts",
+        "./src/stores/note-store.ts",
+        "./src/stores/route-store.ts",
+        "./test/route-store-test.ts",
+        "./typings/chai/chai.d.ts",
+        "./typings/flux/flux.d.ts",
+        "./typings/jquery/jquery.d.ts",
+        "./typings/mocha/mocha.d.ts",
+        "./typings/react-router/react-router.d.ts",
+        "./typings/react/react-addons.d.ts",
+        "./typings/react/react.d.ts",
+        "./typings/sinon/sinon.d.ts",
+        "./typings_modified/eventemitter.d.ts",
+        "./typings_modified/promise.d.ts",
+        "./typings_modified/systemjs.d.ts",
+        "./src/components/alert.tsx",
+        "./src/components/content.tsx",
+        "./src/components/dashboard.tsx",
+        "./src/components/header.tsx",
+        "./src/components/login.tsx",
+        "./src/components/menu.tsx",
+        "./src/components/root.tsx",
+        "./src/components/spinner.tsx",
+        "./src/router.tsx"
+    ]
+}
