@@ -21,8 +21,8 @@ export class CardGrid extends Component<Props, State> {
 
 	var cards = this.props.notes.map((note : Note) => {
         return (
-          <div style={cardStyle}>
-			<SmallTextPayload value={note.payload} tags={note.tags} />
+          <div style={cardStyle} key={note.id}>
+			<SmallTextPayload note={note} />
 		  </div>
         );
     });

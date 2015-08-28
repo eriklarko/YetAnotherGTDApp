@@ -21,6 +21,7 @@
     "files": [
         "./src/actions/note-action-creator.ts",
         "./src/actions/route-action-creator.ts",
+        "./src/actions/tags-action-creator.ts",
         "./src/bootstrap.ts",
         "./src/dispatcher.ts",
         "./src/models/note-model.ts",
@@ -50,6 +51,7 @@
         "./src/components/payload-edit/small-text.tsx",
         "./src/components/root.tsx",
         "./src/components/spinner.tsx",
+        "./src/components/tags.tsx",
         "./src/router.tsx"
     ]
 }
