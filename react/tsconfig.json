@@ -20,11 +20,13 @@
     ],
     "files": [
         "./src/actions/note-action-creator.ts",
+        "./src/actions/payload-action-creator.ts",
         "./src/actions/route-action-creator.ts",
         "./src/actions/tags-action-creator.ts",
         "./src/bootstrap.ts",
         "./src/dispatcher.ts",
         "./src/models/note-model.ts",
+        "./src/models/tag-model.ts",
         "./src/stores/note-store.ts",
         "./src/stores/route-store.ts",
         "./test/route-store-test.ts",
