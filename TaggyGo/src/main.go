@@ -24,6 +24,7 @@ func main() {
 
 	ginEngine := gin.Default()
 	ginEngine.Use(goMetricsMiddleWare)
+	// Todo: Make sure the metrics middleware is the first middleware to be executed to get more accurate timings
 	setupRoutes(ginEngine)
 	startTheServerAndBlock(ginEngine)
 }
