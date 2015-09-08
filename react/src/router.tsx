@@ -12,6 +12,7 @@ var Login = LoginComponent;
 
 import {StateKeeper} from './components/state-keeper';
 import {MasterDetailView} from './components/note-views/master-detail';
+import {CardGrid} from './components/note-views/card-grid';
 
 var Home = MasterDetailView;
 
@@ -22,6 +23,7 @@ export function initRouter() {
         <Route path="/" handler={StateKeeper}>
             <Route name="home" path="/" handler={Home} />
             <Route path="richNote/:noteId" handler={MasterDetailView} />
+            <Route path="cards" handler={CardGrid} />
         </Route>
         <Route name="login" path="login" handler={Login}/>
       </Route>

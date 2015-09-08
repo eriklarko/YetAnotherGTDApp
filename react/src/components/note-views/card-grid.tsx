@@ -9,6 +9,7 @@ interface Props {
   notes : Array<Note>;
 }
 
+// Take a look at http://masonry.desandro.com/
 export class CardGrid extends Component<Props, State> {
 
   private render() : ReactElement<any> {

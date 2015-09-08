@@ -26,16 +26,25 @@ initRouter();
 // Seed with dummy data
 import {dispatcher} from "./dispatcher";
 import {Note, NoteType} from "./models/note-model";
-var notes : Array<Note> = [{
-	id: 1,
-	payload: "HEJSAN",
-	tags: [{name: "tag1"}, {name: "tag2"}],
-	type: NoteType.Short
-},{
-	id: 2,
-	payload: "# hej\
-	\n`apa`",
-	tags: [{name: "123"}, {name: "567"}],
-	type: NoteType.MarkedUpText
-}];
+var notes : Array<Note> = [];
+for (let i = 0; i < 1; i++) {
+    notes.push({
+		id: i,
+		payload: stringGen(Math.floor(Math.random() * 400)) + i,
+		tags: [{name: "tag1"}, {name: "tag2"}],
+		type: NoteType.Short
+	});
+}
+function stringGen(len)
+{
+    var text = " ";
+
+    var charset = "abcdefghijklmnopqrstuvwxyz0123456789 ";
+
+    for( var i=0; i < len; i++ )
+        text += charset.charAt(Math.floor(Math.random() * charset.length));
+
+    return text;
+}
+
 dispatcher.dispatch({type: "notes", notes: notes});
