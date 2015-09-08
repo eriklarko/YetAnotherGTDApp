@@ -25,14 +25,17 @@ initRouter();
 
 // Seed with dummy data
 import {dispatcher} from "./dispatcher";
-import {Note} from "./models/note-model";
+import {Note, NoteType} from "./models/note-model";
 var notes : Array<Note> = [{
 	id: 1,
 	payload: "HEJSAN",
-	tags: ["tag1", "tag2"]
+	tags: [{name: "tag1"}, {name: "tag2"}],
+	type: NoteType.Short
 },{
 	id: 2,
-	payload: "asdsad",
-	tags: ["123", "567"]
+	payload: "# hej\
+	\n`apa`",
+	tags: [{name: "123"}, {name: "567"}],
+	type: NoteType.MarkedUpText
 }];
 dispatcher.dispatch({type: "notes", notes: notes});

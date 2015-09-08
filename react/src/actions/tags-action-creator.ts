@@ -1,8 +1,9 @@
 import {dispatcher} from '../dispatcher';
 import {Note} from "../models/note-model";
+import {Tag} from "../models/tag-model";
 
 class TagsActionCreator {
-  public addTag(note: Note, tag: string) : void {
+  public addTag(note: Note, tag: Tag) : void {
 	note.tags.push(tag);
     dispatcher.dispatch({
 		type: "note-updated",
@@ -10,8 +11,8 @@ class TagsActionCreator {
 	});
   }
 
-  public removeTag(note: Note, tag: string) : void {
-	var index = note.tags.indexOf(tag);
+  public removeTag(note: Note, tag: Tag) : void {
+	let index = this.findIndexOfFirst(note.tags, (t: Tag) => {return t.name === tag.name});
 	if (index > -1) {
 	    note.tags.splice(index, 1);
 		dispatcher.dispatch({
@@ -19,6 +20,15 @@ class TagsActionCreator {
 			note: note
 		});
 	}
+  }
+
+  private findIndexOfFirst<T>(array: Array<T>, predicate: (T)=>boolean) : number {
+      for (let i = 0; i < array.length; i++) {
+          if (predicate(array[i])) {
+              return i;
+          }
+      }
+      return -1;
   }
 }
 

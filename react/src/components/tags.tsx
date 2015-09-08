@@ -14,7 +14,15 @@ interface Props {
 
 export class Tags extends Component<Props, State> {
 
-    availableTags = [{name: "a"}, {name: "b"}, {name: "apa"}];
+    private availableTags = [{name: "a"}, {name: "b"}, {name: "apa"}];
+    private tagStyles = {
+        div: "react-tagsinput",
+        input: "react-tagsinput-input",
+        invalid: "react-tagsinput-invalid",
+        validating: "react-tagsinput-validating",
+        tag: "react-tagsinput-tag",
+        remove: "react-tagsinput-remove"
+    };
 
     constructor() {
         super();
@@ -25,11 +33,11 @@ export class Tags extends Component<Props, State> {
     }
 
 	private addTag = (tag: string) => {
-		tagsActionCreator.addTag(this.props.note, tag);
+		tagsActionCreator.addTag(this.props.note, {name: tag});
 	}
 
 	private removeTag = (tag: string) => {
-		tagsActionCreator.removeTag(this.props.note, tag);
+		tagsActionCreator.removeTag(this.props.note, {name: tag});
 	}
 
     private updateTypeaheadMatches = (input: string) => {
@@ -37,11 +45,12 @@ export class Tags extends Component<Props, State> {
         if (input === "") {
             completions = [];
         } else {
+            let a : any = this.refs["a"];
             completions = this.availableTags.filter(function (availableTag) {
                 var tagName = availableTag.name.toLowerCase();
 
                 var matchesAvailableTag = tagName.substr(0, input.length) == input;
-                var isAlreadyAdded = false; //this.state.tags.indexOf(availableTag) > -1;
+                var isAlreadyAdded = a.getTags().indexOf(tagName) > -1;
 
                 return matchesAvailableTag && !isAlreadyAdded;
             });
@@ -59,22 +68,23 @@ export class Tags extends Component<Props, State> {
     }
 
     private renderTagCompletion = (tag: Tag) : ReactElement<any> => {
-        console.log("Completion", tag.name);
         var addTag = () => {
             var a : any = this.refs["a"];
             a.addTag(tag.name);
         };
-        return <span onClick={addTag}>{tag.name}</span>;
+        return <span onClick={addTag} className={this.tagStyles.tag} style={{cursor: "pointer"}}>{tag.name}</span>;
     }
 
     private render() : ReactElement<any> {
         var renderedTagCompletions = this.state.tagCompletions.map(this.renderTagCompletion);
+        var tagNames = this.props.note.tags.map(tag => tag.name);
 
         return (
             <div>
                 <TagsInput
                     ref="a"
-                    value={this.props.note.tags}
+                    classNames={this.tagStyles}
+                    value={tagNames}
                     onTagAdd={this.addTag}
                     onTagRemove={this.removeTag}
 
@@ -83,7 +93,7 @@ export class Tags extends Component<Props, State> {
                     onChangeInput={this.updateTypeaheadMatches}
                     onChange={this.clearTypeaheadMatches} />
 
-                <div>{renderedTagCompletions}</div>
+                <div style={{marginTop: "5px"}}>{renderedTagCompletions}</div>
             </div>
         );
     }

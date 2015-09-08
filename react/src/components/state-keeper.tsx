@@ -3,6 +3,8 @@ import {RouteHandler} from 'react-router';
 
 import {MenuComponent} from './menu';
 import {CardGrid} from "./note-views/card-grid";
+import {MasterDetailView} from "./note-views/master-detail";
+
 import {Note} from "../models/note-model";
 import {noteStore} from "../stores/note-store";
 
@@ -13,13 +15,14 @@ interface State {
 interface Props {
 }
 
-export class ContentComponent extends Component<Props, State> {
+// This class should not exist :) I need to move the stores down into the components that need them.
+export class StateKeeper extends Component<Props, State> {
 
   constructor() {
       super();
       this.state = {notes: []};
   }
-  
+
   private componentDidMount() : void {
     noteStore.addChangeListener(this.onChange);
   }
@@ -33,20 +36,6 @@ export class ContentComponent extends Component<Props, State> {
   }
 
   private render() : ReactElement<any> {
-    return (
-      <div>
-        <div className="container-fluid">
-          <div className="row">
-            <MenuComponent />
-            <div className="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-              <CardGrid notes={this.state.notes} />
-              <br/><br/><br/><br/><br/><br/><hr/><br/><br/><br/>
-              <RouteHandler />
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+    return <RouteHandler notes={this.state.notes}/>
   }
-
 }

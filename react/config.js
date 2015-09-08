@@ -11,9 +11,14 @@ System.config({
 
 System.config({
   "map": {
+    "autolinker": "github:gregjacobs/Autolinker.js@0.18.1",
+    "autolinker.js": "github:gregjacobs/Autolinker.js@0.18.1",
     "bootstrap": "github:twbs/bootstrap@3.3.5",
     "eventemitter": "npm:eventemitter@0.3.3",
     "flux": "npm:flux@2.0.3",
+    "gregjacobs/Autolinker.js": "github:gregjacobs/Autolinker.js@0.18.1",
+    "guillaumervls/react-ellipsis": "github:guillaumervls/react-ellipsis@master",
+    "jonschlinkert/remarkable": "github:jonschlinkert/remarkable@1.6.0",
     "jquery": "npm:jquery@3.0.0-alpha1",
     "olahol/react-tagsinput": "github:olahol/react-tagsinput@1.4.3",
     "react": "npm:react@0.13.3",

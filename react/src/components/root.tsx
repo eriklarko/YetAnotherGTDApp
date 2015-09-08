@@ -12,7 +12,7 @@ interface Props {
 export class RootComponent extends Component<Props, State> {
   private render() : ReactElement<any> {
     return (
-      <div>
+      <div style={{height: "100%"}}>
         <HeaderComponent title="Taggy" />
         <RouteHandler />
       </div>

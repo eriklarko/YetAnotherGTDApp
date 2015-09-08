@@ -7,23 +7,22 @@ import {routeActionCreator} from './actions/route-action-creator';
 import {RootComponent} from './components/root';
 var Root = RootComponent;
 
-import {ContentComponent} from './components/content';
-var Content = ContentComponent;
-
-import {DashboardComponent} from './components/dashboard';
-var Dashboard = DashboardComponent;
-
 import {LoginComponent} from './components/login';
 var Login = LoginComponent;
+
+import {StateKeeper} from './components/state-keeper';
+import {MasterDetailView} from './components/note-views/master-detail';
+
+var Home = MasterDetailView;
 
 export function initRouter() {
   var options = {
     routes: (
       <Route name="root" path="/" handler={Root}>
-        <Route name="content" path="/" handler={Content}>
-          <Route name="dashboard" path="/" handler={Dashboard} />
+        <Route path="/" handler={StateKeeper}>
+            <Route name="home" path="/" handler={Home} />
+            <Route path="richNote/:noteId" handler={MasterDetailView} />
         </Route>
-
         <Route name="login" path="login" handler={Login}/>
       </Route>
       ),
