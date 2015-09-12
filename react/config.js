@@ -20,11 +20,17 @@ System.config({
     "guillaumervls/react-ellipsis": "github:guillaumervls/react-ellipsis@master",
     "jonschlinkert/remarkable": "github:jonschlinkert/remarkable@1.6.0/dist/remarkable",
     "jquery": "npm:jquery@3.0.0-alpha1",
+    "masonry-layout": "npm:masonry-layout@3.3.2",
     "olahol/react-tagsinput": "github:olahol/react-tagsinput@1.4.3",
     "react": "npm:react@0.13.3",
+    "react-masonry-component": "npm:react-masonry-component@1.0.4",
     "react-router": "npm:react-router@0.13.3",
     "traceur": "github:jmcriffey/bower-traceur@0.0.88",
     "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.88",
+    "get-size/get-size": "npm:get-size@1.2.2",
+    "outlayer/outlayer": "npm:outlayer@1.4.2",
+    "eventEmitter/EventEmitter": "npm:wolfy87-eventemitter@4.2.11",
+    "eventie/eventie": "npm:eventie@1.0.6",
     "github:jspm/nodelibs-buffer@0.1.0": {
       "buffer": "npm:buffer@3.3.1"
     },
@@ -60,6 +66,10 @@ System.config({
     "npm:core-util-is@1.0.1": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0"
     },
+    "npm:doc-ready@1.0.3": {
+      "eventie": "npm:eventie@1.0.6",
+      "process": "github:jspm/nodelibs-process@0.1.1"
+    },
     "npm:envify@3.4.0": {
       "jstransform": "npm:jstransform@10.1.0",
       "process": "github:jspm/nodelibs-process@0.1.1",
@@ -71,6 +81,13 @@ System.config({
     },
     "npm:eventemitter@0.3.3": {
       "process": "github:jspm/nodelibs-process@0.1.1"
+    },
+    "npm:fizzy-ui-utils@1.0.1": {
+      "desandro-matches-selector": "npm:desandro-matches-selector@1.0.3",
+      "doc-ready": "npm:doc-ready@1.0.3"
+    },
+    "npm:get-size@1.2.2": {
+      "desandro-get-style-property": "npm:desandro-get-style-property@1.0.4"
     },
     "npm:inherits@2.0.1": {
       "util": "github:jspm/nodelibs-util@0.1.0"
@@ -86,8 +103,27 @@ System.config({
       "process": "github:jspm/nodelibs-process@0.1.1",
       "source-map": "npm:source-map@0.1.31"
     },
+    "npm:masonry-layout@3.3.2": {
+      "fizzy-ui-utils": "npm:fizzy-ui-utils@1.0.1",
+      "get-size": "npm:get-size@1.2.2",
+      "outlayer": "npm:outlayer@1.4.2",
+      "process": "github:jspm/nodelibs-process@0.1.1"
+    },
+    "npm:outlayer@1.4.2": {
+      "desandro-get-style-property": "npm:desandro-get-style-property@1.0.4",
+      "desandro-matches-selector": "npm:desandro-matches-selector@1.0.3",
+      "doc-ready": "npm:doc-ready@1.0.3",
+      "eventie": "npm:eventie@1.0.6",
+      "fizzy-ui-utils": "npm:fizzy-ui-utils@1.0.1",
+      "get-size": "npm:get-size@1.2.2",
+      "wolfy87-eventemitter": "npm:wolfy87-eventemitter@4.2.11"
+    },
     "npm:path-browserify@0.0.0": {
       "process": "github:jspm/nodelibs-process@0.1.1"
+    },
+    "npm:react-masonry-component@1.0.4": {
+      "imagesloaded": "github:eiriklv/imagesloaded@3.1.8",
+      "masonry": "github:eiriklv/masonry@3.1.5"
     },
     "npm:react-router@0.13.3": {
       "object-assign": "npm:object-assign@2.1.1",
@@ -133,6 +169,9 @@ System.config({
     "npm:util@0.10.3": {
       "inherits": "npm:inherits@2.0.1",
       "process": "github:jspm/nodelibs-process@0.1.1"
+    },
+    "npm:wolfy87-eventemitter@4.2.11": {
+      "fs": "github:jspm/nodelibs-fs@0.1.2"
     }
   }
 });
