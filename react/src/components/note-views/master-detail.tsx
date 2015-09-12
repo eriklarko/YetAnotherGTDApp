@@ -42,10 +42,6 @@ export class MasterDetailView extends Component<Props, State> {
 	return null;
   }
 
-  private summarize(obj) {
-	return obj.summary || obj.payload;
-  }
-
   private render() : ReactElement<any> {
 	let selectedNoteView = null;
 	if (this.state.selectedNote == null) {
@@ -55,11 +51,7 @@ export class MasterDetailView extends Component<Props, State> {
     }
 
 	let list = this.props.notes.map(note => {
-		return <div style={{overflow: "hidden"}}>
-			<Link to={this.props.linkBase + "/" + note.id}>
-				{this.summarize(note)}
-			</Link>
-		</div>
+        return <ListItem note={note} linkBase={this.props.linkBase}/>;
 	});
 
     return (
@@ -69,4 +61,29 @@ export class MasterDetailView extends Component<Props, State> {
       </div>
     );
   }
+}
+
+class ListItem extends Component<{note: Note, linkBase: string}, {}> {
+
+    private summarize(obj) {
+      return this.ellipse(obj.summary || obj.payload, 18, "...");
+    }
+
+    private ellipse(string, maxLength, indicator) {
+      string = string.replace("\n", " ");
+
+      if (string.length > maxLength) {
+          return string.substring(0, maxLength - indicator.length) + indicator;
+      } else {
+          return string;
+      }
+    }
+
+    private render() : ReactElement<any> {
+        return <div style={{borderBottom: "1px solid #ccc", paddingTop: "1em", paddingBottom:"1em", overflow: "hidden"}}>
+            <Link to={this.props.linkBase + "/" + this.props.note.id}>
+                {this.summarize(this.props.note)}
+            </Link>
+		</div>;
+    }
 }
