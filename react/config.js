@@ -18,7 +18,7 @@ System.config({
     "flux": "npm:flux@2.0.3",
     "gregjacobs/Autolinker.js": "github:gregjacobs/Autolinker.js@0.18.1",
     "guillaumervls/react-ellipsis": "github:guillaumervls/react-ellipsis@master",
-    "jonschlinkert/remarkable": "github:jonschlinkert/remarkable@1.6.0",
+    "jonschlinkert/remarkable": "github:jonschlinkert/remarkable@1.6.0/dist/remarkable",
     "jquery": "npm:jquery@3.0.0-alpha1",
     "olahol/react-tagsinput": "github:olahol/react-tagsinput@1.4.3",
     "react": "npm:react@0.13.3",
@@ -136,4 +136,3 @@ System.config({
     }
   }
 });
-
