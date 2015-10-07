@@ -10,7 +10,7 @@ class NoteStore {
 
   public loadingState : LoadingState = LoadingState.NotLoaded;
   public errorMessage : string;
-  public notes : Array<Note> = null;
+  public notes : Array<Note> = [];
 
   constructor() {
     this.registerWithDispatcher();

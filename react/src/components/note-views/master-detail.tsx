@@ -44,8 +44,8 @@ export class MasterDetailView extends Component<Props, State> {
 	}
 
 	let list = this.props.notes.map(note => {
-		return <div>
-			<Link to={"/richNote/" + note.id}>
+		return <div style={{overflow: "hidden"}}>
+			<Link to={"/notes/richNote/" + note.id}>
 				{this.summarize(note)}
 			</Link>
 		</div>

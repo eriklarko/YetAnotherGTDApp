@@ -1,6 +1,6 @@
 import {Component, ReactElement} from 'react';
 import {RouteHandler} from 'react-router';
-
+import {MenuComponent} from "./menu";
 import {HeaderComponent} from './header';
 
 interface State {
@@ -14,6 +14,9 @@ export class RootComponent extends Component<Props, State> {
     return (
       <div style={{height: "100%"}}>
         <HeaderComponent title="Taggy" />
+        <MenuComponent />
+
+        <hr/>
         <RouteHandler />
       </div>
      );

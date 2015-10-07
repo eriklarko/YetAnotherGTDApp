@@ -23,7 +23,9 @@ export class MenuComponent extends React.Component<MenuProps, MenuState> {
         menuItems: [
           [
             // Menu gropu 1
-            {routeName: "dashboard", title: "Dashboard"},
+            {routeName: "richNotesDefault", title: "Stora nottar"},
+            {routeName: "cards", title: "Cards"},
+            {routeName: "filters", title: "Filters"},
           ]
         ],
         currentRouteState: routeStore.getCurrentState()
@@ -81,7 +83,7 @@ export class MenuComponent extends React.Component<MenuProps, MenuState> {
     });
 
     return (
-      <div className="col-sm-3 col-md-2 sidebar">
+      <div>
         {menu}
       </div>
     );

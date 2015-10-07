@@ -12,17 +12,17 @@ interface Props {
 // Take a look at http://masonry.desandro.com/
 export class CardGrid extends Component<Props, State> {
 
-  private render() : ReactElement<any> {
-	var cardStyle = {
+    private cardStyle = {
 		float: "left",
 		border: "1px solid black",
 		margin: "1em",
 		padding: "1em"
-	}
+	};
 
+  private render() : ReactElement<any> {
 	var cards = this.props.notes.map((note : Note) => {
         return (
-          <div style={cardStyle} key={note.id}>
+          <div style={this.cardStyle} key={note.id}>
 			<SmallTextPayload note={note} />
 		  </div>
         );

@@ -16,14 +16,14 @@ interface Props {
 }
 
 // This class should not exist :) I need to move the stores down into the components that need them.
-export class StateKeeper extends Component<Props, State> {
+export class NotesStateKeeper extends Component<Props, State> {
 
   constructor() {
       super();
-      this.state = {notes: []};
+      this.state = {notes: noteStore.getNotes()};
   }
 
-  private componentDidMount() : void {
+  private componentWillMount() : void {
     noteStore.addChangeListener(this.onChange);
   }
 

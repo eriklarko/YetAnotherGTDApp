@@ -10,20 +10,26 @@ var Root = RootComponent;
 import {LoginComponent} from './components/login';
 var Login = LoginComponent;
 
-import {StateKeeper} from './components/state-keeper';
+import {NotesStateKeeper} from './components/notes-state-keeper';
 import {MasterDetailView} from './components/note-views/master-detail';
 import {CardGrid} from './components/note-views/card-grid';
 
-var Home = MasterDetailView;
+import {FiltersStateKeeper} from "./components/filters-state-keeper";
+import {FilterMasterDetail} from "./components/filter-master-detail";
 
 export function initRouter() {
   var options = {
     routes: (
       <Route name="root" path="/" handler={Root}>
-        <Route path="/" handler={StateKeeper}>
-            <Route name="home" path="/" handler={Home} />
-            <Route path="richNote/:noteId" handler={MasterDetailView} />
-            <Route path="cards" handler={CardGrid} />
+        <Route path="/notes" handler={NotesStateKeeper}>
+            <Route name="richNotesDefault" path="richNote" handler={MasterDetailView} />
+            <Route name="richNotes" path="richNote/:noteId" handler={MasterDetailView} />
+            <Route name="cards" path="cards" handler={CardGrid} />
+        </Route>
+
+        <Route path="/filters" handler={FiltersStateKeeper}>
+            <Route name="filters" path="/filters" handler={FilterMasterDetail} />
+            <Route path="/filters/:selectedId" handler={FilterMasterDetail} />
         </Route>
         <Route name="login" path="login" handler={Login}/>
       </Route>
