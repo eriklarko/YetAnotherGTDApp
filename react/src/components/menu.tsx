@@ -23,8 +23,6 @@ export class MenuComponent extends React.Component<MenuProps, MenuState> {
         menuItems: [
           [
             // Menu gropu 1
-            {routeName: "richNotesDefault", title: "Stora nottar"},
-            {routeName: "cards", title: "Cards"},
             {routeName: "filters", title: "Filters"},
           ]
         ],

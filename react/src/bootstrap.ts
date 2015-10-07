@@ -28,30 +28,36 @@ initRouter();
 // Seed with dummy data
 import {dispatcher} from "./dispatcher";
 import {Note, NoteType} from "./models/note-model";
-import {Filter} from "./models/filter-model";
+import {Filter, DisplayType} from "./models/filter-model";
 
-var numNotes = 1;
-var numFilters = 2;
+var numNotes = 100;
 
 var notes : Array<Note> = [];
 for (let i = 0; i < numNotes; i++) {
     notes.push({
 		id: i,
-		payload: stringGen(Math.floor(Math.random() * 4)) + i,
+		payload: stringGen(Math.floor(Math.random() * 20)),
 		tags: [{name: "tag1"}, {name: "tag2"}],
 		type: NoteType.Short
 	});
 }
-for (let i = 0; i < numFilters; i++) {
-    let filter = {
-		name: stringGen(Math.floor(Math.random() * 20)) + i,
-		searchTree: {raw: ""}
-	};
-    dispatcher.dispatch({type: "new-filter", filter: filter});
-}
+
+let filter = {
+	name: "Master detail",
+	searchTree: {raw: ""},
+    displayType: DisplayType.MasterDetail
+};
+dispatcher.dispatch({type: "new-filter", filter: filter});
+filter = {
+	name: "Cards",
+	searchTree: {raw: ""},
+    displayType: DisplayType.Cards
+};
+dispatcher.dispatch({type: "new-filter", filter: filter});
+
 function stringGen(len) {
     var text = "";
-    var charset = "abcdefghijklmnopqrstuvwxyz0123456789 ";
+    var charset = "aeiouyl";
     for( var i=0; i < len; i++ ) {
         text += charset.charAt(Math.floor(Math.random() * charset.length));
     }

@@ -9,7 +9,8 @@ interface State {
 
 interface Props {
   notes : Array<Note>;
-  params : {noteId: Number};
+  linkBase : string;
+  selectedNote: number;
 }
 
 export class MasterDetailView extends Component<Props, State> {
@@ -20,7 +21,15 @@ export class MasterDetailView extends Component<Props, State> {
   }
 
   private componentWillReceiveProps(newProps: Props) {
-	this.setState({selectedNote: this.findFirst(newProps.notes, (a: Note) => a.id == newProps.params.noteId)});
+    if (newProps.notes.length === 0) {
+        return;
+    }
+
+    if (newProps.selectedNote == undefined) {
+        this.setState({selectedNote: newProps.notes[0]});
+    } else {
+	    this.setState({selectedNote: this.findFirst(newProps.notes, (a: Note) => a.id == newProps.selectedNote)});
+    }
   }
 
   private findFirst<T>(array : Array<T>, predicate: (T)=>boolean) : T {
@@ -38,14 +47,16 @@ export class MasterDetailView extends Component<Props, State> {
   }
 
   private render() : ReactElement<any> {
-	let selectedNoteView = <RichTextPayload note={this.state.selectedNote} />
+	let selectedNoteView = null;
 	if (this.state.selectedNote == null) {
 		selectedNoteView = "No selected note yet. Use the list to the left so select one."
-	}
+	} else {
+        selectedNoteView = <RichTextPayload note={this.state.selectedNote} />
+    }
 
 	let list = this.props.notes.map(note => {
 		return <div style={{overflow: "hidden"}}>
-			<Link to={"/notes/richNote/" + note.id}>
+			<Link to={this.props.linkBase + "/" + note.id}>
 				{this.summarize(note)}
 			</Link>
 		</div>

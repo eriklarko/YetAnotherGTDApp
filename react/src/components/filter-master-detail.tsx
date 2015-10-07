@@ -15,15 +15,13 @@ interface Props {
 export class FilterMasterDetail extends Component<Props, State>  {
 
   private render() : ReactElement<any> {
-      //console.log("b", this.props);
-
       return <GenericMasterDetailView
         items={this.props.filters}
         defaultView="select a filter, damnation"
 
         getId={(f) => f.name}
 
-        selectedViewContructor={(f) => <FilterView filter={f}/>}
+        selectedViewContructor={(f) => <FilterView filter={f} params={this.props.params}/>}
         linkConstructor={(f) => <div><Link to={"/filters/" + f.name}>{f.name}</Link></div>}
 
         params={this.props.params}
