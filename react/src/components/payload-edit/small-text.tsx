@@ -20,6 +20,10 @@ export class SmallTextPayload extends Component<Props, State> {
       }
   }
 
+  public componentWillReceiveProps(nextProps: Props) {
+      this.setState({isEditing: false});
+  }
+
   private getPayload() : string {
     let payloadNode : any = React.findDOMNode(this.refs["payload"]);
     return payloadNode.value;
@@ -30,9 +34,10 @@ export class SmallTextPayload extends Component<Props, State> {
   }
 
   private onKeyUp = (event: KeyboardEvent) => {
-    // Enter is pressed
-    if (event.keyCode === 13) {
+    if (event.keyCode === 13) { // Enter is pressed
       this.sendPayloadUpdatedAction();
+    } else if (event.keyCode === 27){ // Esc is pressed
+      this.setState({isEditing: false});
     }
   }
 
