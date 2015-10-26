@@ -18,7 +18,6 @@ interface Props {
     params: {selectedNote: number}
 }
 
-// This class should not exist :) I need to move the stores down into the components that need them.
 export class FilterView extends Component<Props, State> {
 
   constructor() {
@@ -53,7 +52,10 @@ export class FilterView extends Component<Props, State> {
       if (this.props.filter.displayType === DisplayType.Cards) {
           notesView = <CardGrid notes={this.state.notes} />
       } else if (this.props.filter.displayType === DisplayType.MasterDetail) {
-          notesView = <MasterDetailView notes={this.state.notes} linkBase={"/filters/" + this.props.filter.name} selectedNote={this.props.params.selectedNote}/>
+          notesView = <MasterDetailView
+                            notes={this.state.notes}
+                            linkBase={"/filters/" + this.props.filter.name}
+                            selectedNote={this.props.params.selectedNote}/>
       } else {
           notesView = <div>Unknown display type {this.props.filter.displayType}</div>
       }
