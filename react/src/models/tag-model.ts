@@ -1,3 +1,4 @@
-export class Tag {
+export interface Tag {
 	name: string;
+    parent?: Tag;
 }

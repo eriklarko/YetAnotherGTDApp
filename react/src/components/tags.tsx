@@ -12,6 +12,7 @@ interface Props {
   note : Note;
 }
 
+// https://github.com/olahol/react-tagsinput
 export class Tags extends Component<Props, State> {
 
     private availableTags = [{name: "a"}, {name: "b"}, {name: "apa"}];
@@ -75,6 +76,19 @@ export class Tags extends Component<Props, State> {
         return <span onClick={addTag} className={this.tagStyles.tag} style={{cursor: "pointer"}}>{tag.name}</span>;
     }
 
+    private renderTag = (index: any, tag: Tag) => {
+        var tagText : string = tag.name;
+        while (tag.parent) {
+            tagText = tag.parent.name + " > " + tagText;
+            tag = tag.parent;
+        }
+
+        return (<span className={this.tagStyles.tag}>
+            <span>{tagText}</span>
+            <a className={this.tagStyles.remove}></a>
+        </span>);
+    }
+
     private render() : ReactElement<any> {
         var renderedTagCompletions = this.state.tagCompletions.map(this.renderTagCompletion);
         var tagNames = this.props.note.tags.map(tag => tag.name);
@@ -84,9 +98,10 @@ export class Tags extends Component<Props, State> {
                 <TagsInput
                     ref="a"
                     classNames={this.tagStyles}
-                    value={tagNames}
+                    value={this.props.note.tags}
                     onTagAdd={this.addTag}
                     onTagRemove={this.removeTag}
+                    renderTag={this.renderTag}
 
                     // The following are for the typeahead support
                     addOnBlur={false}

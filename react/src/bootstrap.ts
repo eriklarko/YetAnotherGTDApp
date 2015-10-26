@@ -34,10 +34,11 @@ var numNotes = 100;
 
 var notes : Array<Note> = [];
 for (let i = 0; i < numNotes; i++) {
+    var tag1 = {name: "tag1", parent: {name: "a"}};
     notes.push({
 		id: i,
 		payload: stringGen(Math.floor(Math.random() * 20)),
-		tags: [{name: "tag1"}, {name: "tag2"}],
+		tags: [tag1, {name: "tag2"}, {name: "neo", parent: tag1}],
 		type: NoteType.Short
 	});
 }
