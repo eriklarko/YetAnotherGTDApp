@@ -5,8 +5,8 @@ export enum NoteType {
 }
 
 export class Note {
-  id : number;
-  payload : string; // Should probably be a byte[] later so that audio and video can be supported
-  tags: Array<Tag>;
-  type: NoteType;
+    id : number;
+    payload : string; // Should probably be a byte[] later so that audio and video can be supported
+    tags: Array<Tag>;
+    type: NoteType;
 }

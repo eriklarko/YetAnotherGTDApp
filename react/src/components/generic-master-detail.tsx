@@ -13,6 +13,7 @@ interface Props<T> {
   linkConstructor: (T) => ReactElement<any>;
 }
 
+// This is a stupid idea... :) The views using this are hard to understand and debug.
 export class GenericMasterDetailView<T> extends Component<Props<T>, State<T>> {
 
   constructor() {
