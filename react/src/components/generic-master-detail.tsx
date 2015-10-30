@@ -1,69 +1,65 @@
 import {Component, ReactElement} from 'react';
 
-interface State<T> {
-	selectedItem: T;
+interface State {
 }
 
 interface Props<T> {
-  items : Array<T>;
-  getId : (T) => any;
-  params : {selectedId: any};
-  defaultView: ReactElement<any>;
-  selectedViewContructor: (T) => ReactElement<any>;
-  linkConstructor: (T) => ReactElement<any>;
+    items : Array<T>;
+    getId : (T) => any;
+    selectedId: any;
+    defaultView: ReactElement<any>;
+    selectedViewContructor: (T) => ReactElement<any>;
+    linkConstructor: (T) => ReactElement<any>;
 }
 
 // This is a stupid idea... :) The views using this are hard to understand and debug.
-export class GenericMasterDetailView<T> extends Component<Props<T>, State<T>> {
+export class GenericMasterDetailView<T> extends Component<Props<T>, State> {
 
-  constructor() {
-	super();
-	this.state = {selectedItem: null}
-  }
+    private findSelectedItem() : T {
+        if (this.props.selectedId) {
+            let item = this.findFirst(
+                this.props.items,
+                (t: T) => this.props.getId(t) === this.props.selectedId
+            )
 
-  private componentWillReceiveProps(newProps: Props<T>) {
-    if (newProps.params === undefined) {
-        console.log("Props did not contain any params", newProps);
-        return;
+            if (item != undefined) {
+                return item;
+            }
+        }
+
+         if (this.props.items.length > 0){
+            console.debug("Defaulted to first item in collection");
+            return this.props.items[0];
+        } else {
+            return undefined;
+        }
     }
 
-	this.setState({
-        selectedItem: this.findFirst(
-            newProps.items,
-            (t: T) => this.props.getId(t) === newProps.params.selectedId
-        )
-    });
-  }
+    private findFirst<T>(array : Array<T>, predicate: (T)=>boolean) : T {
+        for (let a of array) {
+            if (predicate(a)) {
+                return a;
+            }
+        }
 
-  private findFirst<T>(array : Array<T>, predicate: (T)=>boolean) : T {
-	for (let a of array) {
-		if (predicate(a)) {
-			return a;
-		}
-	}
-
-	return null;
-  }
-
-  private summarize(obj) {
-	return obj.summary || obj.payload;
-  }
-
-  private render() : ReactElement<any> {
-
-    let selectedItemView = null;
-	if (this.state.selectedItem == null) {
-		selectedItemView = this.props.defaultView;
-	} else {
-        selectedItemView = this.props.selectedViewContructor(this.state.selectedItem);
+        return undefined;
     }
 
-	let list = this.props.items.map(this.props.linkConstructor);
-    return (
-      <div style={{height: "100%"}}>
-	    <div className="col-md-1">{list}</div>
-        <div className="col-md-11" style={{height: "100%"}}>{selectedItemView}</div>
-      </div>
-    );
-  }
+    private render() : ReactElement<any> {
+        let selectedItem = this.findSelectedItem();
+        let selectedItemView = null;
+        if (selectedItem) {
+            selectedItemView = this.props.selectedViewContructor(selectedItem);
+        } else {
+            selectedItemView = this.props.defaultView;
+        }
+
+        let list = this.props.items.map(this.props.linkConstructor);
+        return (
+            <div style={{height: "100%"}}>
+                <div className="col-md-1">{list}</div>
+                <div className="col-md-11" style={{height: "100%"}}>{selectedItemView}</div>
+            </div>
+        );
+    }
 }

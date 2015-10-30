@@ -15,7 +15,7 @@ interface State {
 
 interface Props {
     filter : Filter;
-    params: {selectedNote: number}
+    selectedNote: number;
 }
 
 export class FilterView extends Component<Props, State> {
@@ -55,7 +55,7 @@ export class FilterView extends Component<Props, State> {
           notesView = <MasterDetailView
                             notes={this.state.notes}
                             linkBase={"/filters/" + this.props.filter.name}
-                            selectedNote={this.props.params.selectedNote}/>
+                            selectedNote={this.props.selectedNote}/>
       } else {
           notesView = <div>Unknown display type {this.props.filter.displayType}</div>
       }

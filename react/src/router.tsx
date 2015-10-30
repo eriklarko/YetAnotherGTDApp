@@ -13,6 +13,8 @@ var Login = LoginComponent;
 import {FiltersStateKeeper} from "./components/filters-state-keeper";
 import {FilterMasterDetail} from "./components/filter-master-detail";
 
+import {FilterViewController} from "./components/filter-view-controller";
+
 import {NoteReminderViewController} from "./components/note-reminders/note-reminder-view-controller";
 
 export function initRouter() {
@@ -24,6 +26,9 @@ export function initRouter() {
             <Route path="/filters/:selectedId" handler={FilterMasterDetail} />
             <Route path="/filters/:selectedId/:selectedNote" handler={FilterMasterDetail} />
         </Route>
+
+        <Route name="filter" path="/filter/:filterId"         handler={FilterViewController} />
+        <Route               path="/filter/:filterId/:noteId" handler={FilterViewController} />
 
         <Route name="note" path="/note/:id" handler={NoteReminderViewController} />
         <Route name="nr" path="nr" handler={NoteReminderViewController} />

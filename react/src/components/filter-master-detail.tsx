@@ -21,7 +21,7 @@ export class FilterMasterDetail extends Component<Props, State>  {
 
         getId={(f) => f.name}
 
-        selectedViewContructor={(f) => <FilterView filter={f} params={this.props.params}/>}
+        selectedViewContructor={(f) => <FilterView filter={f} selectedNote={this.props.params.selectedNote}/>}
         linkConstructor={(f) => <div><Link to={"/filters/" + f.name}>{f.name}</Link></div>}
 
         params={this.props.params}
