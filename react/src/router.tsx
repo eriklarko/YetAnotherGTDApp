@@ -21,6 +21,10 @@ export function initRouter() {
   var options = {
     routes: (
       <Route name="root" path="/" handler={Root}>
+        <Route path="/" handler={FiltersStateKeeper}>
+            <Route path="/" handler={FilterMasterDetail} />
+        </Route>
+
         <Route path="/filters" handler={FiltersStateKeeper}>
             <Route name="filters" path="/filters" handler={FilterMasterDetail} />
             <Route path="/filters/:selectedId" handler={FilterMasterDetail} />

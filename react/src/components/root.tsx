@@ -14,9 +14,6 @@ export class RootComponent extends Component<Props, State> {
     return (
       <div style={{height: "100%"}}>
         <HeaderComponent title="Taggy" />
-        <MenuComponent />
-
-        <hr/>
         <RouteHandler />
       </div>
      );
