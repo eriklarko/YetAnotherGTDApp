@@ -1,7 +1,6 @@
 import {Component, ReactElement} from 'react';
 import {RouteHandler} from 'react-router';
 
-import {MenuComponent} from './menu';
 import {CardGrid} from "./note-views/card-grid";
 import {MasterDetailView} from "./note-views/master-detail";
 

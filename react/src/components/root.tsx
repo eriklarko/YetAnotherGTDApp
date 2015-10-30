@@ -1,6 +1,5 @@
 import {Component, ReactElement} from 'react';
 import {RouteHandler} from 'react-router';
-import {MenuComponent} from "./menu";
 import {HeaderComponent} from './header';
 
 interface State {
