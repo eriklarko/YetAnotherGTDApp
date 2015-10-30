@@ -2,6 +2,7 @@ import {Component, ReactElement} from 'react';
 import {Link} from 'react-router';
 import {Note} from "../../models/note-model";
 import {RichTextPayload} from "../payload-edit/rich-text";
+import {OneLineNoteLink} from "./one-line-note-link";
 
 interface State {
 	selectedNote: Note;
@@ -64,26 +65,9 @@ export class MasterDetailView extends Component<Props, State> {
 }
 
 class ListItem extends Component<{note: Note, linkBase: string}, {}> {
-
-    private summarize(obj) {
-      return this.ellipse(obj.summary || obj.payload, 18, "...");
-    }
-
-    private ellipse(string, maxLength, indicator) {
-      string = string.replace("\n", " ");
-
-      if (string.length > maxLength) {
-          return string.substring(0, maxLength - indicator.length) + indicator;
-      } else {
-          return string;
-      }
-    }
-
     private render() : ReactElement<any> {
         return <div style={{borderBottom: "1px solid #ccc", paddingTop: "1em", paddingBottom:"1em", overflow: "hidden"}}>
-            <Link to={this.props.linkBase + "/" + this.props.note.id}>
-                {this.summarize(this.props.note)}
-            </Link>
+            <OneLineNoteLink note={this.props.note} linkBase={this.props.linkBase} />
 		</div>;
     }
 }

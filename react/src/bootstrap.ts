@@ -66,3 +66,22 @@ function stringGen(len) {
 }
 
 dispatcher.dispatch({type: "notes", notes: notes});
+
+dispatcher.dispatch({type: "note-reminder", noteReminder: {
+    whenToRemind: new Date(),
+    noteToRemindAbout: {
+		id: 1,
+		payload: stringGen(Math.floor(Math.random() * 20)),
+		tags: [tag1, {name: "tag2"}, {name: "neo"}],
+		type: NoteType.Short
+	}
+}});
+dispatcher.dispatch({type: "note-reminder", noteReminder: {
+    whenToRemind: new Date(12321312312333),
+    noteToRemindAbout: {
+		id: 1,
+		payload: stringGen(Math.floor(Math.random() * 20)),
+		tags: [tag1, {name: "tag2"}, {name: "neo"}],
+		type: NoteType.Short
+	}
+}});

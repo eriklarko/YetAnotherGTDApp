@@ -7,7 +7,7 @@ class NoteReminderStore {
     private changedEvent: string = "note-reminder-changed-event";
     private eventEmitter = new EventEmitter();
 
-    private currentState : Array<NoteReminder>;
+    private currentState : Array<NoteReminder> = [];
 
     constructor() {
         this.registerWithDispatcher();
@@ -19,11 +19,31 @@ class NoteReminderStore {
 
     private handleActions = (action : any) : void => {
       switch (action.type) {
-        case "route-state-update":
-            this.currentState = action.state;
+        case "note-reminder":
+            this.currentState.push(action.noteReminder);
+            this.eventEmitter.emit(this.changedEvent);
+            break;
+        case "dismiss-note-reminder":
+            this.remove(action.noteReminder);
             this.eventEmitter.emit(this.changedEvent);
             break;
       }
+    }
+
+    private remove(noteReminder: NoteReminder) : void {
+        let index = this.findIndexOfFirst(this.currentState, (nr: NoteReminder) => {return nr == noteReminder});
+        if (index > -1) {
+           this.currentState.splice(index, 1);
+        }
+    }
+
+    private findIndexOfFirst<T>(array: Array<T>, predicate: (T)=>boolean) : number {
+        for (let i = 0; i < array.length; i++) {
+            if (predicate(array[i])) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     public addChangeListener(listener) {
@@ -34,7 +54,7 @@ class NoteReminderStore {
         this.eventEmitter.removeListener(this.changedEvent, listener);
     }
 
-    public getCurrentState() : any {
+    public getCurrentState() : Array<NoteReminder> {
         return this.currentState;
     }
 }

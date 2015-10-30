@@ -13,6 +13,8 @@ var Login = LoginComponent;
 import {FiltersStateKeeper} from "./components/filters-state-keeper";
 import {FilterMasterDetail} from "./components/filter-master-detail";
 
+import {NoteReminderViewController} from "./components/note-reminders/note-reminder-view-controller";
+
 export function initRouter() {
   var options = {
     routes: (
@@ -22,10 +24,13 @@ export function initRouter() {
             <Route path="/filters/:selectedId" handler={FilterMasterDetail} />
             <Route path="/filters/:selectedId/:selectedNote" handler={FilterMasterDetail} />
         </Route>
+
+        <Route name="note" path="/note/:id" handler={NoteReminderViewController} />
+        <Route name="nr" path="nr" handler={NoteReminderViewController} />
+
         <Route name="login" path="login" handler={Login}/>
       </Route>
-      ),
-    location: HashLocation
+      )
   };
 
   create(options).run((Root : ComponentClass<any>, state : RouterState) => {

@@ -22,11 +22,6 @@ export class HeaderComponent extends Component<Props, State> {
             <a className="navbar-brand" href="#">{this.props.title}</a>
           </div>
           <div id="navbar" className="navbar-collapse collapse">
-            <ul className="nav navbar-nav navbar-right">
-              <li><a href="#">Settings</a></li>
-              <li><a href="#">Profile</a></li>
-              <li><a href="#">Help</a></li>
-            </ul>
             <form className="navbar-form navbar-right">
               <input type="text" className="form-control" placeholder="Search..." />
             </form>

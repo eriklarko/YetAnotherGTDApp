@@ -14,23 +14,23 @@ System.config({
     "autolinker": "github:gregjacobs/Autolinker.js@0.18.1",
     "autolinker.js": "github:gregjacobs/Autolinker.js@0.18.1",
     "bootstrap": "github:twbs/bootstrap@3.3.5",
+    "eventEmitter/EventEmitter": "npm:wolfy87-eventemitter@4.2.11",
     "eventemitter": "npm:eventemitter@0.3.3",
+    "eventie/eventie": "npm:eventie@1.0.6",
     "flux": "npm:flux@2.0.3",
+    "get-size/get-size": "npm:get-size@1.2.2",
     "gregjacobs/Autolinker.js": "github:gregjacobs/Autolinker.js@0.18.1",
     "guillaumervls/react-ellipsis": "github:guillaumervls/react-ellipsis@master",
     "jonschlinkert/remarkable": "github:jonschlinkert/remarkable@1.6.0/dist/remarkable",
     "jquery": "npm:jquery@3.0.0-alpha1",
     "masonry-layout": "npm:masonry-layout@3.3.2",
     "olahol/react-tagsinput": "github:olahol/react-tagsinput@1.4.3",
+    "outlayer/outlayer": "npm:outlayer@1.4.2",
     "react": "npm:react@0.13.3",
     "react-masonry-component": "npm:react-masonry-component@1.0.4",
     "react-router": "npm:react-router@0.13.3",
     "traceur": "github:jmcriffey/bower-traceur@0.0.88",
     "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.88",
-    "get-size/get-size": "npm:get-size@1.2.2",
-    "outlayer/outlayer": "npm:outlayer@1.4.2",
-    "eventEmitter/EventEmitter": "npm:wolfy87-eventemitter@4.2.11",
-    "eventie/eventie": "npm:eventie@1.0.6",
     "github:jspm/nodelibs-buffer@0.1.0": {
       "buffer": "npm:buffer@3.3.1"
     },
@@ -175,3 +175,4 @@ System.config({
     }
   }
 });
+
