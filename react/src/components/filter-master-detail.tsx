@@ -8,23 +8,60 @@ interface State {
 }
 
 interface Props {
-  filters : Array<Filter>;
-  params: any;
+    filters : Array<Filter>;
+    params: any;
 }
 
 export class FilterMasterDetail extends Component<Props, State>  {
 
-  private render() : ReactElement<any> {
-      return <GenericMasterDetailView
-        items={this.props.filters}
-        defaultView="select a filter, damnation"
+    private verticalThingie(list: Array<ReactElement<any>>, detail: ReactElement<any>) : ReactElement<any> {
+        return  <div style={{height: "100%"}}>
 
-        getId={(f) => f.name}
+                <nav className="navbar navbar-default">
+                    <div className="container-fluid">
 
-        selectedViewContructor={(f) => <FilterView filter={f} selectedNote={this.props.params.selectedNote}/>}
-        linkConstructor={(f) => <div><Link to={"/filters/" + f.name}>{f.name}</Link></div>}
+                        <div className="navbar-header">
+                            <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                                <span className="sr-only">Toggle navigation</span>
+                                <span className="icon-bar"></span>
+                                <span className="icon-bar"></span>
+                                <span className="icon-bar"></span>
+                            </button>
+                        </div>
 
-        params={this.props.params}
-        />
-  }
+                        <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                            <ul className="nav navbar-nav">
+                                {list}
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+
+                <div style={{height: "100%"}}>{detail}</div>
+            </div>
+    }
+
+    private render() : ReactElement<any> {
+
+        console.debug("", this.props);
+
+        return <GenericMasterDetailView
+            items={this.props.filters}
+            defaultView="select a filter, damnation"
+
+            getId={(f) => f.name}
+
+            selectedId={this.props.params.selectedId}
+            selectedViewContructor={(f) => <FilterView filter={f} selectedNote={this.props.params.selectedNote}/>}
+
+            linkConstructor={(f, selected) => {
+                let className = selected ? "active" : ""
+                return  <li className={className}>
+                            <Link to={"/filters/" + f.name}>{f.name}</Link>
+                        </li>
+            }}
+
+            listDetailRenderer={this.verticalThingie}
+            />
+    }
 }

@@ -8,8 +8,10 @@ interface Props<T> {
     getId : (T) => any;
     selectedId: any;
     defaultView: ReactElement<any>;
-    selectedViewContructor: (T) => ReactElement<any>;
-    linkConstructor: (T) => ReactElement<any>;
+    selectedViewContructor: (t: T) => ReactElement<any>;
+    linkConstructor: (t: T, selected: boolean) => ReactElement<any>;
+
+    listDetailRenderer: (list: Array<ReactElement<any>>, detail: ReactElement<any>) => ReactElement<any>;
 }
 
 // This is a stupid idea... :) The views using this are hard to understand and debug.
@@ -45,6 +47,15 @@ export class GenericMasterDetailView<T> extends Component<Props<T>, State> {
         return undefined;
     }
 
+    private horizontalRenderer(list: Array<ReactElement<any>>, detail: ReactElement<any>) : ReactElement<any> {
+        return (
+            <div style={{height: "100%"}}>
+                <div className="col-md-1">{list}</div>
+                <div className="col-md-11" style={{height: "100%"}}>{detail}</div>
+            </div>
+        );
+    }
+
     private render() : ReactElement<any> {
         let selectedItem = this.findSelectedItem();
         let selectedItemView = null;
@@ -54,12 +65,12 @@ export class GenericMasterDetailView<T> extends Component<Props<T>, State> {
             selectedItemView = this.props.defaultView;
         }
 
-        let list = this.props.items.map(this.props.linkConstructor);
-        return (
-            <div style={{height: "100%"}}>
-                <div className="col-md-1">{list}</div>
-                <div className="col-md-11" style={{height: "100%"}}>{selectedItemView}</div>
-            </div>
-        );
+        let list : Array<ReactElement<any>> = this.props.items.map(
+            (item: T) => {
+                let selected = item === selectedItem;
+                return this.props.linkConstructor(item, selected);
+            });
+        let renderer = this.props.listDetailRenderer || this.horizontalRenderer;
+        return renderer(list, selectedItemView);
     }
 }
