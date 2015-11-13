@@ -14,7 +14,7 @@ interface Props {
 
 export class FilterMasterDetail extends Component<Props, State>  {
 
-    private verticalThingie(list: Array<ReactElement<any>>, detail: ReactElement<any>) : ReactElement<any> {
+    private horizontalLayout(list: Array<ReactElement<any>>, detail: ReactElement<any>) : ReactElement<any> {
         return  <div style={{height: "100%"}}>
 
                 <nav className="navbar navbar-default">
@@ -42,11 +42,10 @@ export class FilterMasterDetail extends Component<Props, State>  {
     }
 
     private render() : ReactElement<any> {
-
-        console.debug("", this.props);
+        var starredFilters = this.props.filters.filter((f) => f.starred);
 
         return <GenericMasterDetailView
-            items={this.props.filters}
+            items={starredFilters}
             defaultView="select a filter, damnation"
 
             getId={(f) => f.name}
@@ -61,7 +60,7 @@ export class FilterMasterDetail extends Component<Props, State>  {
                         </li>
             }}
 
-            listDetailRenderer={this.verticalThingie}
+            listDetailRenderer={this.horizontalLayout}
             />
     }
 }

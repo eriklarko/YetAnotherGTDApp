@@ -46,13 +46,15 @@ for (let i = 0; i < numNotes; i++) {
 let filter = {
 	name: "Master detail",
 	searchTree: {raw: ""},
-    displayType: DisplayType.MasterDetail
+    displayType: DisplayType.MasterDetail,
+    starred: true
 };
 dispatcher.dispatch({type: "new-filter", filter: filter});
 filter = {
 	name: "Cards",
 	searchTree: {raw: ""},
-    displayType: DisplayType.Cards
+    displayType: DisplayType.Cards,
+    starred: true
 };
 dispatcher.dispatch({type: "new-filter", filter: filter});
 
