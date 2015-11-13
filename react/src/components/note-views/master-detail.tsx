@@ -57,7 +57,7 @@ export class MasterDetailView extends Component<Props, State> {
         return (
             <div style={{height: "100%"}}>
             <div className="col-md-1">{list}</div>
-                <div className="col-md-11" style={{height: "100%"}}>{selectedNoteView}</div>
+                <div className="col-md-10" style={{height: "100%"}}>{selectedNoteView}</div>
             </div>
         );
     }

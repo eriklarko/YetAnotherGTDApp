@@ -15,7 +15,7 @@ interface Props {
 export class FilterMasterDetail extends Component<Props, State>  {
 
     private horizontalLayout(list: Array<ReactElement<any>>, detail: ReactElement<any>) : ReactElement<any> {
-        return  <div style={{height: "100%"}}>
+        return <div style={{height: "100%"}}>
 
                 <nav className="navbar navbar-default">
                     <div className="container-fluid">
@@ -45,22 +45,22 @@ export class FilterMasterDetail extends Component<Props, State>  {
         var starredFilters = this.props.filters.filter((f) => f.starred);
 
         return <GenericMasterDetailView
-            items={starredFilters}
-            defaultView="select a filter, damnation"
+                    items={starredFilters}
+                    defaultView="select a filter, damnation"
 
-            getId={(f) => f.name}
+                    getId={(f) => f.name}
 
-            selectedId={this.props.params.selectedId}
-            selectedViewContructor={(f) => <FilterView filter={f} selectedNote={this.props.params.selectedNote}/>}
+                    selectedId={this.props.params.selectedId}
+                    selectedViewContructor={(f) => <FilterView filter={f} selectedNote={this.props.params.selectedNote}/>}
 
-            linkConstructor={(f, selected) => {
-                let className = selected ? "active" : ""
-                return  <li className={className}>
-                            <Link to={"/filters/" + f.name}>{f.name}</Link>
-                        </li>
-            }}
+                    linkConstructor={(f, selected) => {
+                        let className = selected ? "active" : ""
+                        return  <li className={className}>
+                                    <Link to={"/filters/" + f.name}>{f.name}</Link>
+                                </li>
+                    }}
 
-            listDetailRenderer={this.horizontalLayout}
-            />
+                    listDetailRenderer={this.horizontalLayout}
+                    />;
     }
 }

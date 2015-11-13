@@ -22,11 +22,33 @@ class FilterStore {
           this.currentState.push(action.filter);
           this.eventEmitter.emit(this.changedEvent);
           break;
-      case "remove-filter":
-        this.remove(this.currentState, action.filter);
-        this.eventEmitter.emit(this.changedEvent);
-        break;
+        case "removed-filter":
+          this.remove(this.currentState, action.filter);
+          this.eventEmitter.emit(this.changedEvent);
+          break;
+        case "filter-updated":
+          this.replaceFilter(action.filter);
+          this.eventEmitter.emit(this.changedEvent);
+          break;
     }
+  }
+
+  private replaceFilter(filter: Filter): void {
+      if (this.currentState === undefined || this.currentState === null) {
+          this.currentState = [filter];
+          this.eventEmitter.emit(this.changedEvent);
+          return;
+      }
+
+      for (var i in this.currentState) {
+          if (this.currentState[i].name === filter.name) {
+              this.currentState[i] = filter;
+              this.eventEmitter.emit(this.changedEvent);
+              return;
+          }
+      }
+
+      console.log("[WARNING] Tried to replace a filter that did not exist in the store", filter, this.currentState);
   }
 
   private remove(array: Array<Filter>, filter: Filter) {

@@ -3,17 +3,22 @@ import {Filter} from "../models/filter-model";
 
 class FilterActionCreator {
 
-    public addNewFilter(filter: Filter) {
+    public addNewFilter(filter: Filter) : void {
         dispatcher.dispatch({type: "new-filter", filter: filter});
     }
 
-    public removeFilter(filter: Filter) {
-        dispatcher.dispatch({type: "remove-filter", filter: Filter});
+    public removeFilter(filter: Filter) : void {
+        dispatcher.dispatch({type: "removed-filter", filter: Filter});
     }
 
-    public getNotesInFilter(filter: Filter) {
-        var notes = [];
-        dispatcher.dispatch({type: "notes-in-filter", filter: Filter, notes: notes});
+    public unstarFilter(filter: Filter) : void {
+        filter.starred = false;
+        dispatcher.dispatch({type: "filter-updated", filter: filter});
+    }
+
+    public starFilter(filter: Filter) : void {
+        filter.starred = true;
+        dispatcher.dispatch({type: "filter-updated", filter: filter});
     }
 }
 
