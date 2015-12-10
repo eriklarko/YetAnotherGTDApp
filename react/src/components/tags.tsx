@@ -37,8 +37,8 @@ export class Tags extends Component<Props, State> {
 		tagsActionCreator.addTag(this.props.note, {name: tag});
 	}
 
-	private removeTag = (tag: string) => {
-		tagsActionCreator.removeTag(this.props.note, {name: tag});
+	private removeTag = (tag: Tag) => {
+		tagsActionCreator.removeTag(this.props.note, tag);
 	}
 
     private updateTypeaheadMatches = (input: string) => {
@@ -83,9 +83,10 @@ export class Tags extends Component<Props, State> {
             tag = tag.parent;
         }
 
+        let removeTag = () => this.removeTag(tag);
         return (<span className={this.tagStyles.tag}>
             <span>{tagText}</span>
-            <a className={this.tagStyles.remove}></a>
+            <a className={this.tagStyles.remove} onClick={removeTag}></a>
         </span>);
     }
 
