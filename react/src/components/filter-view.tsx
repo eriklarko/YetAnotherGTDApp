@@ -89,11 +89,11 @@ export class FilterView extends Component<Props, State> {
 
       return (
           <div>
-              <div style={{display: "inline"}}>
+              <div className="col-md-11">
                   {filterName}
                   {notesView}
               </div>
-              <div style={{display: "inline"}}>{starToggle}</div>
+              <div className="col-md-1">{starToggle}</div>
           </div>
       )
   }

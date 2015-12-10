@@ -1,7 +1,7 @@
 import {Component, ReactElement} from 'react';
 import {Link} from 'react-router';
 import {Note} from "../../models/note-model";
-import {RichTextPayload} from "../payload-edit/rich-text";
+import {NoteView} from "./note-view";
 import {OneLineNoteLink} from "./one-line-note-link";
 
 interface State {
@@ -45,7 +45,7 @@ export class MasterDetailView extends Component<Props, State> {
         let selectedNote = this.findSelectedNote();
         let selectedNoteView = null;
         if (selectedNote) {
-            selectedNoteView = <RichTextPayload note={selectedNote} />
+            selectedNoteView = <NoteView note={selectedNote} />
         } else {
             selectedNoteView = "No selected note yet. Use the list to the left so select one."
         }

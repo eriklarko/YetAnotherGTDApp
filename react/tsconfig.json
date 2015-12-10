@@ -63,6 +63,7 @@
         "./src/components/note-reminders/note-reminder-view-controller.tsx",
         "./src/components/note-views/card-grid.tsx",
         "./src/components/note-views/master-detail.tsx",
+        "./src/components/note-views/note-view.tsx",
         "./src/components/note-views/one-line-note-link.tsx",
         "./src/components/payload-edit/rich-text.tsx",
         "./src/components/payload-edit/small-text.tsx",

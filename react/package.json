@@ -32,6 +32,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "(tsc && mocha) || true"
+    "test": "(tsc && mocha) || true",
+    "dev": "tsc --watch & http-server -c-1"
   }
 }

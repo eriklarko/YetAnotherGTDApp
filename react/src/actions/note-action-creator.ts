@@ -1,5 +1,5 @@
 import {dispatcher} from '../dispatcher';
-
+import {Note, NoteType} from "../models/note-model";
 import * as jquery from "jquery";
 
 declare var window : any;
@@ -38,6 +38,14 @@ class NotesActionCreator {
         });
       });
   }
+    public changeNoteType(note: Note, newType: NoteType) : void {
+        note.type = newType;
+
+        dispatcher.dispatch({
+            type: "note-updated",
+            note: note
+        });
+    }
 }
 
 export var notesActionCreator : NotesActionCreator = new NotesActionCreator();
