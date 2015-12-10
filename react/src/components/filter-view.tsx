@@ -58,7 +58,7 @@ export class FilterView extends Component<Props, State> {
               filterActionCreator.starFilter(filter);
           }
       }
-      return <button onClick={starToggleFunction}>{filter.starred ? "unstar" : "star"}</button>;
+      return <button onClick={starToggleFunction}>{filter.starred ? "unstar filter" : "star filter"}</button>;
       /*return <div>
           <div style={{float: "inline"}}>
               {view}

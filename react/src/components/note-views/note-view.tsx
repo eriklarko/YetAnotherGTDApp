@@ -22,16 +22,18 @@ export class NoteView extends Component<Props, State> {
                 notesActionCreator.changeNoteType(this.props.note, typeToChangeTo);
             }
 
-            let toggleBetweenRichAndSimple = typeToChangeTo == NoteType.Short
-                ? <div onClick={f}>Make note short</div>
-                : <div onClick={f}>Make note rich</div>;
+            let toggleBetweenRichAndSimple = <div onClick={f} style={{cursor: "pointer"}}>
+                {typeToChangeTo == NoteType.Short
+                    ? "Make note short"
+                    : "Make note rich"}
+            </div>;
 
             return <div>
-                <div style={{float: "left"}}>
+                <div className="col-md-11">
                     {noteView}
                 </div>
-                <div style={{float: "left"}}>
-                    {toggleBetweenRichAndSimple}
+                <div className="col-md-1">
+                   {toggleBetweenRichAndSimple}
                 </div>
             </div>;
         } else {
