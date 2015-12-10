@@ -37,7 +37,7 @@ for (let i = 0; i < numNotes; i++) {
     var tag1 = {name: "tag1", parent: {name: "a"}};
     notes.push({
 		id: i,
-		payload: stringGen(Math.floor(Math.random() * 20)),
+		payload: stringGen(Math.floor(Math.random() * 20) + 1),
 		tags: [tag1, {name: "tag2"}, {name: "neo", parent: tag1}],
 		type: NoteType.Short
 	});
@@ -60,7 +60,7 @@ dispatcher.dispatch({type: "new-filter", filter: filter});
 
 function stringGen(len) {
     var text = "";
-    var charset = "aeiouyl";
+    var charset = "aeiouyl\n";
     for( var i=0; i < len; i++ ) {
         text += charset.charAt(Math.floor(Math.random() * charset.length));
     }

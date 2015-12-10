@@ -17,6 +17,8 @@ import {FilterViewController} from "./components/filter-view-controller";
 
 import {NoteReminderViewController} from "./components/note-reminders/note-reminder-view-controller";
 
+import {Search} from "./components/search";
+
 export function initRouter() {
   var options = {
     routes: (
@@ -36,6 +38,8 @@ export function initRouter() {
 
         <Route name="note" path="/note/:id" handler={NoteReminderViewController} />
         <Route name="nr" path="nr" handler={NoteReminderViewController} />
+
+        <Route name="search" path="/search/:query" handler={Search} />
 
         <Route name="login" path="login" handler={Login}/>
       </Route>

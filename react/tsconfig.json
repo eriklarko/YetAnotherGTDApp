@@ -68,6 +68,7 @@
         "./src/components/payload-edit/rich-text.tsx",
         "./src/components/payload-edit/small-text.tsx",
         "./src/components/root.tsx",
+        "./src/components/search.tsx",
         "./src/components/spinner.tsx",
         "./src/components/tags.tsx",
         "./src/router.tsx"
