@@ -53,6 +53,7 @@
         "./typings/sinon/sinon.d.ts",
         "./src/components/alert.tsx",
         "./src/components/filter-master-detail.tsx",
+        "./src/components/filter-menu.tsx",
         "./src/components/filter-view-controller.tsx",
         "./src/components/filter-view.tsx",
         "./src/components/filters-state-keeper.tsx",
@@ -73,5 +74,8 @@
         "./src/components/tags.tsx",
         "./src/router.tsx"
     ],
-    "exclude": []
+    "exclude": [],
+    "atom": {
+        "rewriteTsconfig": true
+    }
 }

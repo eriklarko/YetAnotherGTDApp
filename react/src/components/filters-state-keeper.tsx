@@ -12,7 +12,6 @@ interface State {
 }
 
 interface Props {
-    params: any;
 }
 
 // This class should not exist :) I need to move the stores down into the components that need them.
@@ -36,6 +35,6 @@ export class FiltersStateKeeper extends Component<Props, State> {
     }
 
     private render() : ReactElement<any> {
-        return <RouteHandler filters={this.state.filters} params={this.props.params}/>
+        return <RouteHandler filters={this.state.filters} {...this.props}/>
     }
 }

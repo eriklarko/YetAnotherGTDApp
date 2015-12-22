@@ -18,28 +18,29 @@ import {FilterViewController} from "./components/filter-view-controller";
 import {NoteReminderViewController} from "./components/note-reminders/note-reminder-view-controller";
 
 import {Search} from "./components/search";
+import {FilterMenu} from "./components/filter-menu";
+var AllFiltersList;
 
 export function initRouter() {
   var options = {
     routes: (
       <Route name="root" path="/" handler={Root}>
         <Route path="/" handler={FiltersStateKeeper}>
-            <Route path="/" handler={FilterMasterDetail} />
+            <Route path="/" handler={FilterMenu}>
+
+                <Route path="/filters/:selectedId" handler={FilterViewController} />
+                <Route path="/filters/:selectedId/:selectedNote" handler={FilterViewController} />
+                <Route path="/filters/all" handler={AllFiltersList} />
+
+                <Route name="search" path="/search/:query" handler={Search} />
+
+                <Route name="filter" path="/filter/:filterId"         handler={FilterViewController} />
+                <Route               path="/filter/:filterId/:noteId" handler={FilterViewController} />
+
+                <Route name="note" path="/note/:id" handler={NoteReminderViewController} />
+                <Route name="nr" path="nr" handler={NoteReminderViewController} />
+            </Route>
         </Route>
-
-        <Route path="/filters" handler={FiltersStateKeeper}>
-            <Route name="filters" path="/filters" handler={FilterMasterDetail} />
-            <Route path="/filters/:selectedId" handler={FilterMasterDetail} />
-            <Route path="/filters/:selectedId/:selectedNote" handler={FilterMasterDetail} />
-        </Route>
-
-        <Route name="filter" path="/filter/:filterId"         handler={FilterViewController} />
-        <Route               path="/filter/:filterId/:noteId" handler={FilterViewController} />
-
-        <Route name="note" path="/note/:id" handler={NoteReminderViewController} />
-        <Route name="nr" path="nr" handler={NoteReminderViewController} />
-
-        <Route name="search" path="/search/:query" handler={Search} />
 
         <Route name="login" path="login" handler={Login}/>
       </Route>
