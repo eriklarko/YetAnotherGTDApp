@@ -10,15 +10,16 @@ var Root = RootComponent;
 import {LoginComponent} from './components/login';
 var Login = LoginComponent;
 
-import {FiltersStateKeeper} from "./components/filters-state-keeper";
-import {FilterMasterDetail} from "./components/filter-master-detail";
+import {FiltersStateKeeper} from "./components/filter/filters-state-keeper";
+import {FilterMasterDetail} from "./components/filter/filter-master-detail";
 
-import {FilterViewController} from "./components/filter-view-controller";
+import {FilterViewController} from "./components/filter/filter-view-controller";
+import {FilterEditController} from "./components/filter/filter-edit-controller";
 
 import {NoteReminderViewController} from "./components/note-reminders/note-reminder-view-controller";
 
 import {Search} from "./components/search";
-import {FilterMenu} from "./components/filter-menu";
+import {FilterMenu} from "./components/filter/filter-menu";
 var AllFiltersList;
 
 export function initRouter() {
@@ -36,6 +37,8 @@ export function initRouter() {
 
                 <Route name="filter" path="/filter/:filterId"         handler={FilterViewController} />
                 <Route               path="/filter/:filterId/:noteId" handler={FilterViewController} />
+
+                <Route path="/editfilter/:filterId"    handler={FilterEditController} />
 
                 <Route name="note" path="/note/:id" handler={NoteReminderViewController} />
                 <Route name="nr" path="nr" handler={NoteReminderViewController} />

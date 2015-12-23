@@ -1,15 +1,15 @@
 import {ReactElement, Component} from 'react';
 import {RouteHandler} from 'react-router';
 
-import {Filter, DisplayType, SearchTree} from "../models/filter-model";
+import {Filter, DisplayType, SearchTree} from "../../models/filter-model";
 
-import {Note} from "../models/note-model";
-import {noteStore} from "../stores/note-store";
+import {Note} from "../../models/note-model";
+import {noteStore} from "../../stores/note-store";
 
-import {CardGrid} from "./note-views/card-grid";
-import {MasterDetailView} from "./note-views/master-detail";
+import {CardGrid} from "../note-views/card-grid";
+import {MasterDetailView} from "../note-views/master-detail";
 
-import {filterActionCreator} from "../actions/filter-action-creator";
+import {filterActionCreator} from "../../actions/filter-action-creator";
 
 interface State {
     notes: Array<Note>

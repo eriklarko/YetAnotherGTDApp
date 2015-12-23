@@ -1,7 +1,7 @@
 import {Component, ReactElement} from 'react';
 import {Link, RouteHandler} from 'react-router';
-import {Filter} from "../models/filter-model";
-import {GenericMasterDetailView} from "./generic-master-detail";
+import {Filter} from "../../models/filter-model";
+import {GenericMasterDetailView} from "../generic-master-detail";
 import {FilterView} from "./filter-view";
 
 interface State {

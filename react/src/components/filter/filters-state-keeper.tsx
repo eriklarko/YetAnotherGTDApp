@@ -1,11 +1,11 @@
 import {Component, ReactElement} from 'react';
 import {RouteHandler} from 'react-router';
 
-import {CardGrid} from "./note-views/card-grid";
-import {MasterDetailView} from "./note-views/master-detail";
+import {CardGrid} from "../note-views/card-grid";
+import {MasterDetailView} from "../note-views/master-detail";
 
-import {Filter} from "../models/filter-model";
-import {filterStore} from "../stores/filter-store";
+import {Filter} from "../../models/filter-model";
+import {filterStore} from "../../stores/filter-store";
 
 interface State {
     filters: Array<Filter>
