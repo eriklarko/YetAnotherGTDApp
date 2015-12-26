@@ -29,16 +29,16 @@ export function initRouter() {
         <Route path="/" handler={FiltersStateKeeper}>
             <Route path="/" handler={FilterMenu}>
 
-                <Route path="/filters/:selectedId" handler={FilterViewController} />
-                <Route path="/filters/:selectedId/:selectedNote" handler={FilterViewController} />
+                <Route path="/filters/:filterName" handler={FilterViewController} />
+                <Route path="/filters/:filterName/:selectedNote" handler={FilterViewController} />
                 <Route path="/filters/all" handler={AllFiltersList} />
 
                 <Route name="search" path="/search/:query" handler={Search} />
 
-                <Route name="filter" path="/filter/:filterId"         handler={FilterViewController} />
-                <Route               path="/filter/:filterId/:noteId" handler={FilterViewController} />
+                <Route name="filter" path="/filter/:filterName"         handler={FilterViewController} />
+                <Route               path="/filter/:filterName/:noteId" handler={FilterViewController} />
 
-                <Route path="/editfilter/:filterId"    handler={FilterEditController} />
+                <Route path="/editfilter/:filterId" handler={FilterEditController} />
 
                 <Route name="note" path="/note/:id" handler={NoteReminderViewController} />
                 <Route name="nr" path="nr" handler={NoteReminderViewController} />

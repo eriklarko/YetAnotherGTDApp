@@ -41,7 +41,7 @@ class FilterStore {
       }
 
       for (var i in this.currentState) {
-          if (this.currentState[i].name === filter.name) {
+          if (this.currentState[i].id === filter.id) {
               this.currentState[i] = filter;
               this.eventEmitter.emit(this.changedEvent);
               return;
@@ -52,7 +52,7 @@ class FilterStore {
   }
 
   private remove(array: Array<Filter>, filter: Filter) {
-      var index = this.findIndexOf(array, (f) => f.name, filter.name);
+      var index = this.findIndexOf(array, (f) => f.id, filter.id);
       array.slice(index, 1);
   }
 

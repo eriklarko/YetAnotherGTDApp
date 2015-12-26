@@ -44,6 +44,7 @@ for (let i = 0; i < numNotes; i++) {
 }
 
 let filter = {
+    id: 1,
 	name: "Master detail",
 	searchTree: {raw: ""},
     displayType: DisplayType.MasterDetail,
@@ -51,6 +52,7 @@ let filter = {
 };
 dispatcher.dispatch({type: "new-filter", filter: filter});
 filter = {
+    id: 2,
 	name: "Cards",
 	searchTree: {raw: ""},
     displayType: DisplayType.Cards,

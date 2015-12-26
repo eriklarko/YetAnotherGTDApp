@@ -3,6 +3,7 @@ export enum DisplayType {
 }
 
 export class Filter {
+    id: number;
 	name: string;
     searchTree: SearchTree;
     displayType: DisplayType;

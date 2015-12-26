@@ -20,6 +20,10 @@ class FilterActionCreator {
         filter.starred = true;
         dispatcher.dispatch({type: "filter-updated", filter: filter});
     }
+
+    public updateFilter(oldFilter: Filter, newFilter: Filter) : void {
+        dispatcher.dispatch({type: "filter-updated", filter: newFilter});
+    }
 }
 
 export var filterActionCreator : FilterActionCreator = new FilterActionCreator();

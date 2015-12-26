@@ -1,5 +1,6 @@
 import {Component, ReactElement} from 'react';
 import {Filter, DisplayType} from "../../models/filter-model";
+import {filterActionCreator} from "../../actions/filter-action-creator";
 
 interface State {
 }
@@ -21,6 +22,29 @@ export class FilterEdit extends Component<Props, State> {
 
         return displayTypeOptions;
     }
+
+    private save = () => {
+        let newFilter : Filter = this.copyObject(this.props.filter);
+        //console.log(this.refs, this.refs["name"], this.refs["name"].getDOMNode());
+        newFilter.name = (this.refs["name"] as any).getDOMNode().value;
+        newFilter.starred = (this.refs["starred"] as any).getDOMNode().checked;
+        //newFilter.displayType = (this.refs["displayType"] as any).value;
+        //newFilter.searchTree = (this.refs["name"] as any).value;
+        console.log("Saving", this.props.filter, newFilter);
+
+        filterActionCreator.updateFilter(this.props.filter, newFilter);
+    }
+
+    private copyObject<T> (object:T): T {
+        let objectCopy : T = {} as T;
+        for (var key in object) {
+            if (object.hasOwnProperty(key)) {
+                objectCopy[key] = object[key];
+            }
+        }
+        return objectCopy;
+    }
+
     private render() : ReactElement<any> {
 
         return <div>
@@ -31,10 +55,11 @@ export class FilterEdit extends Component<Props, State> {
                         ref="name"
                         defaultValue={this.props.filter.name} />
             <br />
+            Starred: <input type="checkbox" ref="starred" defaultChecked={this.props.filter.starred} /> <br/>
             Display type: <select>{this.getDisplayTypeOptions()}</select> <br />
             Search tree: <canvas />
 
-            <button>Save</button>
+            <button onClick={this.save}>Save</button>
         </div>
     }
 }

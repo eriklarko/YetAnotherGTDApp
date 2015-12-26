@@ -7,13 +7,13 @@ interface State {
 }
 
 interface Props {
-    params: {selectedId: string, selectedNote: number};
+    params: {filterName: string, selectedNote: number};
     filters: Array<Filter>;
 }
 
 export class FilterViewController extends Component<Props, State> {
 
-    private findFilterById(filterName: string, filters: Array<Filter>) : Filter {
+    private findFilterByName(filterName: string, filters: Array<Filter>) : Filter {
         for(let filter of filters) {
             if (filter.name === filterName) {
                 return filter;
@@ -24,7 +24,7 @@ export class FilterViewController extends Component<Props, State> {
     }
 
     private render() : ReactElement<any> {
-        let filter = this.findFilterById(this.props.params.selectedId, this.props.filters);
+        let filter = this.findFilterByName(this.props.params.filterName, this.props.filters);
         if (filter === undefined) {
             return <div>Unknown filter</div>
         }
