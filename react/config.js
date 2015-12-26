@@ -21,7 +21,7 @@ System.config({
     "get-size/get-size": "npm:get-size@1.2.2",
     "gregjacobs/Autolinker.js": "github:gregjacobs/Autolinker.js@0.18.1",
     "guillaumervls/react-ellipsis": "github:guillaumervls/react-ellipsis@master",
-    "jonschlinkert/remarkable": "github:jonschlinkert/remarkable@1.6.0/dist/remarkable",
+    "jonschlinkert/remarkable": "github:jonschlinkert/remarkable@1.6.0/dist/remarkable/dist/remarkable",
     "jquery": "npm:jquery@3.0.0-alpha1",
     "masonry-layout": "npm:masonry-layout@3.3.2",
     "olahol/react-tagsinput": "github:olahol/react-tagsinput@1.4.3",
@@ -175,4 +175,3 @@ System.config({
     }
   }
 });
-
