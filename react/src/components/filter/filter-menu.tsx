@@ -3,6 +3,7 @@ import {Link, RouteHandler} from 'react-router';
 import {Filter} from "../../models/filter-model";
 import {GenericMasterDetailView} from "../generic-master-detail";
 import {FilterView} from "./filter-view";
+import {ErrorList} from "../error-list";
 
 interface State {
 }
@@ -43,6 +44,7 @@ export class FilterMenu extends Component<Props, State>  {
                     </div>
                 </nav>
                 <div>
+                    <ErrorList />
                     <RouteHandler {...this.props} />
                 </div>
             </div>

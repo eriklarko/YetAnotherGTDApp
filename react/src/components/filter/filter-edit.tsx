@@ -25,7 +25,6 @@ export class FilterEdit extends Component<Props, State> {
 
     private save = () => {
         let newFilter : Filter = this.copyObject(this.props.filter);
-        //console.log(this.refs, this.refs["name"], this.refs["name"].getDOMNode());
         newFilter.name = (this.refs["name"] as any).getDOMNode().value;
         newFilter.starred = (this.refs["starred"] as any).getDOMNode().checked;
         //newFilter.displayType = (this.refs["displayType"] as any).value;

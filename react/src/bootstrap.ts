@@ -89,3 +89,7 @@ dispatcher.dispatch({type: "note-reminder", noteReminder: {
 		type: NoteType.Short
 	}
 }});
+
+
+import {notesActionCreator} from "./actions/note-action-creator";
+//notesActionCreator.requestAllNotes();
