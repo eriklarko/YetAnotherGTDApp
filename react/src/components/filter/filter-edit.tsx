@@ -15,8 +15,8 @@ export class FilterEdit extends Component<Props, State> {
         let displayTypeOptions = [];
         for (var displayType in DisplayType) {
             var isValueProperty = parseInt(displayType, 10) >= 0
-            if (!isValueProperty) {
-                displayTypeOptions.push(<option value={displayType}>{displayType}</option>);
+            if (isValueProperty) {
+                displayTypeOptions.push(<option value={displayType}>{DisplayType[displayType]}</option>);
             }
         }
 
@@ -27,7 +27,7 @@ export class FilterEdit extends Component<Props, State> {
         let newFilter : Filter = this.copyObject(this.props.filter);
         newFilter.name = (this.refs["name"] as any).getDOMNode().value;
         newFilter.starred = (this.refs["starred"] as any).getDOMNode().checked;
-        //newFilter.displayType = (this.refs["displayType"] as any).value;
+        newFilter.displayType = (this.refs["displayType"] as any).getDOMNode().value;
         //newFilter.searchTree = (this.refs["name"] as any).value;
         console.log("Saving", this.props.filter, newFilter);
 
@@ -55,7 +55,7 @@ export class FilterEdit extends Component<Props, State> {
                         defaultValue={this.props.filter.name} />
             <br />
             Starred: <input type="checkbox" ref="starred" defaultChecked={this.props.filter.starred} /> <br/>
-            Display type: <select>{this.getDisplayTypeOptions()}</select> <br />
+            Display type: <select ref="displayType">{this.getDisplayTypeOptions()}</select> <br />
             Search tree: <canvas />
 
             <button onClick={this.save}>Save</button>
