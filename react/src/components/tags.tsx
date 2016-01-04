@@ -5,7 +5,8 @@ import {Tag} from "../models/tag-model";
 import {tagsActionCreator} from "../actions/tags-action-creator";
 
 interface State {
-    tagCompletions: Array<Tag>
+    tagCompletions: Array<Tag>;
+    availableTags: Array<Tag>;
 }
 
 interface Props {
@@ -15,7 +16,7 @@ interface Props {
 // https://github.com/olahol/react-tagsinput
 export class Tags extends Component<Props, State> {
 
-    private availableTags = [{name: "a"}, {name: "b"}, {name: "apa"}];
+    //private availableTags = [{name: "aasf"}, {name: "b"}, {name: "apa"}];
     private tagStyles = {
         div: "react-tagsinput",
         input: "react-tagsinput-input",
@@ -29,7 +30,8 @@ export class Tags extends Component<Props, State> {
         super();
 
         this.state = {
-            tagCompletions: []
+            tagCompletions: [],
+            availableTags: [],
         };
     }
 
@@ -47,7 +49,7 @@ export class Tags extends Component<Props, State> {
             completions = [];
         } else {
             let a : any = this.refs["a"];
-            completions = this.availableTags.filter(function (availableTag) {
+            completions = this.state.availableTags.filter(function (availableTag) {
                 var tagName = availableTag.name.toLowerCase();
 
                 var matchesAvailableTag = tagName.substr(0, input.length) == input;
@@ -58,13 +60,15 @@ export class Tags extends Component<Props, State> {
       }
 
       this.setState({
-          tagCompletions: completions
+          tagCompletions: completions,
+          availableTags: this.state.availableTags,
       });
     }
 
     private clearTypeaheadMatches = () => {
         this.setState({
-            tagCompletions: []
+            tagCompletions: [],
+            availableTags: this.state.availableTags,
         });
     }
 
