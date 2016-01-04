@@ -1,8 +1,9 @@
 import {Component, ReactElement} from 'react';
 import * as TagsInput from "olahol/react-tagsinput";
 import {Note} from "../models/note-model";
-import {Tag} from "../models/tag-model";
+import {Tag, tagEquals} from "../models/tag-model";
 import {tagsActionCreator} from "../actions/tags-action-creator";
+import {noteStore} from "../stores/note-store";
 
 interface State {
     tagCompletions: Array<Tag>;
@@ -16,7 +17,6 @@ interface Props {
 // https://github.com/olahol/react-tagsinput
 export class Tags extends Component<Props, State> {
 
-    //private availableTags = [{name: "aasf"}, {name: "b"}, {name: "apa"}];
     private tagStyles = {
         div: "react-tagsinput",
         input: "react-tagsinput-input",
@@ -35,25 +35,44 @@ export class Tags extends Component<Props, State> {
         };
     }
 
-	private addTag = (tag: string) => {
-		tagsActionCreator.addTag(this.props.note, {name: tag});
-	}
+    private addTag = (tag: string) => {
+        tagsActionCreator.addTag(this.props.note, {name: tag});
+    }
 
-	private removeTag = (tag: Tag) => {
-		tagsActionCreator.removeTag(this.props.note, tag);
-	}
+    private removeTag = (tag: Tag) => {
+        tagsActionCreator.removeTag(this.props.note, tag);
+    }
+
+    private componentWillMount() : void {
+        noteStore.addChangeListener(this.notesChanged);
+        this.setState({
+            tagCompletions: this.state.tagCompletions,
+            availableTags: noteStore.getAllTags(),
+        });
+    }
+
+    private componentWillUnmount() : void {
+        noteStore.removeChangeListener(this.notesChanged);
+    }
+
+    private notesChanged = () => {
+        this.setState({
+            tagCompletions: this.state.tagCompletions,
+            availableTags: noteStore.getAllTags(),
+        })
+    }
 
     private updateTypeaheadMatches = (input: string) => {
         let completions;
         if (input === "") {
             completions = [];
         } else {
-            let a : any = this.refs["a"];
+            let a : any = this.refs["tagsInput"];
             completions = this.state.availableTags.filter(function (availableTag) {
                 var tagName = availableTag.name.toLowerCase();
 
                 var matchesAvailableTag = tagName.substr(0, input.length) == input;
-                var isAlreadyAdded = a.getTags().indexOf(tagName) > -1;
+                var isAlreadyAdded = a.getTags().filter((existingTag) => tagEquals(existingTag, availableTag)).length > 0;
 
                 return matchesAvailableTag && !isAlreadyAdded;
             });
@@ -74,25 +93,32 @@ export class Tags extends Component<Props, State> {
 
     private renderTagCompletion = (tag: Tag) : ReactElement<any> => {
         var addTag = () => {
-            var a : any = this.refs["a"];
-            a.addTag(tag.name);
+            var a : any = this.refs["tagsInput"];
+            tagsActionCreator.addTag(this.props.note, tag);
+            a.clearInput();
+            a.clear();
         };
-        return <span onClick={addTag} className={this.tagStyles.tag} style={{cursor: "pointer"}}>{tag.name}</span>;
+        let tagText = this.getTagNameWithParentInfo(tag);
+        return <span onClick={addTag} className={this.tagStyles.tag} style={{cursor: "pointer"}}>{tagText}</span>;
     }
 
     private renderTag = (index: any, tag: Tag) => {
+        let tagText = this.getTagNameWithParentInfo(tag);
+        let removeTag = () => this.removeTag(tag);
+        return (<span className={this.tagStyles.tag}>
+            <span>{tagText}</span>
+            <a className={this.tagStyles.remove} onClick={removeTag}></a>
+        </span>);
+    }
+
+    private getTagNameWithParentInfo(tag: Tag) : string {
         let tagIterator = tag;
         let tagText : string = tag.name;
         while (tagIterator.parent) {
             tagText = tagIterator.parent.name + " > " + tagText;
             tagIterator = tagIterator.parent;
         }
-
-        let removeTag = () => this.removeTag(tag);
-        return (<span className={this.tagStyles.tag}>
-            <span>{tagText}</span>
-            <a className={this.tagStyles.remove} onClick={removeTag}></a>
-        </span>);
+        return tagText;
     }
 
     private render() : ReactElement<any> {
@@ -101,12 +127,13 @@ export class Tags extends Component<Props, State> {
         return (
             <div>
                 <TagsInput
-                    ref="a"
+                    ref="tagsInput"
                     classNames={this.tagStyles}
                     value={this.props.note.tags}
                     onTagAdd={this.addTag}
                     onTagRemove={this.removeTag}
                     renderTag={this.renderTag}
+                    transform={(id) => id}
 
                     // The following are for the typeahead support
                     addOnBlur={false}

@@ -2,6 +2,7 @@ import {dispatcher} from '../dispatcher';
 import {EventEmitter} from 'eventemitter';
 
 import {Note} from '../models/note-model';
+import {Tag, hash} from "../models/tag-model";
 
 export enum LoadingState {NotLoaded, Loading, Loaded, Error};
 class NoteStore {
@@ -70,6 +71,23 @@ class NoteStore {
 
   public getNotes() : Array<Note> {
     return this.notes;
+  }
+
+  public getAllTags() : Array<Tag> {
+    let tagsSet = {};
+    for (let noteIndex in this.notes) {
+      let note = this.notes[noteIndex];
+      for (let tagIndex in note.tags) {
+        let tag = note.tags[tagIndex];
+        tagsSet[hash(tag)] = tag;
+      }
+    }
+
+    let tags : Array<Tag> = [];
+    for (let tagHash in tagsSet) {
+      tags.push(tagsSet[tagHash]);
+    }
+    return tags;
   }
 }
 
