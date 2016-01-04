@@ -81,10 +81,11 @@ export class Tags extends Component<Props, State> {
     }
 
     private renderTag = (index: any, tag: Tag) => {
-        var tagText : string = tag.name;
-        while (tag.parent) {
-            tagText = tag.parent.name + " > " + tagText;
-            tag = tag.parent;
+        let tagIterator = tag;
+        let tagText : string = tag.name;
+        while (tagIterator.parent) {
+            tagText = tagIterator.parent.name + " > " + tagText;
+            tagIterator = tagIterator.parent;
         }
 
         let removeTag = () => this.removeTag(tag);
@@ -96,7 +97,6 @@ export class Tags extends Component<Props, State> {
 
     private render() : ReactElement<any> {
         var renderedTagCompletions = this.state.tagCompletions.map(this.renderTagCompletion);
-        var tagNames = this.props.note.tags.map(tag => tag.name);
 
         return (
             <div>
