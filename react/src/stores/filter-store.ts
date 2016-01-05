@@ -53,7 +53,7 @@ class FilterStore {
 
   private remove(array: Array<Filter>, filter: Filter) {
       var index = this.findIndexOf(array, (f) => f.id, filter.id);
-      array.slice(index, 1);
+      array.splice(index, 1);
   }
 
   private findIndexOf<T,S>(array: Array<T>, getId: (T)=>S, id: S) : number {

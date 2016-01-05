@@ -8,7 +8,7 @@ class FilterActionCreator {
     }
 
     public removeFilter(filter: Filter) : void {
-        dispatcher.dispatch({type: "removed-filter", filter: Filter});
+        dispatcher.dispatch({type: "removed-filter", filter: filter});
     }
 
     public unstarFilter(filter: Filter) : void {
