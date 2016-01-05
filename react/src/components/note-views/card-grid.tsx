@@ -17,12 +17,6 @@ interface Props {
 // Take a look at http://masonry.desandro.com/
 export class CardGrid extends Component<Props, State> {
 
-    private getDefaultProps() {
-        return {
-            forceOrder: false
-        };
-    }
-
     private cardStyle = {
         float: "left",
         border: "1px solid black",

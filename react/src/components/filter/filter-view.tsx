@@ -46,6 +46,7 @@ export class FilterView extends Component<Props, State> {
   }
 
   private getFilteredNotes(notes: Array<Note>, searchTree: SearchTree) {
+      console.warn("Viewing a filter. This is a bit weird now because all filters show the same notes :)")
       //searchTree
       return notes;
   }

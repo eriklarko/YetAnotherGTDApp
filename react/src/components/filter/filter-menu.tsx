@@ -4,8 +4,10 @@ import {Filter} from "../../models/filter-model";
 import {GenericMasterDetailView} from "../generic-master-detail";
 import {FilterView} from "./filter-view";
 import {ErrorList} from "../error-list";
+import {NewFilter} from "./new-filter";
 
 interface State {
+    showNewFilterForm: boolean;
 }
 
 interface Props {
@@ -13,6 +15,15 @@ interface Props {
 }
 
 export class FilterMenu extends Component<Props, State>  {
+
+    constructor() {
+        super();
+        this.state = {showNewFilterForm: false};
+    }
+
+    private toggleNewFilterForm = () => {
+        this.setState({showNewFilterForm: !this.state.showNewFilterForm})
+    }
 
     private render() : ReactElement<any> {
         let starredFilters = this.props.filters.filter((f) => f.starred);
@@ -23,6 +34,11 @@ export class FilterMenu extends Component<Props, State>  {
                         <Link to={"/filters/" + filter.name}>{filter.name}</Link>
                     </li>
         });
+
+        let newFilterCrud = <div></div>;
+        if (this.state.showNewFilterForm) {
+            newFilterCrud = <NewFilter onAdded={() => this.setState({showNewFilterForm: false})} />
+        }
         return <div>
                 <nav className="navbar navbar-default">
                     <div className="container-fluid">
@@ -40,8 +56,10 @@ export class FilterMenu extends Component<Props, State>  {
                             <ul className="nav navbar-nav">
                                 {list}
                             </ul>
+                            <button className="navbar-form navbar-right" onClick={this.toggleNewFilterForm}>+</button>
                         </div>
                     </div>
+                    {newFilterCrud}
                 </nav>
                 <div>
                     <ErrorList />
