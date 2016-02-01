@@ -82,6 +82,7 @@ func setupRoutes(r *gin.Engine) {
 }
 
 func setupTagRoutes(r *gin.Engine) {
+	r.GET("/tags", webapp.GraphQLEntryPoint)
 	r.POST("/tags", webapp.AddTag)
 }
 
