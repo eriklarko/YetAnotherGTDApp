@@ -75,6 +75,7 @@ func readPortFromEnvIfItsSet() {
 func setupRoutes(r *gin.Engine) {
 	setupTagRoutes(r)
 	setupNoteRoutes(r)
+	setupFilterRoutes(r)
 
 	r.GET("/metrics", func (c *gin.Context){
 		metrics.WriteJSONOnce(metrics.DefaultRegistry, c.Writer)
@@ -87,8 +88,15 @@ func setupTagRoutes(r *gin.Engine) {
 }
 
 func setupNoteRoutes(r *gin.Engine) {
+	r.GET("/notes", webapp.GetAllNotes)
 	r.POST("/notes", webapp.AddNote)
 	r.DELETE("/notes/:id", webapp.DeleteNote)
+}
+
+func setupFilterRoutes(r *gin.Engine) {
+	r.GET("/filters", webapp.GetAllFilters)
+	r.POST("/filters", webapp.AddFilter)
+	r.DELETE("/filters", webapp.DeleteFilter)
 }
 
 func startTheServerAndBlock(r *gin.Engine) {

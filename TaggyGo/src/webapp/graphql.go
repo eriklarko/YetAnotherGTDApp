@@ -5,6 +5,7 @@ import (
 	"github.com/graphql-go/graphql"
 	"log"
 	"models"
+	"services"
 )
 
 func GraphQLEntryPoint(c *gin.Context) {
@@ -32,7 +33,6 @@ func buildSchema() graphql.Schema {
 	// define schema, with our rootQuery and rootMutation
 	var schema, err = graphql.NewSchema(graphql.SchemaConfig{
 		Query:    rootQuery,
-		Mutation: rootMutation,
 	});
 
 	if err != nil {
@@ -77,43 +77,24 @@ var noteType = graphql.NewObject(graphql.ObjectConfig {
 	},
 })
 
-// root mutation
-var rootMutation = graphql.NewObject(graphql.ObjectConfig{
-	Name: "RootMutation",
-	Fields: graphql.Fields{
-		/*
-		   curl -g 'http://localhost:8080/graphql?query=mutation+_{createTodo(text:"My+new+todo"){id,text,done}}'
-		*/
-		"createCreate": &graphql.Field{
-			Type: noteType, // the return type for this field
-			Args: graphql.FieldConfigArgument{
-				"payload": &graphql.ArgumentConfig{
-					Type: graphql.NewNonNull(graphql.String),
-				},
-			},
-			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-
-				// marshall and cast the argument value
-				payload, _ := params.Args["payload"].(string)
-
-				// perform mutation operation here
-				// for e.g. create a Todo and save to DB.
-				newTodo := models.Note {
-					Payload: payload,
-					Tags: make([]string, 0),
-					Id: 1,
-				}
-
-				// return the new Todo object that we supposedly save to DB
-				// Note here that
-				// - we are returning a `Todo` struct instance here
-				// - we previously specified the return Type to be `todoType`
-				// - `Todo` struct maps to `todoType`, as defined in `todoType` ObjectConfig`
-				return newTodo, nil
-			},
+var filterType = graphql.NewObject(graphql.ObjectConfig {
+	Name: "Filter",
+	Fields: graphql.Fields {
+		"id": &graphql.Field {
+			Type: graphql.Int,
+		},
+		"name": &graphql.Field {
+			Type: graphql.String,
+		},
+		"starred": &graphql.Field {
+			Type: graphql.Boolean,
+		},
+		"searchTree": &graphql.Field {
+			Type: graphql.String,
 		},
 	},
 })
+
 
 // root query
 // we just define a trivial example here, depuis root query is required.
@@ -144,29 +125,23 @@ var rootQuery = graphql.NewObject(graphql.ObjectConfig {
 			},
 		},
 
-		"lastTodo": &graphql.Field{
-			Type:        noteType,
-			Description: "Last todo added",
+		"allFilters": &graphql.Field{
+			Type:        filterType,
+			Description: "A list of all filters",
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-				return models.Note{}, nil
+				return services.GetAllFilters(), nil
 			},
 		},
 
 		/*
 		   curl -g 'http://localhost:8080/graphql?query={todoList{id,text,done}}'
 		*/
-		"todoList": &graphql.Field{
+		"allNotes": &graphql.Field{
 			Type:        graphql.NewList(noteType),
-			Description: "List of todos",
+			Description: "A list of all notes",
 			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				return make([]models.Note, 0), nil
+				return services.GetAllNotes(), nil;
 			},
 		},
 	},
-})
-
-
-
-
-
-
+});

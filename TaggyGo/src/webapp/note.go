@@ -9,6 +9,10 @@ import (
 	"fmt"
 )
 
+func GetAllNotes(c *gin.Context) {
+	c.JSON(200, services.GetAllNotes())
+}
+
 func AddNote(c *gin.Context) {
 	var note models.Note
 	c.BindJSON(&note)
@@ -25,12 +29,12 @@ func DeleteNote(c *gin.Context) {
 	rawNoteId := c.Param("id")
 	noteId, err := strconv.Atoi(rawNoteId)
 	if err != nil {
-		c.JSON(422, misc.JsonMessage{Message: fmt.Sprintf("Invalid id '%s', %v", rawNoteId, err.Error())})
+		c.JSON(422, misc.JsonMessage{Message: fmt.Sprintf("Invalid note id '%s', %v", rawNoteId, err.Error())})
 	}
 
 	err = services.DeleteNote(noteId)
 	if err == nil {
-		c.JSON(200, misc.JsonMessage{Message: "ok"})
+		c.JSON(200, misc.JsonMessage{Message: fmt.Sprintf("note %d deleted", noteId)})
 	} else { // TODO: This assumes that the only possible error returned from services.DeleteNote means that the note did not exist
 		c.JSON(422, misc.JsonMessage{Message: err.Error()})
 	}
