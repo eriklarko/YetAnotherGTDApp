@@ -11,19 +11,23 @@ class TaggyJquery {
 
     public getJSON(url: string) : JQueryXHR  {
         if (this.simianMode === SIMIAN_MODE.NONE) {
-            return this.doRealGetJSON(url);
+            return jquery.getJSON(url);
         } else {
-            return this.getStubbedXHR(this.simianMode, url);
+            return this.getStubbedXHR(this.simianMode, url, jquery.getJSON);
         }
     }
 
-    private doRealGetJSON(url: string) : JQueryXHR {
-        return jquery.getJSON(url);
+    public post(url: string, payload: any) {
+        if (this.simianMode === SIMIAN_MODE.NONE) {
+            return jquery.post(url, payload);
+        } else {
+            return this.getStubbedXHR(this.simianMode, url, url => jquery.post(url, payload));
+        }
     }
 
-    private getStubbedXHR(simianMode: SIMIAN_MODE, url: string) {
+    private getStubbedXHR(simianMode: SIMIAN_MODE, url: string, realCallback: (url : string) => any) {
         if (simianMode === SIMIAN_MODE.ADD_DELAY) {
-            var realRequest = this.doRealGetJSON(url);
+            var realRequest = realCallback(url);
         }
 
         let stubbedXHR : any = {};

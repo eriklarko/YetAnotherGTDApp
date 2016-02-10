@@ -26,6 +26,10 @@ class NotesActionCreator {
             });
     }
 
+    public addNote(note: Note) : void {
+        taggyJquery.post("/notes", note);
+    }
+
     public changeNoteType(note: Note, newType: NoteType) : void {
         note.type = newType;
 
