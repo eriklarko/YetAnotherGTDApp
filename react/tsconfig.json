@@ -38,7 +38,6 @@
         "./src/taggy-jquery.ts",
         "./test/route-store-test.ts",
         "./typings_modified/eventemitter.d.ts",
-        "./typings_modified/jonschlinkert.remarkable.d.ts",
         "./typings_modified/masonry-layout.d.ts",
         "./typings_modified/olahol.react-tagsinput.d.ts",
         "./typings_modified/promise.d.ts",
