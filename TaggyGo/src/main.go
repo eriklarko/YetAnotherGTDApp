@@ -84,7 +84,6 @@ func setupRoutes(r *gin.Engine) {
 
 func setupTagRoutes(r *gin.Engine) {
 	r.GET("/tags", webapp.GraphQLEntryPoint)
-	r.POST("/tags", webapp.AddTag)
 }
 
 func setupNoteRoutes(r *gin.Engine) {
@@ -97,6 +96,8 @@ func setupFilterRoutes(r *gin.Engine) {
 	r.GET("/filters", webapp.GetAllFilters)
 	r.POST("/filters", webapp.AddFilter)
 	r.DELETE("/filters", webapp.DeleteFilter)
+
+	r.GET("/filters/:id/notes", webapp.GetNotesInFilter);
 }
 
 func startTheServerAndBlock(r *gin.Engine) {

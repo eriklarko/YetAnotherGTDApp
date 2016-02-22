@@ -7,11 +7,13 @@ fi
 
 set -e
 
-$(./setup-gopath.sh)
+. ./setup-gopath.sh
 echo "GOPATH is now $GOPATH"
 
 echo "Downloading dependencies..."
 go get github.com/gin-gonic/gin
 go get github.com/rcrowley/go-metrics
 go get github.com/graphql-go/graphql
+go get golang.org/x/tools/cmd/goimports
+go get github.com/golang/lint/golint
 echo "Done!"

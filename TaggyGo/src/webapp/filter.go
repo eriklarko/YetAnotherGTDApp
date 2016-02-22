@@ -39,3 +39,18 @@ func DeleteFilter(c *gin.Context) {
 		c.JSON(422, misc.JsonMessage{Message: err.Error()})
 	}
 }
+
+func GetNotesInFilter(c *gin.Context) {
+	rawFilterId := c.Param("id")
+	filterId, err := strconv.Atoi(rawFilterId)
+	if err != nil {
+		c.JSON(422, misc.JsonMessage{Message: fmt.Sprintf("Invalid filter id '%s', %v", rawFilterId, err.Error())})
+	}
+
+	notes, err := services.GetNotesInFilter(filterId)
+	if err == nil {
+		return c.JSON(200, notes);
+	} else {
+		return c.JSON(422, misc.JsonMessage{Message: fmt.Sprintf("An error occurred while finding the notes that match the specified filter '%s'", rawFilterId, err.Error())})
+	}
+}

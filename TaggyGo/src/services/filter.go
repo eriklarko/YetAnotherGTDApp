@@ -40,3 +40,8 @@ func GetAllFilters() []models.Filter {
 	}
 	return f;
 }
+
+func GetNotesInFilter(filterId int) ([]notes, error) {
+	// TODO :)
+	return nil, errors.New("Not implemented yet");
+}
