@@ -49,8 +49,8 @@ func GetNotesInFilter(c *gin.Context) {
 
 	notes, err := services.GetNotesInFilter(filterId)
 	if err == nil {
-		return c.JSON(200, notes);
+		c.JSON(200, notes);
 	} else {
-		return c.JSON(422, misc.JsonMessage{Message: fmt.Sprintf("An error occurred while finding the notes that match the specified filter '%s'", rawFilterId, err.Error())})
+		c.JSON(422, misc.JsonMessage{Message: fmt.Sprintf("An error occurred while finding the notes that match the specified filter '%s'", rawFilterId, err.Error())})
 	}
 }

@@ -41,7 +41,7 @@ func GetAllFilters() []models.Filter {
 	return f;
 }
 
-func GetNotesInFilter(filterId int) ([]notes, error) {
+func GetNotesInFilter(filterId int) ([]models.Note, error) {
 	// TODO :)
 	return nil, errors.New("Not implemented yet");
 }
