@@ -1,0 +1,21 @@
+{
+  "name": "taggy",
+  "version": "0.0.1",
+  "description": "Le epic brain dump",
+  "scripts": {
+    "build": "babel src --out-file bundle.js",
+    "watch": "babel src --out-file bundle.js --watch",
+    "live-server": "live-server --port=3004",
+    "dev": "babel src --out-file bundle.js --watch & live-server --port=3004",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.6.0",
+    "babel-plugin-transform-es2015-classes": "^6.6.0",
+    "babel-plugin-transform-es2015-modules-umd": "^6.6.0",
+    "babel-preset-react": "^6.5.0",
+    "live-server": "^0.9.2"
+  }
+}
