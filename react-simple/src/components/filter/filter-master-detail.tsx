@@ -14,7 +14,7 @@ interface Props {
 
 export class FilterMasterDetail extends React.Component<Props, State>  {
 
-    private horizontalLayout(list: Array<ReactElement<any>>, detail: React.ReactElement<any>) : React.ReactElement<any> {
+    private horizontalLayout(list: Array<React.ReactElement<any>>, detail: React.ReactElement<any>) : React.ReactElement<any> {
         return <div style={{height: "100%"}}>
 
                 <nav className="navbar navbar-default">

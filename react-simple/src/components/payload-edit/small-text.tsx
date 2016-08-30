@@ -1,7 +1,6 @@
-import {Component, ReactElement, KeyboardEvent} from 'react';
+import * as React from "react";
 import {Note} from "../../models/note-model";
 import {Tags} from "../tags";
-import {payloadActionCreator} from "../../actions/payload-action-creator";
 
 interface State {
   isEditing: boolean;
@@ -10,6 +9,7 @@ interface State {
 
 interface Props {
   note : Note;
+  onSave : (note: Note, payload: string) =>  void;
 }
 
 export class SmallTextPayload extends React.Component<Props, State> {
@@ -23,8 +23,7 @@ export class SmallTextPayload extends React.Component<Props, State> {
   }
 
   private getPayload() : string {
-    let payloadNode : any = React.findDOMNode(this.refs["payload"]);
-    return payloadNode.value;
+    return this.state.unsavedText || this.props.note.payload;
   }
 
   componentWillMount() {
@@ -62,13 +61,13 @@ export class SmallTextPayload extends React.Component<Props, State> {
       }
   }
 
-  private onInputChanged = () => {
-      var a : any = React.findDOMNode(this.refs["payload"]);
+  private onInputChanged(e : any) {
+      var a : any = e.target;
       this.setState({isEditing: this.state.isEditing, unsavedText: a.value});
   }
 
   private sendPayloadUpdatedAction() {
-    payloadActionCreator.updatePayload(this.props.note, this.getPayload());
+    this.props.onSave(this.props.note, this.getPayload());
     this.leaveEditingState();
   }
 

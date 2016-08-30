@@ -1,6 +1,5 @@
 import * as React from "react";
 import {Note} from "../../models/note-model";
-import {payloadActionCreator} from "../../actions/payload-action-creator";
 import {Tags} from "../tags";
 
 interface State {
@@ -28,8 +27,8 @@ export class RichTextPayload extends React.Component<Props, State> {
       this.setState({unsavedPayload: newProps.note.payload});
   }
 
-  private onTextAreaChanged = () => {
-      var a : any = React.findDOMNode(this.refs["ta"]);
+  private onTextAreaChanged(e : any) {
+      var a : any = e.target;
       this.setState({unsavedPayload: a.value});
   }
 
@@ -52,7 +51,7 @@ export class RichTextPayload extends React.Component<Props, State> {
                         disabled={!hasUnsavedChanges}
                         className="btn btn-default"
                         style={{float: "left", height: "43px", marginRight: "5px"}}>Save</button>
-                <Tags note={this.props.note} style={{float: "left"}}/>
+                <Tags note={this.props.note} />
             </div>
         </div>
         <div className="col-md-6">TODO, remarkable from jonschlinkert did not work out</div>

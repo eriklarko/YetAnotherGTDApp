@@ -4,7 +4,6 @@ import * as React from "react";
 import {Note, NoteType} from "../../models/note-model";
 import {RichTextPayload} from "../payload-edit/rich-text";
 import {SmallTextPayload} from "../payload-edit/small-text";
-import {notesActionCreator} from "../../actions/note-action-creator";
 
 interface State {
 }
@@ -44,7 +43,7 @@ export class NoteView extends React.Component<Props, State> {
     private getNoteView(): React.ReactElement<any> {
 
         if (this.props.note.type == NoteType.Short) {
-            return <SmallTextPayload note={this.props.note} />
+            return <SmallTextPayload note={this.props.note} onSave={(note, payload) => console.log("note-view onSave", note, payload)} />
         } else if (this.props.note.type == NoteType.MarkedUpText) {
             return <RichTextPayload note={this.props.note} />
         } else {

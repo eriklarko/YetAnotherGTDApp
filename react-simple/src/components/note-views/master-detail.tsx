@@ -31,7 +31,7 @@ export class MasterDetailView extends React.Component<Props, State> {
         }
     }
 
-    private findFirst<T>(array : Array<T>, predicate: (T)=>boolean) : T {
+    private findFirst<T>(array : Array<T>, predicate: (t:T)=>boolean) : T {
         for (let a of array) {
             if (predicate(a)) {
                 return a;
@@ -43,7 +43,7 @@ export class MasterDetailView extends React.Component<Props, State> {
 
     render() : React.ReactElement<any> {
         let selectedNote = this.findSelectedNote();
-        let selectedNoteView = null;
+        let selectedNoteView : any = null;
         if (selectedNote) {
             selectedNoteView = <NoteView note={selectedNote} />
         } else {
@@ -63,7 +63,7 @@ export class MasterDetailView extends React.Component<Props, State> {
     }
 }
 
-class ListItem extends Component<{note: Note, linkBase: string}, {}> {
+class ListItem extends React.Component<{note: Note, linkBase: string}, {}> {
     render() : React.ReactElement<any> {
         return <div style={{borderBottom: "1px solid #ccc", paddingTop: "1em", paddingBottom:"1em", overflow: "hidden"}}>
             <OneLineNoteLink note={this.props.note} linkBase={this.props.linkBase} />

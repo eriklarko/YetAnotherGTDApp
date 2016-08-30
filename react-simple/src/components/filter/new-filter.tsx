@@ -1,6 +1,5 @@
 import * as React from "react";
 import {Filter, DisplayType} from "../../models/filter-model";
-import {filterActionCreator} from "../../actions/filter-action-creator";
 import {FilterCrudForm} from "./filter-crud-form";
 
 interface State {
@@ -25,6 +24,7 @@ export class NewFilter extends React.Component<Props, State> {
         return <FilterCrudForm
                     headerText="Create new Filter"
                     submitButtonText="Create"
-                    submitButtonOnClick={this.create} />
+                    submitButtonOnClick={this.create}
+                    prePopulateFilter={undefined} />
     }
 }

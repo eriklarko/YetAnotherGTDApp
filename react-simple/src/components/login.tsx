@@ -1,5 +1,4 @@
 import * as React from "react";
-import {RouteHandler} from 'react-router';
 
 interface State {
 }
@@ -15,7 +14,7 @@ export class LoginComponent extends React.Component<Props, State> {
       Username: <input></input>
       Password: <input></input>
       <hr/>
-      <RouteHandler />
+      {this.props.children}
     </div>
   }
 }

@@ -1,5 +1,4 @@
 import * as React from "react";
-import * as React from 'react';
 import {Note} from "../../models/note-model";
 import {SmallTextPayload} from "../payload-edit/small-text";
 import * as rmc from "react-masonry-component";
@@ -17,7 +16,7 @@ interface Props {
 // Take a look at http://masonry.desandro.com/
 export class CardGrid extends React.Component<Props, State> {
 
-    private cardStyle = {
+    private cardStyle : any = {
         float: "left",
         border: "1px solid black",
         padding: "1em"
@@ -31,10 +30,10 @@ export class CardGrid extends React.Component<Props, State> {
             this.cardStyle["marginTop"] = "1em";
         }
 
-        let cards = this.props.notes.map((note : Note) => {
+        let cards : any = this.props.notes.map((note : Note) => {
             return (
                 <div style={this.cardStyle} key={note.id}>
-                <SmallTextPayload note={note} />
+                <SmallTextPayload note={note} onSave={(note, payload) => console.log("Saved payload of",note, payload)}/>
                 </div>
             );
         });

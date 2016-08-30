@@ -10,7 +10,7 @@ interface Props {
 export class HeaderComponent extends React.Component<Props, State> {
 
     private onSearchInputKeyUp = (event: KeyboardEvent) => {
-        var a : any = React.findDOMNode(this.refs["searchInput"]);
+        var a : any = event.target;
         if (event.keyCode === 13) { // Enter
             this.search(a.value);
         } else if (event.keyCode === 27) { // Esc

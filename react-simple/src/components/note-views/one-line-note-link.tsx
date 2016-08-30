@@ -3,13 +3,13 @@ import {Note} from '../../models/note-model';
 import {Link} from 'react-router';
 
 
-export class OneLineNoteLink extends Component<{note: Note, linkBase: string}, {}> {
+export class OneLineNoteLink extends React.Component<{note: Note, linkBase: string}, {}> {
 
-    private summarize(obj) {
+    private summarize(obj:any) {
       return this.ellipse(obj.summary || obj.payload, 18, "...");
     }
 
-    private ellipse(string, maxLength, indicator) {
+    private ellipse(string : string, maxLength : number, indicator : string) {
       string = string.replace("\n", " ");
 
       if (string.length > maxLength) {

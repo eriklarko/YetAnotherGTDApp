@@ -2,8 +2,6 @@ import * as React from "react";
 import * as TagsInput from "olahol/react-tagsinput";
 import {Note} from "../models/note-model";
 import {Tag, tagEquals} from "../models/tag-model";
-import {tagsActionCreator} from "../actions/tags-action-creator";
-import {noteStore} from "../stores/note-store";
 
 interface State {
     tagCompletions: Array<Tag>;
@@ -51,10 +49,6 @@ export class Tags extends React.Component<Props, State> {
         });
     }
 
-    private componentWillUnmount() : void {
-        noteStore.removeChangeListener(this.notesChanged);
-    }
-
     private notesChanged = () => {
         this.setState({
             tagCompletions: this.state.tagCompletions,
@@ -63,7 +57,7 @@ export class Tags extends React.Component<Props, State> {
     }
 
     private updateTypeaheadMatches = (input: string) => {
-        let completions;
+        let completions : any;
         if (input === "") {
             completions = [];
         } else {
@@ -72,7 +66,7 @@ export class Tags extends React.Component<Props, State> {
                 var tagName = availableTag.name.toLowerCase();
 
                 var matchesAvailableTag = tagName.substr(0, input.length) == input;
-                var isAlreadyAdded = a.getTags().filter((existingTag) => tagEquals(existingTag, availableTag)).length > 0;
+                var isAlreadyAdded = a.getTags().filter((existingTag : Tag) => tagEquals(existingTag, availableTag)).length > 0;
 
                 return matchesAvailableTag && !isAlreadyAdded;
             });
@@ -133,7 +127,7 @@ export class Tags extends React.Component<Props, State> {
                     onTagAdd={this.addTag}
                     onTagRemove={this.removeTag}
                     renderTag={this.renderTag}
-                    transform={(id) => id}
+                    transform={(id : any) => id}
 
                     // The following are for the typeahead support
                     addOnBlur={false}

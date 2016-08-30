@@ -1,7 +1,6 @@
 import * as React from "react";
 import {FilterEdit} from "./filter-edit";
 import {Filter} from "../../models/filter-model";
-import {filterStore} from "../../stores/filter-store";
 
 interface State {
 }

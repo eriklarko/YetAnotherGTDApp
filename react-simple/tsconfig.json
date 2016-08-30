@@ -20,6 +20,7 @@
         "./src/components/filter/filter-edit.tsx",
         "./src/components/filter/filter-master-detail.tsx",
         "./src/components/filter/filter-menu.tsx",
+        "./src/components/filter/filter-view.tsx",
         "./src/components/filter/new-filter.tsx",
         "./src/components/generic-master-detail.tsx",
         "./src/components/header.tsx",

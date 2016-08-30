@@ -1,9 +1,7 @@
 import * as React from "react";
-import {Link, RouteHandler} from 'react-router';
+import {Link} from 'react-router';
 import {Filter} from "../../models/filter-model";
 import {GenericMasterDetailView} from "../generic-master-detail";
-import {FilterView} from "./filter-view";
-import {ErrorList} from "../error-list";
 import {NewFilter} from "./new-filter";
 
 interface State {
@@ -62,8 +60,7 @@ export class FilterMenu extends React.Component<Props, State>  {
                     {newFilterCrud}
                 </nav>
                 <div>
-                    <ErrorList />
-                    <RouteHandler {...this.props} />
+                    {this.props.children}
                 </div>
             </div>
     }

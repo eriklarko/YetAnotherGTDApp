@@ -5,17 +5,17 @@ interface State {
 
 interface Props<T> {
     items : Array<T>;
-    getId : (T) => any;
+    getId : (t: T) => any;
     selectedId: any;
-    defaultView: React.ReactElement<any>;
+    defaultView: React.ReactElement<any> | string;
     selectedViewContructor: (t: T) => React.ReactElement<any>;
     linkConstructor: (t: T, selected: boolean) => React.ReactElement<any>;
 
-    listDetailRenderer: (list: Array<ReactElement<any>>, detail: React.ReactElement<any>) => React.ReactElement<any>;
+    listDetailRenderer: (list: Array<React.ReactElement<any>>, detail: React.ReactElement<any>) => React.ReactElement<any>;
 }
 
 // This is a stupid idea... :) The views using this are hard to understand and debug.
-export class GenericMasterDetailView<T> extends Component<Props<T>, State> {
+export class GenericMasterDetailView<T> extends React.Component<Props<T>, State> {
 
     private findSelectedItem() : T {
         if (this.props.selectedId) {
@@ -37,7 +37,7 @@ export class GenericMasterDetailView<T> extends Component<Props<T>, State> {
         }
     }
 
-    private findFirst<T>(array : Array<T>, predicate: (T)=>boolean) : T {
+    private findFirst<T>(array : Array<T>, predicate: (t:T)=>boolean) : T {
         for (let a of array) {
             if (predicate(a)) {
                 return a;
@@ -47,7 +47,7 @@ export class GenericMasterDetailView<T> extends Component<Props<T>, State> {
         return undefined;
     }
 
-    private horizontalRenderer(list: Array<ReactElement<any>>, detail: React.ReactElement<any>) : React.ReactElement<any> {
+    private horizontalRenderer(list: Array<React.ReactElement<any>>, detail: React.ReactElement<any>) : React.ReactElement<any> {
         return (
             <div style={{height: "100%"}}>
                 <div className="col-md-1">{list}</div>
@@ -58,14 +58,14 @@ export class GenericMasterDetailView<T> extends Component<Props<T>, State> {
 
     render() : React.ReactElement<any> {
         let selectedItem = this.findSelectedItem();
-        let selectedItemView = null;
+        let selectedItemView : any = null;
         if (selectedItem) {
             selectedItemView = this.props.selectedViewContructor(selectedItem);
         } else {
             selectedItemView = this.props.defaultView;
         }
 
-        let list : Array<ReactElement<any>> = this.props.items.map(
+        let list : Array<React.ReactElement<any>> = this.props.items.map(
             (item: T) => {
                 let selected = item === selectedItem;
                 return this.props.linkConstructor(item, selected);

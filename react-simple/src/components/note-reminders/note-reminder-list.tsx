@@ -4,7 +4,7 @@ import {OneLineNoteLink} from "../note-views/one-line-note-link";
 
 interface Props {
     noteReminders: Array<NoteReminder>;
-    onDismiss: (NoteReminder) => void;
+    onDismiss: (nr:NoteReminder) => void;
 }
 
 interface State {

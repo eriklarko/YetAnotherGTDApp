@@ -1,6 +1,5 @@
 import * as React from "react";
 import {Filter, DisplayType} from "../../models/filter-model";
-import {filterActionCreator} from "../../actions/filter-action-creator";
 
 interface State {
 }
@@ -14,8 +13,8 @@ interface Props {
 
 export class FilterCrudForm extends React.Component<Props, State> {
 
-    private getDisplayTypeOptions() : Array<ReactElement<any>> {
-        let displayTypeOptions = [];
+    private getDisplayTypeOptions() : Array<React.ReactElement<any>> {
+        let displayTypeOptions : any = [];
         for (var displayType in DisplayType) {
             var isValueProperty = parseInt(displayType, 10) >= 0
             if (isValueProperty) {
@@ -43,7 +42,7 @@ export class FilterCrudForm extends React.Component<Props, State> {
         let objectCopy : T = {} as T;
         for (var key in object) {
             if (object.hasOwnProperty(key)) {
-                objectCopy[key] = object[key];
+                (objectCopy as any)[key] = (object as any)[key];
             }
         }
         return objectCopy;
