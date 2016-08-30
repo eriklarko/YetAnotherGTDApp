@@ -23,7 +23,7 @@ export class HeaderComponent extends React.Component<Props, State> {
         window.location.href = "#/search/" + query;
     }
 
-    private render() : ReactElement<any> {
+    render() : ReactElement<any> {
         return (
             <nav className="navbar navbar-inverse navbar-fixed-top">
                 <div className="container-fluid">

@@ -37,7 +37,7 @@ export class RichTextPayload extends React.Component<Props, State> {
     payloadActionCreator.updatePayload(this.props.note, this.state.unsavedPayload);
   }
 
-  private render() : ReactElement<any> {
+  render() : ReactElement<any> {
     let editablePayload = <textarea ref="ta" onChange={this.onTextAreaChanged} value={this.state.unsavedPayload} style={{width: "100%", height: "100%"}} />
 
     let hasUnsavedChanges = this.props.note.payload !== this.state.unsavedPayload;

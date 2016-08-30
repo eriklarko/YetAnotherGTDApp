@@ -19,7 +19,7 @@ export class OneLineNoteLink extends Component<{note: Note, linkBase: string}, {
       }
     }
 
-    private render() : ReactElement<any> {
+    render() : ReactElement<any> {
         return  <Link to={this.props.linkBase + "/" + this.props.note.id}>
                     {this.summarize(this.props.note)}
                 </Link>;

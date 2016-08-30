@@ -121,7 +121,7 @@ export class Tags extends React.Component<Props, State> {
         return tagText;
     }
 
-    private render() : ReactElement<any> {
+    render() : ReactElement<any> {
         var renderedTagCompletions = this.state.tagCompletions.map(this.renderTagCompletion);
 
         return (

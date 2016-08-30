@@ -7,7 +7,7 @@ interface Props {
 }
 
 export class SpinnerComponent extends React.Component<Props, State> {
-  private render() : ReactElement<any> {
+  render() : ReactElement<any> {
     return (
       <div className="text-center">
         <div className="throbber-loader">

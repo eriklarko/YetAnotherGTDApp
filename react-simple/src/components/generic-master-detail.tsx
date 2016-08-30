@@ -56,7 +56,7 @@ export class GenericMasterDetailView<T> extends Component<Props<T>, State> {
         );
     }
 
-    private render() : ReactElement<any> {
+    render() : ReactElement<any> {
         let selectedItem = this.findSelectedItem();
         let selectedItemView = null;
         if (selectedItem) {

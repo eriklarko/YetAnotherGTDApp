@@ -25,7 +25,7 @@ export class FilterMenu extends React.Component<Props, State>  {
         this.setState({showNewFilterForm: !this.state.showNewFilterForm})
     }
 
-    private render() : ReactElement<any> {
+    render() : ReactElement<any> {
         let starredFilters = this.props.filters.filter((f) => f.starred);
         let list = starredFilters.map(filter => {
             let selected :boolean = false;

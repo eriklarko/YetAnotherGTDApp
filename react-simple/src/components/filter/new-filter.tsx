@@ -20,7 +20,7 @@ export class NewFilter extends React.Component<Props, State> {
         }
     }
 
-    private render() : ReactElement<any> {
+    render() : ReactElement<any> {
 
         return <FilterCrudForm
                     headerText="Create new Filter"

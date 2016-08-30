@@ -29,7 +29,7 @@ export class FilterEdit extends React.Component<Props, State> {
         this.setState({filterRemoved: true});
     }
 
-    private render() : ReactElement<any> {
+    render() : ReactElement<any> {
         if (this.state.filterRemoved) {
             return <h2>The filter is removed</h2>;
         }

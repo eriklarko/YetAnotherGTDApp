@@ -72,7 +72,7 @@ export class SmallTextPayload extends React.Component<Props, State> {
     this.leaveEditingState();
   }
 
-  private render() : ReactElement<any> {
+  render() : ReactElement<any> {
     if (this.state.isEditing) {
       var payload = <input
                         autoFocus

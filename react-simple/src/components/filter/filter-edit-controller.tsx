@@ -23,7 +23,7 @@ export class FilterEditController extends React.Component<Props, State> {
         return undefined;
     }
 
-    private render() : ReactElement<any> {
+    render() : ReactElement<any> {
         let filter = this.findFilterById(this.props.params.filterId, this.props.filters);
         if (filter === undefined) {
             console.warn("Trying to render edit form for unknown filter", this.props);

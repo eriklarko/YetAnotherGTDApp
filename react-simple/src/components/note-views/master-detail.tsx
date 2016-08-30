@@ -41,7 +41,7 @@ export class MasterDetailView extends React.Component<Props, State> {
         return undefined;
     }
 
-    private render() : ReactElement<any> {
+    render() : ReactElement<any> {
         let selectedNote = this.findSelectedNote();
         let selectedNoteView = null;
         if (selectedNote) {
@@ -64,7 +64,7 @@ export class MasterDetailView extends React.Component<Props, State> {
 }
 
 class ListItem extends Component<{note: Note, linkBase: string}, {}> {
-    private render() : ReactElement<any> {
+    render() : ReactElement<any> {
         return <div style={{borderBottom: "1px solid #ccc", paddingTop: "1em", paddingBottom:"1em", overflow: "hidden"}}>
             <OneLineNoteLink note={this.props.note} linkBase={this.props.linkBase} />
         </div>;

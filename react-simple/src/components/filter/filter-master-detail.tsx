@@ -41,7 +41,7 @@ export class FilterMasterDetail extends React.Component<Props, State>  {
             </div>
     }
 
-    private render() : ReactElement<any> {
+    render() : ReactElement<any> {
         var starredFilters = this.props.filters.filter((f) => f.starred);
 
         return <GenericMasterDetailView
