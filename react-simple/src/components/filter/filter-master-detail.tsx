@@ -12,7 +12,7 @@ interface Props {
     params: any;
 }
 
-export class FilterMasterDetail extends Component<Props, State>  {
+export class FilterMasterDetail extends React.Component<Props, State>  {
 
     private horizontalLayout(list: Array<ReactElement<any>>, detail: ReactElement<any>) : ReactElement<any> {
         return <div style={{height: "100%"}}>

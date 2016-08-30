@@ -11,7 +11,7 @@ interface Props {
   note : Note;
 }
 
-export class RichTextPayload extends Component<Props, State> {
+export class RichTextPayload extends React.Component<Props, State> {
 
   constructor() {
     super();

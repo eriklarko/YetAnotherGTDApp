@@ -15,7 +15,7 @@ interface Props {
 }
 
 // https://github.com/olahol/react-tagsinput
-export class Tags extends Component<Props, State> {
+export class Tags extends React.Component<Props, State> {
 
     private tagStyles = {
         div: "react-tagsinput",

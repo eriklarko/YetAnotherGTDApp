@@ -12,7 +12,7 @@ interface Props {
   note : Note;
 }
 
-export class SmallTextPayload extends Component<Props, State> {
+export class SmallTextPayload extends React.Component<Props, State> {
 
   constructor() {
       super();

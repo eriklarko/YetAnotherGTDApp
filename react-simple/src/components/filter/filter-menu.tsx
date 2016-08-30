@@ -14,7 +14,7 @@ interface Props {
     filters : Array<Filter>;
 }
 
-export class FilterMenu extends Component<Props, State>  {
+export class FilterMenu extends React.Component<Props, State>  {
 
     constructor() {
         super();

@@ -8,7 +8,7 @@ interface Props {
 
 }
 
-export class LoginComponent extends Component<Props, State> {
+export class LoginComponent extends React.Component<Props, State> {
   private render() : ReactElement<any> {
     return <div>
       <h1>Login </h1>

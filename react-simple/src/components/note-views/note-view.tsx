@@ -13,7 +13,7 @@ interface Props {
     note : Note;
 }
 
-export class NoteView extends Component<Props, State> {
+export class NoteView extends React.Component<Props, State> {
     public render(): ReactElement<any> {
         let noteView = this.getNoteView();
         if (noteView) {

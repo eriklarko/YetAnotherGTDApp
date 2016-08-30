@@ -15,7 +15,7 @@ interface Props {
 }
 
 // Take a look at http://masonry.desandro.com/
-export class CardGrid extends Component<Props, State> {
+export class CardGrid extends React.Component<Props, State> {
 
     private cardStyle = {
         float: "left",

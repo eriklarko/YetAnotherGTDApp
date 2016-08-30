@@ -12,7 +12,7 @@ interface Props {
     prePopulateFilter: Filter;
 }
 
-export class FilterCrudForm extends Component<Props, State> {
+export class FilterCrudForm extends React.Component<Props, State> {
 
     private getDisplayTypeOptions() : Array<ReactElement<any>> {
         let displayTypeOptions = [];

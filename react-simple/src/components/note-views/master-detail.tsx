@@ -13,7 +13,7 @@ interface Props {
     selectedNote: number;
 }
 
-export class MasterDetailView extends Component<Props, State> {
+export class MasterDetailView extends React.Component<Props, State> {
 
     private findSelectedNote() : Note {
         if (this.props.selectedNote) {

@@ -10,7 +10,7 @@ interface Props {
     onAdded: () => void;
 }
 
-export class NewFilter extends Component<Props, State> {
+export class NewFilter extends React.Component<Props, State> {
 
     private create = (newFilter: Filter) => {
         filterActionCreator.addNewFilter(newFilter);

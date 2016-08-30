@@ -6,7 +6,7 @@ interface State {
 interface Props {
 }
 
-export class SpinnerComponent extends Component<Props, State> {
+export class SpinnerComponent extends React.Component<Props, State> {
   private render() : ReactElement<any> {
     return (
       <div className="text-center">

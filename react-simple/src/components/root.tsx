@@ -8,7 +8,7 @@ interface State {
 interface Props {
 }
 
-export class RootComponent extends Component<Props, State> {
+export class RootComponent extends React.Component<Props, State> {
   private render() : ReactElement<any> {
     return (
       <div style={{height: "100%"}}>

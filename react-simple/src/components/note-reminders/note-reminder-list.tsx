@@ -10,7 +10,7 @@ interface Props {
 interface State {
 }
 
-export class NoteReminderList extends Component<Props, State> {
+export class NoteReminderList extends React.Component<Props, State> {
 
     private render() : ReactElement<any> {
         let items = this.props.noteReminders.map(nr => {

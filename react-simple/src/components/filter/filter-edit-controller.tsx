@@ -11,7 +11,7 @@ interface Props {
     filters: Array<Filter>;
 }
 
-export class FilterEditController extends Component<Props, State> {
+export class FilterEditController extends React.Component<Props, State> {
 
     private findFilterById(filterId: number, filters: Array<Filter>) : Filter {
         for (let filter of filters) {

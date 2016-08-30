@@ -11,7 +11,7 @@ interface Props {
     filter: Filter;
 }
 
-export class FilterEdit extends Component<Props, State> {
+export class FilterEdit extends React.Component<Props, State> {
 
     constructor() {
         super();

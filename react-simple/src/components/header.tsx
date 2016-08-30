@@ -7,7 +7,7 @@ interface Props {
     title: string;
 }
 
-export class HeaderComponent extends Component<Props, State> {
+export class HeaderComponent extends React.Component<Props, State> {
 
     private onSearchInputKeyUp = (event: KeyboardEvent) => {
         var a : any = React.findDOMNode(this.refs["searchInput"]);
