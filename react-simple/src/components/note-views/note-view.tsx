@@ -14,7 +14,7 @@ interface Props {
 }
 
 export class NoteView extends React.Component<Props, State> {
-    public render(): ReactElement<any> {
+    public render(): React.ReactElement<any> {
         let noteView = this.getNoteView();
         if (noteView) {
             let typeToChangeTo = this.props.note.type == NoteType.Short ? NoteType.MarkedUpText : NoteType.Short;
@@ -41,7 +41,7 @@ export class NoteView extends React.Component<Props, State> {
         }
     }
 
-    private getNoteView(): ReactElement<any> {
+    private getNoteView(): React.ReactElement<any> {
 
         if (this.props.note.type == NoteType.Short) {
             return <SmallTextPayload note={this.props.note} />

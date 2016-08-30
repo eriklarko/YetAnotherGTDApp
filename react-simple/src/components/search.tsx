@@ -9,7 +9,7 @@ interface Props {
 
 export class Search extends React.Component<Props, State> {
 
-    public render(): ReactElement<any> {
+    public render(): React.ReactElement<any> {
         return <div>Searching for {this.props.params.query}</div>;
     }
 }

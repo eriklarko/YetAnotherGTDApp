@@ -49,7 +49,7 @@ export class FilterCrudForm extends React.Component<Props, State> {
         return objectCopy;
     }
 
-    render() : ReactElement<any> {
+    render() : React.ReactElement<any> {
         let defaultValues : Filter;
         if (this.props.prePopulateFilter) {
             defaultValues = this.props.prePopulateFilter;

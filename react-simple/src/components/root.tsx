@@ -9,7 +9,7 @@ interface Props {
 }
 
 export class RootComponent extends React.Component<Props, State> {
-  render() : ReactElement<any> {
+  render() : React.ReactElement<any> {
     return (
       <div style={{height: "100%"}}>
         <HeaderComponent title="Taggy" />

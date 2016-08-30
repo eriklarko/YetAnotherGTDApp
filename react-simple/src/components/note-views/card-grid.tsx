@@ -23,7 +23,7 @@ export class CardGrid extends React.Component<Props, State> {
         padding: "1em"
     };
 
-    render() : ReactElement<any> {
+    render() : React.ReactElement<any> {
         if (this.props.forceOrder) {
             this.cardStyle["margin"] = "1em";
         } else {

@@ -91,7 +91,7 @@ export class Tags extends React.Component<Props, State> {
         });
     }
 
-    private renderTagCompletion = (tag: Tag) : ReactElement<any> => {
+    private renderTagCompletion = (tag: Tag) : React.ReactElement<any> => {
         var addTag = () => {
             var a : any = this.refs["tagsInput"];
             tagsActionCreator.addTag(this.props.note, tag);
@@ -121,7 +121,7 @@ export class Tags extends React.Component<Props, State> {
         return tagText;
     }
 
-    render() : ReactElement<any> {
+    render() : React.ReactElement<any> {
         var renderedTagCompletions = this.state.tagCompletions.map(this.renderTagCompletion);
 
         return (

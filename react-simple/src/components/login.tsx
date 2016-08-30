@@ -9,7 +9,7 @@ interface Props {
 }
 
 export class LoginComponent extends React.Component<Props, State> {
-  render() : ReactElement<any> {
+  render() : React.ReactElement<any> {
     return <div>
       <h1>Login </h1>
       Username: <input></input>

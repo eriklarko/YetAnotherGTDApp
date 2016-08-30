@@ -7,11 +7,11 @@ interface Props<T> {
     items : Array<T>;
     getId : (T) => any;
     selectedId: any;
-    defaultView: ReactElement<any>;
-    selectedViewContructor: (t: T) => ReactElement<any>;
-    linkConstructor: (t: T, selected: boolean) => ReactElement<any>;
+    defaultView: React.ReactElement<any>;
+    selectedViewContructor: (t: T) => React.ReactElement<any>;
+    linkConstructor: (t: T, selected: boolean) => React.ReactElement<any>;
 
-    listDetailRenderer: (list: Array<ReactElement<any>>, detail: ReactElement<any>) => ReactElement<any>;
+    listDetailRenderer: (list: Array<ReactElement<any>>, detail: React.ReactElement<any>) => React.ReactElement<any>;
 }
 
 // This is a stupid idea... :) The views using this are hard to understand and debug.
@@ -47,7 +47,7 @@ export class GenericMasterDetailView<T> extends Component<Props<T>, State> {
         return undefined;
     }
 
-    private horizontalRenderer(list: Array<ReactElement<any>>, detail: ReactElement<any>) : ReactElement<any> {
+    private horizontalRenderer(list: Array<ReactElement<any>>, detail: React.ReactElement<any>) : React.ReactElement<any> {
         return (
             <div style={{height: "100%"}}>
                 <div className="col-md-1">{list}</div>
@@ -56,7 +56,7 @@ export class GenericMasterDetailView<T> extends Component<Props<T>, State> {
         );
     }
 
-    render() : ReactElement<any> {
+    render() : React.ReactElement<any> {
         let selectedItem = this.findSelectedItem();
         let selectedItemView = null;
         if (selectedItem) {

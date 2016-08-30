@@ -12,7 +12,7 @@ interface State {
 
 export class NoteReminderList extends React.Component<Props, State> {
 
-    render() : ReactElement<any> {
+    render() : React.ReactElement<any> {
         let items = this.props.noteReminders.map(nr => {
             let onClose = () => {
                 if (this.props.onDismiss) {

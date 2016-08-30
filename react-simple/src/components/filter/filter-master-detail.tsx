@@ -14,7 +14,7 @@ interface Props {
 
 export class FilterMasterDetail extends React.Component<Props, State>  {
 
-    private horizontalLayout(list: Array<ReactElement<any>>, detail: ReactElement<any>) : ReactElement<any> {
+    private horizontalLayout(list: Array<ReactElement<any>>, detail: React.ReactElement<any>) : React.ReactElement<any> {
         return <div style={{height: "100%"}}>
 
                 <nav className="navbar navbar-default">
@@ -41,7 +41,7 @@ export class FilterMasterDetail extends React.Component<Props, State>  {
             </div>
     }
 
-    render() : ReactElement<any> {
+    render() : React.ReactElement<any> {
         var starredFilters = this.props.filters.filter((f) => f.starred);
 
         return <GenericMasterDetailView
