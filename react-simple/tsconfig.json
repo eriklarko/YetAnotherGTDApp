@@ -7,7 +7,7 @@
         "target": "es5",
         "jsx": "react"
     },
-    filesGlob: [
+    "filesGlob": [
         "./src/**/*.tsx",
         "./src/**/*.ts"
     ],

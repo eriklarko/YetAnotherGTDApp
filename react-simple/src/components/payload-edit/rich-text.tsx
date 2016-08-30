@@ -1,4 +1,4 @@
-import {Component, ReactElement} from 'react';
+import * as React from "react";
 import {Note} from "../../models/note-model";
 import {payloadActionCreator} from "../../actions/payload-action-creator";
 import {Tags} from "../tags";

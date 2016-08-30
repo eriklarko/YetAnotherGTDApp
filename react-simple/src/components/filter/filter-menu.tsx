@@ -1,4 +1,4 @@
-import {Component, ReactElement} from 'react';
+import * as React from "react";
 import {Link, RouteHandler} from 'react-router';
 import {Filter} from "../../models/filter-model";
 import {GenericMasterDetailView} from "../generic-master-detail";

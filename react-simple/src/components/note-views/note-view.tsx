@@ -1,6 +1,6 @@
 // Used to show either a rich text edit or a simple edit field based on the note
 // passed as a prop
-import {Component, ReactElement} from 'react';
+import * as React from "react";
 import {Note, NoteType} from "../../models/note-model";
 import {RichTextPayload} from "../payload-edit/rich-text";
 import {SmallTextPayload} from "../payload-edit/small-text";

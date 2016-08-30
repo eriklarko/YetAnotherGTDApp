@@ -1,4 +1,4 @@
-import {Component, ReactElement} from 'react';
+import * as React from "react";
 import {Note} from '../../models/note-model';
 import {Link} from 'react-router';
 

@@ -1,4 +1,4 @@
-import {Component, ReactElement} from 'react';
+import * as React from "react";
 import {Filter, DisplayType} from "../../models/filter-model";
 import {filterActionCreator} from "../../actions/filter-action-creator";
 

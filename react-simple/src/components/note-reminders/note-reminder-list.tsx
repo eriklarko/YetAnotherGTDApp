@@ -1,4 +1,4 @@
-import {Component, ReactElement} from 'react';
+import * as React from "react";
 import {NoteReminder} from "../../models/note-reminder";
 import {OneLineNoteLink} from "../note-views/one-line-note-link";
 

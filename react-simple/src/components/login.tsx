@@ -1,4 +1,4 @@
-import {Component, ReactElement} from 'react';
+import * as React from "react";
 import {RouteHandler} from 'react-router';
 
 interface State {
